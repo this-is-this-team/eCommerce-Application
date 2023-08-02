@@ -1,0 +1,15 @@
+@import './libs/_reset.scss';
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: $back;
+    color: $text;
+    user-select: none; // test postcss
+}
+
+.image {
+    width: 200px;
+    height: 100px;
+    background-size: cover;
+    background-image: url(../assets/rsschool-test.png);
+}
