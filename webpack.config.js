@@ -12,13 +12,16 @@ module.exports = {
   mode,
   target,
   devtool,
-  entry: path.resolve(__dirname, 'src', 'index.js'),
+  entry: path.resolve(__dirname, 'src', 'index.ts'),
   output: {
     filename: '[name].[contenthash:8].js',
     path: path.resolve(__dirname, 'dist'),
     assetModuleFilename: 'assets/[name].[contenthash:8][ext]',
     clean: true,
     publicPath: '/',
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
   },
   module: {
     rules: [
@@ -44,8 +47,8 @@ module.exports = {
         ],
       },
       {
-        test: /\.js$/i,
-        use: 'babel-loader',
+        test: /\.ts$/,
+        use: 'ts-loader',
         exclude: /node_modules/,
       },
       {
