@@ -34,7 +34,15 @@ module.exports = {
               },
             },
           },
-          "sass-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              additionalData: `
+                @import './src/styles/base/_variables.scss'; 
+                @import './src/styles/base/_fonts.scss';
+              `,
+            },
+          },
         ],
       },
       {
@@ -44,9 +52,9 @@ module.exports = {
       },
       {
         test: /\.woff2?$/i,
-        type: 'asset/resource',
+        type: "asset/resource",
         generator: {
-          filename: 'assets/fonts/[name][ext]',
+          filename: "assets/fonts/[name][ext]",
         },
       },
       {
@@ -57,9 +65,8 @@ module.exports = {
         test: /\.svg$/i,
         type: "asset/resource",
         generator: {
-          filename: 'assets/icons/[name].[contenthash:8][ext]',
+          filename: "assets/icons/[name].[contenthash:8][ext]",
         },
-
       },
     ],
   },
