@@ -8,7 +8,9 @@
     "build:dev": "webpack --node-env=development",
     "build:prod": "webpack --node-env=production",
     "lint:check": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prettier:check": "prettier . --check !.github",
+    "prettier:fix": "prettier . --write !.github"
   },
   "author": "",
   "license": "ISC",
