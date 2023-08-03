@@ -1,0 +1,12 @@
+{
+    "*.ts": [
+      "prettier",
+      "eslint",
+      "jest"
+    ],
+    "*.html": [
+      "eslint",
+      "prettier"
+    ],
+    "*.scss": "eslint"
+  }
