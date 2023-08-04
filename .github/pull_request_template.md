@@ -1,20 +1,21 @@
-__1. Task__  
+**1. Task**  
 _task_title_
 
-__2. Link in [project](https://github.com/orgs/this-is-this-team/projects/3)__  
+**2. Link in [project](https://github.com/orgs/this-is-this-team/projects/3)**  
 _if multiple issues are combined into a single pull request then insert all links (link-1, link-2, etc.)_  
 [link](_insert_link_here_)
 
-__3. Sprint__  
+**3. Sprint**  
 _number_of_sprint_
 
-__4. Timeline__  
+**4. Timeline**  
 Done 01.08.2023 / Deadline 30.08.2023
 
-__5. Task description and solution__  
+**5. Task description and solution**  
 _task_description_and_solution_
 
-__6. Self Check before Merge__  
+**6. Self Check before Merge**
+
 - [ ] Pull request title should follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)
 - [ ] Reviewers added (elsuppo/MaxLisyanskiy/eugenebalts)
 - [ ] All commits in pull request should follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary)
