@@ -2,3 +2,6 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 npx lint-staged
+
+# // TODO: uncomment in sprint 2 when tests appear
+# npm run test
