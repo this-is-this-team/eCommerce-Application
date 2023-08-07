@@ -1,2 +1,79 @@
-$back: #18033e;
-$text: #ffffff;
+// colors
+$color-white: #ffffff;
+$color-primary: #001329;
+$color-gray: #f2f2f2;
+$color-price: #2b8813;
+$color-rating: #fcc400;
+$color-logo: #ff8a00;
+$color-button: #0058c1;
+
+// breakpoints
+$width-mobile: 768px;
+$width-tablet: 1024px;
+
+@mixin mobile {
+  @media (max-width: $width-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $width-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $width-tablet) {
+    @content;
+  }
+}
+
+// fonts
+$font-family-jakarta: 'Plus Jakarta Sans', sans-serif;
+$font-family-gloock: 'Gloock', serif;
+
+$font-main: 500 16px/1.5 $font-family-jakarta;
+$font-logo: 400 26px/0.92 $font-family-gloock;
+$font-button: 700 15px/1.5 $font-family-jakarta;
+$font-label: 600 15px/1.5 $font-family-jakarta;
+$font-xs: 600 12px/1.5 $font-family-jakarta;
+
+@mixin font-h1 {
+  font: 400 60px/1.2 $font-family-gloock;
+
+  @include mobile {
+    font-size: 40px;
+  }
+}
+
+@mixin font-h2 {
+  font: 400 40px/1.2 $font-family-gloock;
+
+  @include mobile {
+    font-size: 32px;
+  }
+}
+
+@mixin font-h3 {
+  font: 400 24px/1.4 $font-family-gloock;
+
+  @include mobile {
+    font-size: 20px;
+  }
+}
+
+// container
+@mixin container {
+  margin: 0 auto;
+  max-width: 1920px;
+  padding: 0 120px;
+
+  @include tablet {
+    padding: 0 60px;
+  }
+
+  @include mobile {
+    padding: 0 20px;
+  }
+}
