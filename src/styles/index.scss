@@ -1,17 +1,25 @@
 @import './libs/_reset.scss';
+@import './base/_fonts.scss';
 
-@import './src/styles/base/_fonts.scss';
-
+html,
 body {
-  font-family: 'Montserrat', sans-serif;
-  background-color: $back;
-  color: $text;
-  user-select: none; // test postcss
+  height: 100%;
 }
 
-.image {
-  width: 200px;
-  height: 100px;
-  background-size: cover;
-  background-image: url('../assets/rsschool-test.png');
+body {
+  font: $font-main;
+  background-color: $color-white;
+  color: $color-primary;
+  display: flex;
+  flex-direction: column;
+}
+
+header,
+footer {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+main {
+  flex-grow: 1;
 }
