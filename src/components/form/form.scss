@@ -1,0 +1,39 @@
+.form {
+  background: $color-bg-card;
+  border-radius: 8px;
+  padding: 64px;
+  display: flex;
+  flex-direction: column;
+
+  @include mobile {
+    padding: 32px;
+  }
+
+  &__title {
+    @include font-h2;
+    margin-bottom: 12px;
+  }
+
+  &__subtitle {
+    opacity: 0.6;
+    margin-bottom: 32px;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__action {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    gap: 24px;
+
+    @include mobile {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+}
