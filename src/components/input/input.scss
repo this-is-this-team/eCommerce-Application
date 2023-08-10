@@ -1,0 +1,36 @@
+.form-field {
+  display: flex;
+  flex-direction: column;
+
+  &__label {
+    font: $font-label;
+    color: $color-primary;
+    margin-bottom: 8px;
+  }
+
+  &__input {
+    padding: 16px 24px;
+    font: $font-main;
+    color: $color-primary;
+    background: $color-white;
+    border: 1px solid $color-white;
+    border-radius: 6px;
+    transition:
+      color 0.3s ease-in-out,
+      border 0.3s ease-in-out;
+
+    &:focus,
+    &:hover {
+      border: 1px solid $color-border;
+    }
+
+    .valid-error & {
+      border: 1px solid $color-error;
+      color: $color-error;
+    }
+
+    &::placeholder {
+      opacity: 0.4;
+    }
+  }
+}
