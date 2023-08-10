@@ -6,4 +6,8 @@ export default class BaseComponent {
     this.node.classList.add(...classNames);
     this.node.textContent = textContent;
   }
+
+  public getElement(): HTMLElement {
+    return this.node;
+  }
 }
