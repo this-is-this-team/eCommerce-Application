@@ -1,0 +1,21 @@
+.button {
+  background: $color-button;
+  border-radius: 6px;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-white;
+  font: $font-button;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &:not(:disabled):hover {
+    background: $color-button-hover;
+  }
+}
