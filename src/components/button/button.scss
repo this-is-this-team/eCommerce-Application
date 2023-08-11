@@ -15,7 +15,19 @@
     cursor: default;
   }
 
-  &:not(:disabled):hover {
+  &:not(:disabled):hover,
+  &:not(:disabled):active {
     background: $color-button-hover;
+  }
+
+  &--white {
+    width: 124px;
+    background: $color-white;
+    color: $color-primary;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: $color-gray;
+    }
   }
 }
