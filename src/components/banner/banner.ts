@@ -2,7 +2,7 @@ import BaseComponent from '../../components/base-component';
 import Button from '../button/button';
 import './banner.scss';
 
-export default class Banner extends BaseComponent {
+export default class Banner extends BaseComponent<'section'> {
   constructor(title: string, text: string) {
     super('section', ['banner']);
 

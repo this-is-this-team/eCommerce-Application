@@ -7,7 +7,7 @@ interface breadcrumbLink {
   pageHref?: string;
 }
 
-export default class Breadcrumbs extends BaseComponent {
+export default class Breadcrumbs extends BaseComponent<'div'> {
   constructor(links: breadcrumbLink[]) {
     super('div', ['breadcrumbs']);
 

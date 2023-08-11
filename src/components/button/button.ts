@@ -1,7 +1,7 @@
 import BaseComponent from '../base-component';
 import './button.scss';
 
-export default class Button extends BaseComponent {
+export default class Button extends BaseComponent<'button'> {
   constructor(
     type: 'submit' | 'reset' | 'button' = 'button',
     text: string,
@@ -10,10 +10,8 @@ export default class Button extends BaseComponent {
     onClick: () => void = () => {}
   ) {
     super('button', ['button', ...classes], text);
-    if (this.node instanceof HTMLButtonElement) {
-      this.node.type = type;
-      this.node.disabled = disabled;
-      this.node.addEventListener('click', onClick);
-    }
+    this.node.type = type;
+    this.node.disabled = disabled;
+    this.node.addEventListener('click', onClick);
   }
 }

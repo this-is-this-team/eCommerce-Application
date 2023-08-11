@@ -4,7 +4,7 @@ import InputField from '../input/input';
 import Link from '../link/link';
 import './form.scss';
 
-export default class SignupForm extends BaseComponent {
+export default class SignupForm extends BaseComponent<'div'> {
   private formElement: HTMLFormElement;
   private inputFieldFirstName: HTMLElement;
   private inputFieldLastName: HTMLElement;
@@ -13,7 +13,7 @@ export default class SignupForm extends BaseComponent {
 
   constructor() {
     super('div', ['form']);
-    this.formElement = new BaseComponent('form', ['form__form']).getElement() as HTMLFormElement;
+    this.formElement = new BaseComponent('form', ['form__form']).getElement();
 
     this.inputFieldFirstName = new InputField('text', 'firstName', 'First Name', 'First Name').getElement();
     this.inputFieldLastName = new InputField('text', 'lastName', 'Last Name', 'Last Name').getElement();

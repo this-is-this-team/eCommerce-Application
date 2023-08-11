@@ -1,7 +1,7 @@
 import BaseComponent from '../base-component';
 import './input.scss';
 
-export default class InputField extends BaseComponent {
+export default class InputField extends BaseComponent<'div'> {
   constructor(
     type: string = 'text',
     name: string = '',
@@ -14,12 +14,10 @@ export default class InputField extends BaseComponent {
     const labelElement = new BaseComponent('label', ['form-field__label'], label).getElement();
     const inputElement = new BaseComponent('input', ['form-field__input']).getElement();
 
-    if (inputElement instanceof HTMLInputElement) {
-      inputElement.type = type;
-      inputElement.name = name;
-      inputElement.required = true;
-      inputElement.placeholder = placeholder;
-    }
+    inputElement.type = type;
+    inputElement.name = name;
+    inputElement.required = true;
+    inputElement.placeholder = placeholder;
 
     this.node.append(labelElement, inputElement);
   }
