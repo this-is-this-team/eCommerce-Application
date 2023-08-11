@@ -1,0 +1,46 @@
+.banner {
+  width: 100vw;
+  height: 680px;
+  color: $color-white;
+  background-image: url('../../assets/img/discover-world.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  @include tablet {
+    height: 540px;
+  }
+
+  &__container {
+    @include container;
+  }
+
+  &__content {
+    max-width: 840px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 250px;
+
+    @include tablet {
+      padding-top: 200px;
+    }
+
+    @include mobile {
+      padding-top: 120px;
+    }
+  }
+
+  &__title {
+    @include font-h1;
+    margin-bottom: 24px;
+  }
+
+  &__text {
+    font-size: 18px;
+    margin-bottom: 32px;
+
+    @include tablet {
+      font-size: 16px;
+    }
+  }
+}
