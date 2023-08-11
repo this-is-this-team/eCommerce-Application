@@ -1,11 +1,16 @@
 .link {
   &--breadcrumbs {
     font: $font-xs;
-    color: $color-secondary;
+    color: $color-secondary-40;
+    transition: color 0.3s ease-in-out;
 
     &::after {
       content: '/';
       margin-left: 6px;
+    }
+
+    &:hover {
+      color: $color-secondary-60;
     }
   }
 
