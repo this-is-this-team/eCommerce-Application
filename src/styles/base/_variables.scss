@@ -1,6 +1,7 @@
 // colors
 $color-white: #ffffff;
 $color-primary: #001329;
+$color-secondary: #99a1a9;
 $color-gray: #f2f2f2;
 $color-price: #2b8813;
 $color-rating: #fcc400;
@@ -46,24 +47,36 @@ $font-xs: 600 12px/1.5 $font-family-jakarta;
 @mixin font-h1 {
   font: 400 60px/1.2 $font-family-gloock;
 
+  @include tablet {
+    font-size: 50px;
+  }
+
   @include mobile {
-    font-size: 40px;
+    font-size: 36px;
   }
 }
 
 @mixin font-h2 {
   font: 400 40px/1.2 $font-family-gloock;
 
+  @include tablet {
+    font-size: 36px;
+  }
+
   @include mobile {
-    font-size: 32px;
+    font-size: 24px;
   }
 }
 
 @mixin font-h3 {
   font: 400 24px/1.4 $font-family-gloock;
 
-  @include mobile {
+  @include tablet {
     font-size: 20px;
+  }
+
+  @include mobile {
+    font-size: 18px;
   }
 }
 
