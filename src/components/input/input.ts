@@ -1,9 +1,11 @@
 import BaseComponent from '../base-component';
+import formValidationRules from '../../constants/formValidationRules';
 import './input.scss';
 
 export default class InputField extends BaseComponent<'div'> {
   private labelElement: HTMLLabelElement;
   private inputElement: HTMLInputElement;
+  private errorElement: HTMLSpanElement;
 
   constructor(
     type: string = 'text',
@@ -16,6 +18,7 @@ export default class InputField extends BaseComponent<'div'> {
 
     this.labelElement = new BaseComponent('label', ['form-field__label'], label).getElement();
     this.inputElement = new BaseComponent('input', ['form-field__input']).getElement();
+    this.errorElement = new BaseComponent('span', ['form-field__error']).getElement();
 
     this.inputElement.type = type;
     this.inputElement.name = name;
@@ -25,6 +28,31 @@ export default class InputField extends BaseComponent<'div'> {
     this.node.append(this.labelElement, this.inputElement);
 
     if (type === 'password') this.createPasswordCheckbox();
+  }
+
+  public isValid(inputName: keyof typeof formValidationRules, value: string): boolean {
+    const regex: RegExp = formValidationRules[inputName].rule;
+
+    if (!regex.test(value)) {
+      this.showError(inputName);
+      this.inputElement.addEventListener('input', () => this.clearError());
+
+      return false;
+    }
+
+    return true;
+  }
+
+  private showError(inputName: keyof typeof formValidationRules) {
+    this.inputElement.classList.add('valid-error');
+    this.errorElement.textContent = formValidationRules[inputName].errorText;
+    this.node.append(this.errorElement);
+  }
+
+  private clearError() {
+    this.inputElement.classList.remove('valid-error');
+    this.errorElement.textContent = '';
+    this.errorElement.remove();
   }
 
   private createPasswordCheckbox() {

@@ -6,19 +6,20 @@ import './form.scss';
 
 export default class SignupForm extends BaseComponent<'div'> {
   private formElement: HTMLFormElement;
-  private inputFieldFirstName: HTMLElement;
-  private inputFieldLastName: HTMLElement;
-  private inputFieldEmail: HTMLElement;
-  private inputFieldPassword: HTMLElement;
+  private firstNameField: InputField;
+  private lastNameField: InputField;
+  private emailField: InputField;
+  private passwordField: InputField;
 
   constructor() {
     super('div', ['form']);
     this.formElement = new BaseComponent('form', ['form__form']).getElement();
 
-    this.inputFieldFirstName = new InputField('text', 'firstName', 'First Name', 'First Name').getElement();
-    this.inputFieldLastName = new InputField('text', 'lastName', 'Last Name', 'Last Name').getElement();
-    this.inputFieldEmail = new InputField('email', 'email', 'Email', 'Email').getElement();
-    this.inputFieldPassword = new InputField('password', 'password', 'Password', 'Password').getElement();
+    // TODO: add fields required by the task
+    this.firstNameField = new InputField('text', 'firstName', 'First Name', 'First Name');
+    this.lastNameField = new InputField('text', 'lastName', 'Last Name', 'Last Name');
+    this.emailField = new InputField('email', 'email', 'Email', 'Email');
+    this.passwordField = new InputField('password', 'password', 'Password', 'Password');
 
     this.formElement.addEventListener('submit', (event) => this.onSubmit(event));
 
@@ -37,22 +38,31 @@ export default class SignupForm extends BaseComponent<'div'> {
     actionField.append(buttonSubmit, linkOnLogin);
 
     this.formElement.append(
-      this.inputFieldFirstName,
-      this.inputFieldLastName,
-      this.inputFieldEmail,
-      this.inputFieldPassword,
+      this.firstNameField.getElement(),
+      this.lastNameField.getElement(),
+      this.emailField.getElement(),
+      this.passwordField.getElement(),
       actionField
     );
 
     this.node.append(formTitle, formSubtitle, this.formElement);
   }
 
+  // TODO: describe interface of data to be sent to commerceTools
   private getValues() {
     const formData = new FormData(this.formElement);
-    const firstName = formData.get('firstName')?.toString().trim();
-    const lastName = formData.get('lastName')?.toString().trim();
-    const email = formData.get('email')?.toString().trim();
-    const password = formData.get('password')?.toString().trim();
+    const firstName = formData.get('firstName')?.toString().trim() || '';
+    const lastName = formData.get('lastName')?.toString().trim() || '';
+    const email = formData.get('email')?.toString().trim() || '';
+    const password = formData.get('password')?.toString().trim() || '';
+
+    if (
+      !this.firstNameField.isValid('firstName', firstName) ||
+      !this.lastNameField.isValid('lastName', lastName) ||
+      !this.passwordField.isValid('password', password)
+    ) {
+      return;
+    }
 
     return {
       firstName,
@@ -62,9 +72,11 @@ export default class SignupForm extends BaseComponent<'div'> {
     };
   }
 
+  // TODO: send to commerceTools
   private onSubmit(event: SubmitEvent): void {
     event.preventDefault();
     const regData = this.getValues();
+    if (!regData) return;
     console.log(regData);
   }
 }

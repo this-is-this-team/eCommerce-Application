@@ -24,7 +24,7 @@
       border: 1px solid $color-border;
     }
 
-    .valid-error & {
+    &.valid-error {
       border: 1px solid $color-error;
       color: $color-error;
     }
@@ -45,7 +45,7 @@
   &__check {
     position: absolute;
     right: 24px;
-    bottom: 19px;
+    top: 49.5px;
     width: 20px;
     height: 20px;
     background-image: url('../../assets/icons/visibility.svg');
@@ -57,5 +57,11 @@
     &.password-visible {
       background-image: url('../../assets/icons/visibility-off.svg');
     }
+  }
+
+  &__error {
+    margin-top: 4px;
+    font-size: 14px;
+    color: $color-error;
   }
 }
