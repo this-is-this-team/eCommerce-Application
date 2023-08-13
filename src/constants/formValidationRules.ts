@@ -23,11 +23,11 @@ const formValidationRules: IValidationRules = {
     errorText: 'Requires minimum 8 characters, 1 uppercase, 1 lowercase and 1 number',
   },
   firstName: {
-    rule: /^(?=.*[^\d!@#$%^&*()_+[\]{};':"\\|,.<>/?]).+$/,
+    rule: /^[^\d!@#$%^&*()_+[\]{};':"\\|,.<>/?]+$/,
     errorText: 'Requires at least one letter, no special characters or numbers',
   },
   lastName: {
-    rule: /^(?=.*[^\d!@#$%^&*()_+[\]{};':"\\|,.<>/?]).+$/,
+    rule: /^[^\d!@#$%^&*()_+[\]{};':"\\|,.<>/?]+$/,
     errorText: 'Requires at least one letter, no special characters or numbers',
   },
   email: {
@@ -43,7 +43,7 @@ const formValidationRules: IValidationRules = {
     errorText: 'Requires at least one letter',
   },
   cityShipping: {
-    rule: /^(?=.*[^\d!@#$%^&*()_+[\]{};':"\\|,.<>/?]).+$/,
+    rule: /^[^\d!@#$%^&*()_+[\]{};':"\\|,.<>/?]+$/,
     errorText: 'Requires at least one letter, no special characters or numbers',
   },
   postcodeShipping: {
@@ -55,7 +55,7 @@ const formValidationRules: IValidationRules = {
     errorText: 'Requires at least one letter',
   },
   cityBilling: {
-    rule: /^(?=.*[^\d!@#$%^&*()_+[\]{};':"\\|,.<>/?]).+$/,
+    rule: /^[^\d!@#$%^&*()_+[\]{};':"\\|,.<>/?]+$/,
     errorText: 'Requires at least one letter, no special characters or numbers',
   },
   postcodeBilling: {
