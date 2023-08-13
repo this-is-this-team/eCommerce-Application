@@ -20,27 +20,52 @@ export default class InputField extends BaseComponent<'div'> {
     this.inputElement = new BaseComponent('input', ['form-field__input']).getElement();
     this.errorElement = new BaseComponent('span', ['form-field__error']).getElement();
 
-    this.inputElement.type = type;
-    this.inputElement.name = name;
-    this.inputElement.required = true;
-    this.inputElement.placeholder = placeholder;
+    this.setAttributes(type, name, placeholder);
+
+    if (type === 'date') this.addMinMaxForInputDate();
+    if (type === 'password') this.createPasswordCheckbox();
+    if (type === 'checkbox') this.node.classList.add('form-field-checkbox');
+    if (name === 'country') this.createCountryField();
 
     this.node.append(this.labelElement, this.inputElement);
-
-    if (type === 'password') this.createPasswordCheckbox();
   }
 
-  public isValid(inputName: keyof typeof formValidationRules, value: string): boolean {
-    const regex: RegExp = formValidationRules[inputName].rule;
+  public getValue(inputName: keyof typeof formValidationRules): string | undefined {
+    const regex: RegExp = formValidationRules[inputName]?.rule;
 
-    if (!regex.test(value)) {
+    if (regex && !regex.test(this.inputElement.value)) {
       this.showError(inputName);
       this.inputElement.addEventListener('input', () => this.clearError());
 
-      return false;
+      return;
     }
 
-    return true;
+    this.inputElement.removeEventListener('input', () => this.clearError());
+
+    return this.inputElement.value;
+  }
+
+  private setAttributes(type: string = 'text', name: string = '', placeholder: string = '') {
+    this.inputElement.type = type;
+    this.inputElement.name = name;
+    this.inputElement.id = name;
+    this.inputElement.placeholder = placeholder;
+    this.labelElement.setAttribute('for', name);
+  }
+
+  private createCountryField() {
+    this.node.classList.add('form-field-country');
+    this.inputElement.value = 'US';
+    this.inputElement.disabled = true;
+  }
+
+  private addMinMaxForInputDate() {
+    this.inputElement.min = '1900-01-01';
+    const thirteenYearsAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 13));
+    const formattedDate = `${thirteenYearsAgo.getFullYear()}-${(thirteenYearsAgo.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${thirteenYearsAgo.getDate().toString().padStart(2, '0')}`;
+    this.inputElement.max = formattedDate;
   }
 
   private showError(inputName: keyof typeof formValidationRules) {

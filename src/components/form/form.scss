@@ -22,13 +22,29 @@
   &__form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 32px;
+
+    &-block {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+
+    @include tablet {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
   }
 
   &__action {
     display: flex;
     align-items: center;
-    margin-top: 16px;
     gap: 24px;
 
     @include mobile {

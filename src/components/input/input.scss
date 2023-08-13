@@ -9,7 +9,8 @@
   }
 
   &__input {
-    padding: 16px 24px;
+    padding: 10px 24px;
+    height: 48px;
     font: $font-main;
     color: $color-primary;
     background: $color-white;
@@ -32,6 +33,11 @@
     &::placeholder {
       opacity: 0.4;
     }
+
+    &:disabled {
+      opacity: 0.6;
+      border: 1px solid $color-white;
+    }
   }
 
   &-password {
@@ -45,7 +51,7 @@
   &__check {
     position: absolute;
     right: 24px;
-    top: 49.5px;
+    top: 44.5px;
     width: 20px;
     height: 20px;
     background-image: url('../../assets/icons/visibility.svg');
@@ -63,5 +69,36 @@
     margin-top: 4px;
     font-size: 14px;
     color: $color-error;
+  }
+
+  &-checkbox {
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: flex-end;
+
+    input {
+      cursor: pointer;
+    }
+
+    .form-field__label {
+      margin: 0 0 0 8px;
+    }
+  }
+
+  &-country {
+    &::after {
+      content: '* currently, the shop only operates in the USA';
+      color: $color-secondary-60;
+      margin-top: 8px;
+      padding-bottom: 32px;
+
+      @include tablet {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  &--hidden {
+    display: none;
   }
 }
