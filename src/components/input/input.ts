@@ -33,7 +33,7 @@ export default class InputField extends BaseComponent<'div'> {
   public getValue(inputName: keyof typeof formValidationRules): string | undefined {
     const regex: RegExp = formValidationRules[inputName]?.rule;
 
-    if (regex && !regex.test(this.inputElement.value)) {
+    if (regex && !regex.test(this.inputElement.value.trim())) {
       this.showError(inputName);
       this.inputElement.addEventListener('input', () => this.clearError());
 
@@ -42,7 +42,7 @@ export default class InputField extends BaseComponent<'div'> {
 
     this.inputElement.removeEventListener('input', () => this.clearError());
 
-    return this.inputElement.value;
+    return this.inputElement.value.trim();
   }
 
   private setAttributes(type: string = 'text', name: string = '', placeholder: string = '') {
