@@ -1,5 +1,7 @@
-import SignupPage from './components/pages/signup-page/signup-page';
+import LoginPage from './components/pages/login-page/login-page';
 import './styles/index.scss';
 
-const signupPage = new SignupPage().getElement();
-document.body.append(signupPage);
+// TODO: Remove after the implementation of routing
+const loginPage = new LoginPage().getElement();
+
+document.body.append(loginPage);
