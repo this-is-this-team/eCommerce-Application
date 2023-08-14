@@ -1,0 +1,54 @@
+.footer {
+  background-color: $color-primary;
+
+  &__container {
+    @include container;
+    padding: 80px 120px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__information {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+  }
+
+  &__subtitle {
+    color: $color-white;
+  }
+
+  &__post-subtitle {
+    color: $color-white;
+    font-size: 14px;
+    opacity: 0.5;
+  }
+
+  &__nav {
+    display: flex;
+    gap: 64px;
+  }
+
+  &__menu {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .menu {
+      &__title > a {
+        color: $color-white;
+      }
+
+      &__item:not(.menu__title) > a {
+        color: $color-gray;
+        opacity: 0.5;
+        transition: all 0.2s ease;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
