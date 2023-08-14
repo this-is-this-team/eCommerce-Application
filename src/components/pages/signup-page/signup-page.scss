@@ -12,11 +12,5 @@
 
   &__container {
     @include container;
-    display: grid;
-    gap: 24px;
-
-    @include tablet {
-      grid-template-columns: 1fr;
-    }
   }
 }
