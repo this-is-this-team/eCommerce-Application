@@ -6,6 +6,10 @@ $color-price: #2b8813;
 $color-rating: #fcc400;
 $color-logo: #ff8a00;
 $color-button: #0058c1;
+$color-button-hover: #1969c7;
+$color-bg-card: #f5f6f6;
+$color-border: #e0e3e5;
+$color-error: #ef4444;
 
 // breakpoints
 $width-mobile: 768px;
@@ -90,4 +94,17 @@ $font-xs: 600 12px/1.5 $font-family-jakarta;
   background-position: center;
   background-size: cover;
   transition: all 0.1s linear;
+}
+
+@mixin account-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url('../../../assets/icons/account-icon.svg') center/cover;
+}
+
+@mixin bag-icon {
+  width: 20px;
+  height: 20px;
+  background: url('../../../assets/icons/bag-icon.svg') center/cover;
 }

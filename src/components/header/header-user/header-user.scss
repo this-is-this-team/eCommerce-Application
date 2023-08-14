@@ -1,0 +1,99 @@
+.header {
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  &__user-account {
+    position: relative;
+    height: 100%;
+    transition: all 0.2s ease;
+
+    &:hover > .user-account__title {
+      opacity: 1;
+    }
+
+    .user-account {
+      &__title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        opacity: 0.5;
+      }
+
+      &__icon {
+        @include account-icon;
+      }
+    }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 20px 24px;
+    top: 35px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.08);
+
+    &_closed {
+      display: none;
+    }
+
+    &_opened {
+      display: flex;
+    }
+
+    &__button {
+      padding: 16px 40px;
+      white-space: nowrap;
+    }
+
+    &__link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      gap: 8px;
+      font: $font-button;
+      color: $color-button;
+      text-transform: capitalize;
+      border-bottom: 2px solid $color-button;
+
+      &__span {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: url('../../../assets/icons/create-account-icon.svg') center/cover;
+      }
+    }
+  }
+
+  &__user-bag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 16px;
+    border-left: 2px solid $color-border;
+    gap: 4px;
+    height: 100%;
+    padding-left: 16px;
+
+    .user-bag {
+      &__icon {
+        @include bag-icon;
+      }
+
+      &__counter {
+        padding: 2px 8px;
+        text-align: center;
+        background-color: $color-gray;
+        border-radius: 100%;
+      }
+    }
+  }
+}
