@@ -2,26 +2,30 @@ import BaseComponent from '../base-component';
 import Link from '../link/link';
 import './breadcrumbs.scss';
 
-interface breadcrumbLink {
+interface IBreadcrumbLink {
   pageName: string;
   pageHref?: string;
 }
 
 export default class Breadcrumbs extends BaseComponent<'div'> {
-  constructor(links: breadcrumbLink[]) {
+  constructor(links: IBreadcrumbLink[]) {
     super('div', ['breadcrumbs']);
 
     this.renderBreadcrumbs(links);
   }
 
-  renderBreadcrumbs(links: breadcrumbLink[]) {
-    const container = new BaseComponent('div', ['breadcrumbs__container']).getElement();
-    const linksElement = new BaseComponent('div', ['breadcrumbs__links']).getElement();
-    const activeLinks = links.slice(0, links.length - 1);
-    const activeLinksElements = activeLinks.map((link) =>
+  renderBreadcrumbs(links: IBreadcrumbLink[]) {
+    const container: HTMLDivElement = new BaseComponent('div', ['breadcrumbs__container']).getElement();
+    const linksElement: HTMLDivElement = new BaseComponent('div', ['breadcrumbs__links']).getElement();
+    const activeLinks: IBreadcrumbLink[] = links.slice(0, links.length - 1);
+    const activeLinksElements: HTMLAnchorElement[] = activeLinks.map((link) =>
       new Link('Home', ['link--breadcrumbs'], link.pageHref).getElement()
     );
-    const currentPage = new BaseComponent('p', ['breadcrumbs__current'], links.at(-1)?.pageName).getElement();
+    const currentPage: HTMLParagraphElement = new BaseComponent(
+      'p',
+      ['breadcrumbs__current'],
+      links.at(-1)?.pageName
+    ).getElement();
 
     linksElement.append(...activeLinksElements, currentPage);
 

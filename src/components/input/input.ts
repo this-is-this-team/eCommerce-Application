@@ -61,8 +61,8 @@ export default class InputField extends BaseComponent<'div'> {
 
   private addMinMaxForInputDate() {
     this.inputElement.min = '1900-01-01';
-    const thirteenYearsAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 13));
-    const formattedDate = `${thirteenYearsAgo.getFullYear()}-${(thirteenYearsAgo.getMonth() + 1)
+    const thirteenYearsAgo: Date = new Date(new Date().setFullYear(new Date().getFullYear() - 13));
+    const formattedDate: string = `${thirteenYearsAgo.getFullYear()}-${(thirteenYearsAgo.getMonth() + 1)
       .toString()
       .padStart(2, '0')}-${thirteenYearsAgo.getDate().toString().padStart(2, '0')}`;
     this.inputElement.max = formattedDate;
@@ -83,7 +83,7 @@ export default class InputField extends BaseComponent<'div'> {
   private createPasswordCheckbox() {
     this.node.classList.add('form-field-password');
 
-    const checkboxBlock = new BaseComponent('div', ['form-field__check']).getElement();
+    const checkboxBlock: HTMLDivElement = new BaseComponent('div', ['form-field__check']).getElement();
 
     checkboxBlock.addEventListener('click', () => {
       this.inputElement.type = this.inputElement.type === 'password' ? 'text' : 'password';

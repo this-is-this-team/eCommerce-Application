@@ -38,7 +38,7 @@ export default class SignupPage extends BaseComponent<'main'> {
   }
 
   private renderSignupSection(): void {
-    const container = new BaseComponent('div', ['signup-section__container']).getElement();
+    const container: HTMLElement = new BaseComponent('div', ['signup-section__container']).getElement();
 
     const signupForm = new SignupForm().getElement();
 
