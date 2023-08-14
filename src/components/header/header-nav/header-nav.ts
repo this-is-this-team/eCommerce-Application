@@ -26,7 +26,7 @@ export default class HeaderNav extends BaseComponent<'nav'> {
       const { innerItems }: IMenuItems = item;
 
       if (innerItems) {
-        const bridge: HTMLDivElement = new BaseComponent<'div'>('div', ['item__bridge']).getElement();
+        const bridge: HTMLDivElement = new BaseComponent<'div'>('div', ['header__bridge']).getElement();
         const itemInnerList: HTMLUListElement = new BaseComponent<'ul'>('ul', ['item__inner-list']).getElement();
 
         innerItems.forEach((innerItem) => {
