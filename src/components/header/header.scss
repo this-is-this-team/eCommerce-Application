@@ -1,0 +1,29 @@
+.header {
+  height: 80px;
+
+  &__container {
+    @include container;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &__logo-menu {
+    display: flex;
+    gap: 64px;
+  }
+
+  &__link {
+    color: unset;
+    transition: all 0.2s ease;
+  }
+
+  &__bridge {
+    position: absolute;
+    top: 20px;
+    width: calc(100% + 20px);
+    height: 15px;
+    z-index: 0;
+  }
+}
