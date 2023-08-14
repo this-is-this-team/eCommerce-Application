@@ -1,0 +1,33 @@
+.button {
+  background: $color-button;
+  border-radius: 6px;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-white;
+  font: $font-button;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &:not(:disabled):hover,
+  &:not(:disabled):active {
+    background: $color-button-hover;
+  }
+
+  &--white {
+    width: 124px;
+    background: $color-white;
+    color: $color-primary;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: $color-gray;
+    }
+  }
+}
