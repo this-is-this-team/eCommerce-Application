@@ -1,0 +1,22 @@
+.signup-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-section {
+  margin-bottom: 104px;
+
+  @include mobile {
+    margin-bottom: 80px;
+  }
+
+  &__container {
+    @include container;
+    display: grid;
+    gap: 24px;
+
+    @include tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+}

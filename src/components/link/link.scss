@@ -1,0 +1,50 @@
+.link {
+  &--breadcrumbs {
+    font: $font-xs;
+    color: $color-secondary-40;
+    transition: color 0.3s ease-in-out;
+
+    &::after {
+      content: '/';
+      margin-left: 6px;
+    }
+
+    &:hover {
+      color: $color-secondary-60;
+    }
+  }
+
+  &--arrow {
+    font: $font-button;
+    color: $color-button;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $color-button;
+    transition:
+      border 0.3s ease-in-out,
+      color 0.3s ease-in-out;
+
+    &::after {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-left: 6px;
+      background-image: url('../../assets/icons/link-arrow.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    &:hover,
+    &:active {
+      color: $color-button-hover;
+      border-bottom: 1px solid $color-bg-card;
+
+      &::after {
+        transform: rotate(45deg);
+      }
+    }
+  }
+}
