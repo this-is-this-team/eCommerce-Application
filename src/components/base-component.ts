@@ -1,13 +1,13 @@
-export default class BaseComponent {
-  protected node: HTMLElement;
+export default class BaseComponent<K extends keyof HTMLElementTagNameMap> {
+  protected node: HTMLElementTagNameMap[K];
 
-  constructor(tagName: keyof HTMLElementTagNameMap = 'div', classNames: Array<string> = [], textContent: string = '') {
+  constructor(tagName: K, classNames: Array<string> = [], textContent: string = '') {
     this.node = document.createElement(tagName);
     this.node.classList.add(...classNames);
     this.node.textContent = textContent;
   }
 
-  getElement() {
+  public getElement(): HTMLElementTagNameMap[K] {
     return this.node;
   }
 }
