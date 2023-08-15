@@ -5,16 +5,16 @@ import './header-user.scss';
 export default class HeaderUser extends BaseComponent<'div'> {
   private account: HTMLDivElement;
   private dropdownMenu: HTMLDivElement;
-  private bag: HTMLDivElement;
+  private cart: HTMLDivElement;
 
   constructor() {
     super('div', ['header__user']);
 
     this.dropdownMenu = this.drawDropdownMenu();
     this.account = this.drawAccount();
-    this.bag = this.drawBag();
+    this.cart = this.drawBag();
 
-    this.node.append(this.account, this.bag);
+    this.node.append(this.account, this.cart);
   }
 
   private drawAccount(): HTMLDivElement {
@@ -61,6 +61,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
     const arrowIcon: HTMLSpanElement = new BaseComponent<'span'>('span', ['dropdown-menu__link__span']).getElement();
 
     createAccountBtn.href = '#';
+
     createAccountBtn.append(arrowIcon);
 
     dropdownMenu.append(loginBtn, createAccountBtn);
@@ -88,10 +89,10 @@ export default class HeaderUser extends BaseComponent<'div'> {
     }
   }
 
-  drawBag() {
-    const bag: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-bag']).getElement();
-    const bagIcon = new BaseComponent<'a'>('a', ['user-bag__icon']).getElement();
-    const bagCounter = new BaseComponent<'div'>('div', ['user-bag__counter'], '0').getElement();
+  private drawBag(): HTMLDivElement {
+    const bag: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-cart']).getElement();
+    const bagIcon: HTMLAnchorElement = new BaseComponent<'a'>('a', ['user-cart__icon']).getElement();
+    const bagCounter: HTMLDivElement = new BaseComponent<'div'>('div', ['user-cart__counter'], '0').getElement();
 
     bagIcon.href = '#';
 

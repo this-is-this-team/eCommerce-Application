@@ -117,7 +117,7 @@ $font-xs: 600 12px/1.5 $font-family-jakarta;
   background: url('../../../assets/icons/account-icon.svg') center/cover;
 }
 
-@mixin bag-icon {
+@mixin cart-icon {
   width: 20px;
   height: 20px;
   background: url('../../../assets/icons/bag-icon.svg') center/cover;

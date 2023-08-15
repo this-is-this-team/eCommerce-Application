@@ -14,29 +14,32 @@ export default class HeaderNav extends BaseComponent<'nav'> {
     this.node.append(this.list);
   }
 
-  createHeaderList(menuItems: IMenuItems[] = []): HTMLUListElement {
+  private createHeaderList(menuItems: IMenuItems[] = []): HTMLUListElement {
     const headerList: HTMLUListElement = new BaseComponent<'ul'>('ul', ['header__list']).getElement();
 
     menuItems.forEach((item) => {
       const headerItem: HTMLLIElement = this.createListItem(item, [
         'header__item',
-        item['innerItems'] ? 'header__item_nested-closed' : 'header__item_empty',
+        item['innerItems'] ? 'header__item_with-submenu' : 'header__item_empty',
       ]);
 
       const { innerItems }: IMenuItems = item;
 
       if (innerItems) {
         const bridge: HTMLDivElement = new BaseComponent<'div'>('div', ['header__bridge']).getElement();
-        const itemInnerList: HTMLUListElement = new BaseComponent<'ul'>('ul', ['item__inner-list']).getElement();
+        const dropdownMenu: HTMLUListElement = new BaseComponent<'ul'>('ul', [
+          'dropdown-menu',
+          'dropdown-menu_closed',
+        ]).getElement();
 
         innerItems.forEach((innerItem) => {
           const innerListItem: HTMLLIElement = this.createListItem(innerItem, ['item__inner-item']);
 
-          itemInnerList.append(innerListItem);
+          dropdownMenu.append(innerListItem);
 
           headerItem.append(bridge);
 
-          headerItem.append(itemInnerList);
+          headerItem.append(dropdownMenu);
 
           headerItem.onmouseenter = (event) => {
             if (event.target instanceof HTMLElement) this.showInnerList(event.target);
@@ -66,22 +69,24 @@ export default class HeaderNav extends BaseComponent<'nav'> {
   }
 
   private showInnerList(element: HTMLElement): void {
-    const classClosed = 'header__item_nested-closed';
-    const classOpened = 'header__item_nested-opened';
+    const classClosed = 'dropdown-menu_closed';
+    const classOpened = 'dropdown-menu_opened';
+    const dropdownMenu = element.querySelector(`.${classClosed}`);
 
-    if (element.classList.contains(classClosed)) {
-      element.classList.remove(classClosed);
-      element.classList.add(classOpened);
+    if (dropdownMenu) {
+      dropdownMenu.classList.remove(classClosed);
+      dropdownMenu.classList.add(classOpened);
     }
   }
 
   private hideInnerList(element: HTMLElement): void {
-    const classClosed = 'header__item_nested-closed';
-    const classOpened = 'header__item_nested-opened';
+    const classClosed = 'dropdown-menu_closed';
+    const classOpened = 'dropdown-menu_opened';
+    const dropdownMenu = element.querySelector(`.${classOpened}`);
 
-    if (element.classList.contains(classOpened)) {
-      element.classList.remove(classOpened);
-      element.classList.add(classClosed);
+    if (dropdownMenu) {
+      dropdownMenu.classList.remove(classOpened);
+      dropdownMenu.classList.add(classClosed);
     }
   }
 }
