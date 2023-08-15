@@ -1,5 +1,6 @@
 import BaseComponent from '../../base-component';
 import Button from '../../button/button';
+import Link from '../../link/link';
 import './header-user.scss';
 
 export default class HeaderUser extends BaseComponent<'div'> {
@@ -52,17 +53,11 @@ export default class HeaderUser extends BaseComponent<'div'> {
     ]).getElement();
 
     const loginBtn: HTMLButtonElement = new Button('button', 'Log In', ['dropdown-menu__button']).getElement();
-    const createAccountBtn: HTMLAnchorElement = new BaseComponent<'a'>(
-      'a',
-      ['dropdown-menu__link'],
-      'Create Account'
+    const createAccountBtn: HTMLAnchorElement = new Link(
+      'Create Account',
+      ['link--arrow', 'dropdown-menu__link'],
+      '#'
     ).getElement();
-
-    const arrowIcon: HTMLSpanElement = new BaseComponent<'span'>('span', ['dropdown-menu__link__span']).getElement();
-
-    createAccountBtn.href = '#';
-
-    createAccountBtn.append(arrowIcon);
 
     dropdownMenu.append(loginBtn, createAccountBtn);
 

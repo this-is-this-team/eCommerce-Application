@@ -2,6 +2,7 @@ import './header-nav.scss';
 import BaseComponent from '../../base-component';
 import menuItems from './menu-items';
 import { IMenuItems } from '../../../types/types';
+import Link from '../../link/link';
 
 export default class HeaderNav extends BaseComponent<'nav'> {
   private list: HTMLUListElement;
@@ -59,9 +60,7 @@ export default class HeaderNav extends BaseComponent<'nav'> {
 
   private createListItem(menuItem: IMenuItems, classNames: string[]): HTMLLIElement {
     const listItem: HTMLLIElement = new BaseComponent<'li'>('li', [...classNames]).getElement();
-    const itemLink: HTMLAnchorElement = new BaseComponent<'a'>('a', ['header__link'], menuItem.title).getElement();
-
-    itemLink.href = menuItem.href;
+    const itemLink: HTMLAnchorElement = new Link(menuItem.title, ['header__link'], menuItem.href).getElement();
 
     listItem.append(itemLink);
 
