@@ -17,15 +17,11 @@ export default class Header extends BaseComponent<'header'> {
 
   private createMarkup(): HTMLDivElement {
     const container: HTMLDivElement = new BaseComponent<'div'>('div', ['header__container']).getElement();
-    const logoMenuWrapper: HTMLDivElement = new BaseComponent<'div'>('div', ['header__logo-menu']).getElement();
     const headerLogo: HTMLAnchorElement = new Logo().getElement();
     const navigation: HTMLElement = new HeaderNav().getElement();
     const userWrapper: HTMLDivElement = new HeaderUser().getElement();
 
-    logoMenuWrapper.append(headerLogo, navigation);
-
-    container.append(logoMenuWrapper);
-    container.append(userWrapper);
+    container.append(headerLogo, navigation, userWrapper);
 
     return container;
   }

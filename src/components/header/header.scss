@@ -5,13 +5,9 @@
     @include container;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 100%;
-  }
-
-  &__logo-menu {
-    display: flex;
+    justify-content: flex-start;
     gap: 64px;
+    height: 100%;
   }
 
   &__link {
