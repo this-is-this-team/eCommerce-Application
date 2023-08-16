@@ -3,8 +3,8 @@ import Button from '../button/button';
 import './banner.scss';
 
 export default class Banner extends BaseComponent<'section'> {
-  constructor(title: string, text: string) {
-    super('section', ['banner']);
+  constructor(title: string, text: string, classes: string[] = []) {
+    super('section', ['banner', ...classes]);
 
     this.createMarkup(title, text);
   }
