@@ -1,7 +1,15 @@
-import LoginPage from './components/pages/login-page/login-page';
 import './styles/index.scss';
+import { createRouter } from './router';
 
-// TODO: Remove after the implementation of routing
-const loginPage = new LoginPage().getElement();
+class App {
+  public start(): void {
+    const main = document.createElement('main');
 
-document.body.append(loginPage);
+    document.body.append(main);
+
+    createRouter(main);
+  }
+}
+
+const app: App = new App();
+app.start();
