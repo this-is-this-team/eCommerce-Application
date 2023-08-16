@@ -1,10 +1,13 @@
 import './logo.scss';
 import BaseComponent from '../base-component';
+import Link from '../link/link';
 
-export default class Logo extends BaseComponent<'a'> {
+export default class Logo extends BaseComponent<'h1'> {
   constructor() {
-    super('a', ['logo'], 'this is this.');
+    super('h1', ['logo']);
 
-    this.node.href = '#';
+    const logoLink = new Link('this is this.', ['logo__link'], '#').getElement();
+
+    this.node.append(logoLink);
   }
 }

@@ -1,17 +1,56 @@
 .header {
+  &__menu {
+    background-color: white;
+
+    @include tablet {
+      & {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translateX(320px);
+        width: 320px;
+        height: 100%;
+        z-index: 20;
+        transition: transform 0.3s ease;
+      }
+
+      &_opened {
+        transform: translateX(0);
+      }
+    }
+  }
+
   &__list {
     position: relative;
     display: flex;
     gap: 54px;
+
+    @include tablet {
+      top: 80px;
+      width: 100%;
+      flex-direction: column;
+      gap: 0;
+      background-color: white;
+      width: 320px;
+      z-index: 20;
+    }
   }
 
   &__item {
     position: relative;
     display: inline-block;
     transition: all 0.2s ease;
+
     & > a,
     &:after {
       opacity: 0.5;
+
+      @include tablet {
+        display: block;
+        opacity: 1;
+        padding: 5px 50px;
+        font-size: 20px;
+      }
     }
 
     &:hover {
@@ -27,15 +66,15 @@
         top: calc(50% - 10px);
         right: -20px;
         cursor: pointer;
+
+        @include tablet {
+          display: none;
+        }
       }
 
       &:hover {
         &:after {
-          @include chevron;
-          top: calc(50% - 10px);
-          right: -20px;
           transform: rotate(-180deg);
-          cursor: pointer;
         }
       }
     }
@@ -43,6 +82,18 @@
     & .dropdown-menu {
       padding: 12px 0;
       width: 140px;
+
+      @include tablet {
+        position: static;
+        width: 100%;
+        padding: 0;
+        box-shadow: none;
+        opacity: 0.5;
+
+        &_closed {
+          display: block;
+        }
+      }
 
       & .header__link {
         display: inline-block;
@@ -52,7 +103,20 @@
         &:hover {
           background-color: $color-gray;
         }
+
+        @include tablet {
+          padding: 0;
+          width: 100%;
+          padding: 5px 70px;
+        }
       }
+    }
+  }
+
+  &__bridge {
+    @include tablet {
+      display: block;
+      right: 0;
     }
   }
 }

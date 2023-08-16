@@ -1,4 +1,17 @@
 .logo {
-  color: $color-logo;
+  display: inline-block;
   font: $font-logo;
+
+  &__link {
+    color: $color-logo;
+    white-space: nowrap;
+  }
+
+  @include tablet {
+    font-size: 24px;
+  }
+
+  @include mobile {
+    font-size: 22px;
+  }
 }

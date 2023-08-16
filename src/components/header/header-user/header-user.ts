@@ -4,7 +4,7 @@ import Link from '../../link/link';
 import './header-user.scss';
 
 export default class HeaderUser extends BaseComponent<'div'> {
-  private account: HTMLDivElement;
+  private account: HTMLAnchorElement;
   private dropdownMenu: HTMLDivElement;
   private cart: HTMLDivElement;
 
@@ -18,18 +18,16 @@ export default class HeaderUser extends BaseComponent<'div'> {
     this.node.append(this.account, this.cart);
   }
 
-  private drawAccount(): HTMLDivElement {
-    const account: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-account']).getElement();
+  private drawAccount(): HTMLAnchorElement {
+    const account: HTMLAnchorElement = new Link('', ['header__user-account', '#']).getElement();
     const accountIcon: HTMLSpanElement = new BaseComponent<'span'>('span', ['user-account__icon']).getElement();
-    const accountTitle: HTMLAnchorElement = new BaseComponent<'a'>(
-      'a',
-      ['user-account__title', 'header__link'],
+    const accountTitle: HTMLParagraphElement = new BaseComponent<'p'>(
+      'p',
+      ['user-account__title'],
       'Account'
     ).getElement();
 
     const bridge: HTMLDivElement = new BaseComponent('div', ['header__bridge']).getElement();
-
-    accountTitle.href = '#';
 
     account.onmouseenter = (event) => {
       if (event.target instanceof HTMLElement) this.showDropdownMenu();
@@ -39,9 +37,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
       if (event.target instanceof HTMLElement) this.hideDropdownMenu();
     };
 
-    accountTitle.prepend(accountIcon);
-
-    account.append(accountTitle, bridge, this.dropdownMenu);
+    account.append(accountIcon, accountTitle, bridge, this.dropdownMenu);
 
     return account;
   }

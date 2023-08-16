@@ -8,6 +8,9 @@
 
   &__user-account {
     position: relative;
+    display: flex;
+    gap: 8px;
+    align-items: center;
     height: 100%;
     transition: all 0.2s ease;
 
@@ -20,8 +23,15 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
         opacity: 0.5;
+
+        @include tablet {
+          display: none;
+        }
+
+        @include mobile {
+          display: none;
+        }
       }
 
       &__icon {
@@ -35,6 +45,11 @@
       align-items: center;
       gap: 16px;
       padding: 12px 20px 24px;
+
+      @include tablet {
+        top: 35px;
+        right: 0;
+      }
 
       &_opened {
         display: flex;
@@ -52,6 +67,7 @@
   }
 
   &__user-cart {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -67,11 +83,27 @@
       }
 
       &__counter {
-        padding: 2px 8px;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 25px;
+        width: 25px;
         background-color: $color-gray;
         border-radius: 100%;
+        pointer-events: none;
+
+        @include mobile {
+          position: absolute;
+          transform: scale(0.7);
+          top: -10px;
+          right: -10px;
+        }
       }
+    }
+
+    @include mobile {
+      padding: 0;
+      border: 0;
     }
   }
 }

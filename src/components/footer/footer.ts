@@ -27,7 +27,7 @@ export default class Footer extends BaseComponent<'footer'> {
 
   private drawFooterInfo(): HTMLDivElement {
     const footerInfo: HTMLDivElement = new BaseComponent<'div'>('div', ['footer__information']).getElement();
-    const footerLogo: HTMLAnchorElement = new Logo().getElement();
+    const footerLogo: HTMLHeadingElement = new Logo().getElement();
     const footerSubtitle: HTMLParagraphElement = new BaseComponent<'p'>(
       'p',
       ['footer__subtitle'],
