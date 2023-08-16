@@ -1,7 +1,7 @@
-import BaseComponent from '../../base-component';
-import Breadcrumbs from '../../breadcrumbs/breadcrumbs';
-import SignupForm from '../../form/signup-form';
-import Banner from '../../banner/banner';
+import BaseComponent from '../../components/base-component';
+import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+import SignupForm from '../../components/form/signup-form';
+import Banner from '../../components/banner/banner';
 import './signup-page.scss';
 
 const breadcrumbsLinks = [
