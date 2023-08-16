@@ -7,12 +7,12 @@ const bannerContent = {
   text: 'Satisfy your wanderlust with our collection of exclusive tours tailored to quench your thirst for exploration.',
 };
 
-export default class MainPage extends BaseComponent<'main'> {
+export default class MainPage extends BaseComponent<'div'> {
   private bannerSection: HTMLElement;
   private temporarySection: HTMLElement;
 
   constructor() {
-    super('main', ['signup-main']);
+    super('div', ['main-page']);
 
     this.bannerSection = new Banner(bannerContent.title, bannerContent.text, ['banner--main-page']).getElement();
     this.temporarySection = new BaseComponent('section', ['temporary-section'], 'Opening soon').getElement();

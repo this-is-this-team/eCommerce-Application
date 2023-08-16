@@ -19,13 +19,13 @@ const bannerContent = {
   text: 'Our expertly crafted itineraries take you beyond the ordinary, unveiling the hidden gems of captivating destinations across the globe.',
 };
 
-export default class LoginPage extends BaseComponent<'main'> {
+export default class LoginPage extends BaseComponent<'div'> {
   private breadcrumbs: HTMLElement;
   private loginSection: HTMLElement;
   private bannerSection: HTMLElement;
 
   constructor() {
-    super('main', ['signup-main']);
+    super('div', ['login-page']);
 
     this.breadcrumbs = new Breadcrumbs(breadcrumbsLinks).getElement();
 
