@@ -1,9 +1,9 @@
-.signup-page {
+.login-page {
   display: flex;
   flex-direction: column;
 }
 
-.signup-section {
+.login-section {
   margin-bottom: 104px;
 
   @include mobile {
@@ -12,5 +12,7 @@
 
   &__container {
     @include container;
+    display: flex;
+    justify-content: center;
   }
 }

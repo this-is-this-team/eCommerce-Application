@@ -1,8 +1,8 @@
 import BaseComponent from '../../components/base-component';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
-import SignupForm from '../../components/form/signup-form';
+import LoginForm from '../../components/form/login-form';
 import Banner from '../../components/banner/banner';
-import './signup-page.scss';
+import './login-page.scss';
 
 const breadcrumbsLinks = [
   {
@@ -10,7 +10,7 @@ const breadcrumbsLinks = [
     pageHref: '/',
   },
   {
-    pageName: 'Create Account',
+    pageName: 'Log In',
   },
 ];
 
@@ -19,31 +19,31 @@ const bannerContent = {
   text: 'Our expertly crafted itineraries take you beyond the ordinary, unveiling the hidden gems of captivating destinations across the globe.',
 };
 
-export default class SignupPage extends BaseComponent<'div'> {
+export default class LoginPage extends BaseComponent<'div'> {
   private breadcrumbs: HTMLElement;
-  private signupSection: HTMLElement;
+  private loginSection: HTMLElement;
   private bannerSection: HTMLElement;
 
   constructor() {
-    super('div', ['signup-page']);
+    super('div', ['login-page']);
 
     this.breadcrumbs = new Breadcrumbs(breadcrumbsLinks).getElement();
 
-    this.signupSection = new BaseComponent('section', ['signup-section']).getElement();
+    this.loginSection = new BaseComponent('section', ['login-section']).getElement();
     this.renderSignupSection();
 
     this.bannerSection = new Banner(bannerContent.title, bannerContent.text).getElement();
 
-    this.node.append(this.breadcrumbs, this.signupSection, this.bannerSection);
+    this.node.append(this.breadcrumbs, this.loginSection, this.bannerSection);
   }
 
   private renderSignupSection(): void {
-    const container: HTMLElement = new BaseComponent('div', ['signup-section__container']).getElement();
+    const container: HTMLElement = new BaseComponent('div', ['login-section__container']).getElement();
 
-    const signupForm = new SignupForm().getElement();
+    const signupForm: HTMLDivElement = new LoginForm().getElement();
 
     container.append(signupForm);
 
-    this.signupSection.append(container);
+    this.loginSection.append(container);
   }
 }

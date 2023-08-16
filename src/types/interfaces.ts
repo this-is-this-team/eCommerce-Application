@@ -14,3 +14,8 @@ export interface ISignupData {
   birthDate: string;
   addresses: IAddress[];
 }
+
+export interface ISigninData {
+  email: string;
+  password: string;
+}
