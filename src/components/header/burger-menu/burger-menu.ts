@@ -18,6 +18,10 @@ export default class BurgerMenu extends BaseComponent<'div'> {
     this.node.onclick = () => {
       this.switchBurgerMenu();
     };
+
+    this.blur.onclick = () => {
+      this.switchBurgerMenu();
+    };
   }
 
   private drawBurgerMenu(): void {

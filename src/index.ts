@@ -1,6 +1,17 @@
 import './styles/index.scss';
-import App from './components/app.ts/app';
+import Header from './components/header/header';
+import Footer from './components/footer/footer';
 
-const app = new App();
+class App {
+  public start(): void {
+    const body = document.querySelector('body');
 
-app.drawView();
+    const header = new Header().getElement();
+    const footer = new Footer().getElement();
+
+    body?.append(header, footer);
+  }
+}
+
+const app: App = new App();
+app.start();

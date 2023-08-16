@@ -38,9 +38,6 @@
 }
 
 body {
-  position: relative;
-  overflow-x: hidden;
-
   & .blur {
     position: absolute;
     content: '';
