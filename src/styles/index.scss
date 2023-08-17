@@ -13,6 +13,10 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+
+  &.hidden {
+    overflow: hidden;
+  }
 }
 
 header,
