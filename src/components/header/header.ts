@@ -21,7 +21,7 @@ export default class Header extends BaseComponent<'header'> {
     const headerLogo: HTMLHeadingElement = new Logo().getElement();
     const navigation: HTMLElement = new HeaderNav().getElement();
     const userWrapper: HTMLDivElement = new HeaderUser().getElement();
-    const burgerMenu: HTMLDivElement = new BurgerMenu().getElement();
+    const burgerMenu: HTMLDivElement = new BurgerMenu(navigation).getElement();
 
     container.append(headerLogo, navigation, userWrapper, burgerMenu);
 

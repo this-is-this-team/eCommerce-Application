@@ -2,18 +2,17 @@ import './burger-menu.scss';
 import BaseComponent from '../../base-component';
 
 export default class BurgerMenu extends BaseComponent<'div'> {
-  private classOpened = 'burger-menu_opened';
-  private classClosed = 'burger-menu_closed';
-  private body: HTMLBodyElement | null = document.querySelector('body');
+  private isOpenMenu: boolean;
   private blur: HTMLDivElement;
-  private headerMenu: HTMLElement | null;
+  private headerMenu: HTMLElement;
 
-  constructor() {
-    super('div', ['burger-menu', 'burger-menu_closed']);
+  constructor(headerMenu: HTMLElement) {
+    super('div', ['burger-menu']);
 
     this.blur = new BaseComponent<'div'>('div', ['blur']).getElement();
     this.drawBurgerMenu();
-    this.headerMenu = document.querySelector('.header__menu');
+    this.headerMenu = headerMenu;
+    this.isOpenMenu = false;
 
     this.node.onclick = () => {
       this.toggleBurgerMenu();
@@ -32,26 +31,18 @@ export default class BurgerMenu extends BaseComponent<'div'> {
   }
 
   private toggleBurgerMenu(): void {
-    const headerMenu: HTMLElement | null = this.headerMenu ? this.headerMenu : document.querySelector('.header__menu');
-    const isBurgerMenuClosed = this.node.classList.contains(this.classClosed);
+    this.isOpenMenu = !this.isOpenMenu;
 
-    if (this.body) {
-      if (this.body?.firstElementChild !== this.blur) {
-        this.body.prepend(this.blur);
-      } else {
-        this.body.removeChild(this.blur);
-      }
+    if (this.isOpenMenu) {
+      document.body.append(this.blur);
+      document.body.classList.add('hidden');
+      this.headerMenu.classList.add('header__menu_opened');
+      this.node.classList.add('burger-menu_opened');
+    } else {
+      this.blur.remove();
+      document.body.removeAttribute('class');
+      this.headerMenu.classList.remove('header__menu_opened');
+      this.node.classList.remove('burger-menu_opened');
     }
-
-    if (headerMenu) {
-      if (headerMenu.classList.contains('header__menu_opened')) {
-        headerMenu.classList.remove('header__menu_opened');
-      } else {
-        headerMenu.classList.add('header__menu_opened');
-      }
-    }
-
-    this.node.classList.toggle(this.classClosed, !isBurgerMenuClosed);
-    this.node.classList.toggle(this.classOpened, isBurgerMenuClosed);
   }
 }
