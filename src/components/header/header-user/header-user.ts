@@ -19,7 +19,6 @@ export default class HeaderUser extends BaseComponent<'div'> {
   }
 
   private drawAccount(): HTMLDivElement {
-    // const account: HTMLAnchorElement = new Link('', ['header__user-account', '#']).getElement();
     const account: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-account']).getElement();
     const accountIcon: HTMLSpanElement = new BaseComponent<'span'>('span', ['user-account__icon']).getElement();
     const accountTitle: HTMLParagraphElement = new BaseComponent<'p'>(
