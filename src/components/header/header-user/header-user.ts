@@ -13,7 +13,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
 
     this.dropdownMenu = this.drawDropdownMenu();
     this.account = this.drawAccount();
-    this.cart = this.drawBag();
+    this.cart = this.drawCart();
 
     this.node.append(this.account, this.cart);
   }
@@ -30,11 +30,11 @@ export default class HeaderUser extends BaseComponent<'div'> {
     const bridge: HTMLDivElement = new BaseComponent('div', ['header__bridge']).getElement();
 
     account.onmouseenter = (event) => {
-      if (event.target instanceof HTMLElement) this.showDropdownMenu();
+      if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
     };
 
     account.onmouseleave = (event) => {
-      if (event.target instanceof HTMLElement) this.hideDropdownMenu();
+      if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
     };
 
     account.append(accountIcon, accountTitle, bridge, this.dropdownMenu);
@@ -60,35 +60,22 @@ export default class HeaderUser extends BaseComponent<'div'> {
     return dropdownMenu;
   }
 
-  private showDropdownMenu(): void {
+  private toggleDropdownMenu(): void {
     const classOpened = 'dropdown-menu_opened';
     const classClosed = 'dropdown-menu_closed';
+    const isDropDownMenuClosed = this.dropdownMenu.classList.contains(classClosed);
 
-    if (this.dropdownMenu.classList.contains(classClosed)) {
-      this.dropdownMenu.classList.remove(classClosed);
-      this.dropdownMenu.classList.add(classOpened);
-    }
+    this.dropdownMenu.classList.toggle(classOpened, isDropDownMenuClosed);
+    this.dropdownMenu.classList.toggle(classClosed, !isDropDownMenuClosed);
   }
 
-  private hideDropdownMenu(): void {
-    const classOpened = 'dropdown-menu_opened';
-    const classClosed = 'dropdown-menu_closed';
+  private drawCart(): HTMLDivElement {
+    const cart: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-cart']).getElement();
+    const cartIcon: HTMLAnchorElement = new Link('', ['user-cart__icon'], '#').getElement();
+    const cartCounter: HTMLDivElement = new BaseComponent<'div'>('div', ['user-cart__counter'], '0').getElement();
 
-    if (this.dropdownMenu.classList.contains(classOpened)) {
-      this.dropdownMenu.classList.remove(classOpened);
-      this.dropdownMenu.classList.add(classClosed);
-    }
-  }
+    cart.append(cartIcon, cartCounter);
 
-  private drawBag(): HTMLDivElement {
-    const bag: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-cart']).getElement();
-    const bagIcon: HTMLAnchorElement = new BaseComponent<'a'>('a', ['user-cart__icon']).getElement();
-    const bagCounter: HTMLDivElement = new BaseComponent<'div'>('div', ['user-cart__counter'], '0').getElement();
-
-    bagIcon.href = '#';
-
-    bag.append(bagIcon, bagCounter);
-
-    return bag;
+    return cart;
   }
 }

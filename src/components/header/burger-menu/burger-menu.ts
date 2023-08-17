@@ -2,11 +2,11 @@ import './burger-menu.scss';
 import BaseComponent from '../../base-component';
 
 export default class BurgerMenu extends BaseComponent<'div'> {
-  classOpened = 'burger-menu_opened';
-  classClosed = 'burger-menu_closed';
-  body: HTMLBodyElement | null = document.querySelector('body');
-  blur: HTMLDivElement;
-  headerMenu: HTMLElement | null;
+  private classOpened = 'burger-menu_opened';
+  private classClosed = 'burger-menu_closed';
+  private body: HTMLBodyElement | null = document.querySelector('body');
+  private blur: HTMLDivElement;
+  private headerMenu: HTMLElement | null;
 
   constructor() {
     super('div', ['burger-menu', 'burger-menu_closed']);
@@ -16,11 +16,11 @@ export default class BurgerMenu extends BaseComponent<'div'> {
     this.headerMenu = document.querySelector('.header__menu');
 
     this.node.onclick = () => {
-      this.switchBurgerMenu();
+      this.toggleBurgerMenu();
     };
 
     this.blur.onclick = () => {
-      this.switchBurgerMenu();
+      this.toggleBurgerMenu();
     };
   }
 
@@ -31,8 +31,9 @@ export default class BurgerMenu extends BaseComponent<'div'> {
     }
   }
 
-  private switchBurgerMenu(): void {
+  private toggleBurgerMenu(): void {
     const headerMenu: HTMLElement | null = this.headerMenu ? this.headerMenu : document.querySelector('.header__menu');
+    const isBurgerMenuClosed = this.node.classList.contains(this.classClosed);
 
     if (this.body) {
       if (this.body?.firstElementChild !== this.blur) {
@@ -50,12 +51,7 @@ export default class BurgerMenu extends BaseComponent<'div'> {
       }
     }
 
-    if (this.node.classList.contains(this.classClosed)) {
-      this.node.classList.remove(this.classClosed);
-      this.node.classList.add(this.classOpened);
-    } else if (this.node.classList.contains(this.classOpened)) {
-      this.node.classList.remove(this.classOpened);
-      this.node.classList.add(this.classClosed);
-    }
+    this.node.classList.toggle(this.classClosed, !isBurgerMenuClosed);
+    this.node.classList.toggle(this.classOpened, isBurgerMenuClosed);
   }
 }

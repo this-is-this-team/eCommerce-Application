@@ -3,6 +3,7 @@ import Logo from '../logo/logo';
 import menuItems from '../header/header-nav/menu-items';
 import './footer.scss';
 import { IMenuItems } from '../../types/types';
+import Link from '../link/link';
 
 export default class Footer extends BaseComponent<'footer'> {
   private container: HTMLDivElement;
@@ -82,9 +83,7 @@ export default class Footer extends BaseComponent<'footer'> {
 
   private createListItem(name: string, classNames: string[], href: string): HTMLLIElement {
     const listItem: HTMLLIElement = new BaseComponent<'li'>('li', [...classNames]).getElement();
-    const itemLink: HTMLAnchorElement = new BaseComponent<'a'>('a', ['menu__link'], name).getElement();
-
-    itemLink.href = href;
+    const itemLink: HTMLAnchorElement = new Link(name, ['menu__link', href]).getElement();
 
     listItem.append(itemLink);
 
