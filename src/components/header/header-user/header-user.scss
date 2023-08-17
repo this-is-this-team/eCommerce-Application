@@ -13,6 +13,7 @@
     align-items: center;
     height: 100%;
     transition: all 0.2s ease;
+    cursor: pointer;
 
     &:hover > .user-account__title {
       opacity: 1;
