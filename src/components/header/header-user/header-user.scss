@@ -24,6 +24,8 @@
         align-items: center;
         justify-content: center;
         opacity: 0.5;
+        user-select: none;
+        cursor: unset;
 
         @include tablet {
           display: none;

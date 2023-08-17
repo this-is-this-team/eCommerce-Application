@@ -4,7 +4,7 @@ import Link from '../../link/link';
 import './header-user.scss';
 
 export default class HeaderUser extends BaseComponent<'div'> {
-  private account: HTMLAnchorElement;
+  private account: HTMLDivElement;
   private dropdownMenu: HTMLDivElement;
   private cart: HTMLDivElement;
 
@@ -18,8 +18,9 @@ export default class HeaderUser extends BaseComponent<'div'> {
     this.node.append(this.account, this.cart);
   }
 
-  private drawAccount(): HTMLAnchorElement {
-    const account: HTMLAnchorElement = new Link('', ['header__user-account', '#']).getElement();
+  private drawAccount(): HTMLDivElement {
+    // const account: HTMLAnchorElement = new Link('', ['header__user-account', '#']).getElement();
+    const account: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-account']).getElement();
     const accountIcon: HTMLSpanElement = new BaseComponent<'span'>('span', ['user-account__icon']).getElement();
     const accountTitle: HTMLParagraphElement = new BaseComponent<'p'>(
       'p',
