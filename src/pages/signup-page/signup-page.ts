@@ -1,7 +1,7 @@
-import BaseComponent from '../../base-component';
-import Breadcrumbs from '../../breadcrumbs/breadcrumbs';
-import SignupForm from '../../form/signup-form';
-import Banner from '../../banner/banner';
+import BaseComponent from '../../components/base-component';
+import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
+import SignupForm from '../../components/form/signup-form';
+import Banner from '../../components/banner/banner';
 import './signup-page.scss';
 
 const breadcrumbsLinks = [
@@ -19,13 +19,13 @@ const bannerContent = {
   text: 'Our expertly crafted itineraries take you beyond the ordinary, unveiling the hidden gems of captivating destinations across the globe.',
 };
 
-export default class SignupPage extends BaseComponent<'main'> {
+export default class SignupPage extends BaseComponent<'div'> {
   private breadcrumbs: HTMLElement;
   private signupSection: HTMLElement;
   private bannerSection: HTMLElement;
 
   constructor() {
-    super('main', ['signup-main']);
+    super('div', ['signup-page']);
 
     this.breadcrumbs = new Breadcrumbs(breadcrumbsLinks).getElement();
 

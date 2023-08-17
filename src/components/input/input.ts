@@ -45,7 +45,7 @@ export default class InputField extends BaseComponent<'div'> {
     return this.inputElement.value.trim();
   }
 
-  private setAttributes(type: string = 'text', name: string = '', placeholder: string = '') {
+  private setAttributes(type: string = 'text', name: string = '', placeholder: string = ''): void {
     this.inputElement.type = type;
     this.inputElement.name = name;
     this.inputElement.id = name;
@@ -53,13 +53,13 @@ export default class InputField extends BaseComponent<'div'> {
     this.labelElement.setAttribute('for', name);
   }
 
-  private createCountryField() {
+  private createCountryField(): void {
     this.node.classList.add('form-field-country');
     this.inputElement.value = 'US';
     this.inputElement.disabled = true;
   }
 
-  private addMinMaxForInputDate() {
+  private addMinMaxForInputDate(): void {
     this.inputElement.min = '1900-01-01';
     const thirteenYearsAgo: Date = new Date(new Date().setFullYear(new Date().getFullYear() - 13));
     const formattedDate: string = `${thirteenYearsAgo.getFullYear()}-${(thirteenYearsAgo.getMonth() + 1)
@@ -68,19 +68,19 @@ export default class InputField extends BaseComponent<'div'> {
     this.inputElement.max = formattedDate;
   }
 
-  private showError(inputName: keyof typeof formValidationRules) {
+  private showError(inputName: keyof typeof formValidationRules): void {
     this.inputElement.classList.add('valid-error');
     this.errorElement.textContent = formValidationRules[inputName].errorText;
     this.node.append(this.errorElement);
   }
 
-  private clearError() {
+  private clearError(): void {
     this.inputElement.classList.remove('valid-error');
     this.errorElement.textContent = '';
     this.errorElement.remove();
   }
 
-  private createPasswordCheckbox() {
+  private createPasswordCheckbox(): void {
     this.node.classList.add('form-field-password');
 
     const checkboxBlock: HTMLDivElement = new BaseComponent('div', ['form-field__check']).getElement();
