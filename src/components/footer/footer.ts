@@ -1,9 +1,10 @@
 import BaseComponent from '../base-component';
 import Logo from '../logo/logo';
 import menuItems from '../header/header-nav/menu-items';
-import './footer.scss';
-import { IMenuItems } from '../../types/types';
 import Link from '../link/link';
+import { AppRoutesPath } from '../../router/types';
+import { IMenuItems } from '../../types/types';
+import './footer.scss';
 
 export default class Footer extends BaseComponent<'footer'> {
   private container: HTMLDivElement;
@@ -69,10 +70,10 @@ export default class Footer extends BaseComponent<'footer'> {
 
     const pagesMenu: HTMLUListElement = new BaseComponent<'ul'>('ul', ['footer__menu']).getElement();
 
-    const pagesItem: HTMLLIElement = this.createListItem('Pages', ['menu__item', 'menu__title'], '#');
-    const aboutUsItem: HTMLLIElement = this.createListItem('About Us', ['menu__item'], '#');
-    const accountItem: HTMLLIElement = this.createListItem('Account', ['menu__item'], '#');
-    const shoppingCartItem: HTMLLIElement = this.createListItem('Shopping Cart', ['menu__item'], '#');
+    const pagesItem: HTMLLIElement = this.createListItem('Pages', ['menu__item', 'menu__title'], AppRoutesPath.ANCHOR);
+    const aboutUsItem: HTMLLIElement = this.createListItem('About Us', ['menu__item'], AppRoutesPath.ANCHOR);
+    const accountItem: HTMLLIElement = this.createListItem('Account', ['menu__item'], AppRoutesPath.ANCHOR);
+    const shoppingCartItem: HTMLLIElement = this.createListItem('Shopping Cart', ['menu__item'], AppRoutesPath.ANCHOR);
 
     pagesMenu.append(pagesItem, aboutUsItem, accountItem, shoppingCartItem);
 
@@ -81,9 +82,9 @@ export default class Footer extends BaseComponent<'footer'> {
     return navigation;
   }
 
-  private createListItem(name: string, classNames: string[], href: string): HTMLLIElement {
+  private createListItem(name: string, classNames: string[], href: AppRoutesPath): HTMLLIElement {
     const listItem: HTMLLIElement = new BaseComponent<'li'>('li', [...classNames]).getElement();
-    const itemLink: HTMLAnchorElement = new Link(name, ['menu__link', href]).getElement();
+    const itemLink: HTMLAnchorElement = new Link(name, ['menu__link'], href).getElement();
 
     listItem.append(itemLink);
 

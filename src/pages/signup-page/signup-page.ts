@@ -2,19 +2,21 @@ import BaseComponent from '../../components/base-component';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import SignupForm from '../../components/form/signup-form';
 import Banner from '../../components/banner/banner';
+import { IBannerContent, IBreadcrumbLink } from '../../types/interfaces';
+import { AppRoutesPath } from '../../router/types';
 import './signup-page.scss';
 
-const breadcrumbsLinks = [
+const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
     pageName: 'Home',
-    pageHref: '/',
+    pageHref: AppRoutesPath.MAIN,
   },
   {
     pageName: 'Create Account',
   },
 ];
 
-const bannerContent = {
+const bannerContent: IBannerContent = {
   title: 'Discover the World: Book Unforgettable Journeys Today!',
   text: 'Our expertly crafted itineraries take you beyond the ordinary, unveiling the hidden gems of captivating destinations across the globe.',
 };

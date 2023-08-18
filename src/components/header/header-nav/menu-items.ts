@@ -1,37 +1,38 @@
+import { AppRoutesPath } from '../../../router/types';
 import { IMenuItems } from '../../../types/types';
 
 const menuItems: IMenuItems[] = [
   {
     title: 'Shop',
-    href: '#',
+    href: AppRoutesPath.ANCHOR,
     innerItems: [
       {
         title: 'Shop All',
-        href: '#',
+        href: AppRoutesPath.ANCHOR,
       },
       {
         title: 'Best Sellers',
-        href: '#',
+        href: AppRoutesPath.ANCHOR,
       },
       {
         title: 'New Tours',
-        href: '#',
+        href: AppRoutesPath.ANCHOR,
       },
     ],
   },
   {
     title: 'Categories',
-    href: '#',
+    href: AppRoutesPath.ANCHOR,
     innerItems: [
       {
         title: 'Exotic',
-        href: '#',
+        href: AppRoutesPath.ANCHOR,
       },
     ],
   },
   {
     title: 'About Us',
-    href: '#',
+    href: AppRoutesPath.ANCHOR,
   },
 ];
 

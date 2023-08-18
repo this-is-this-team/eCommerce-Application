@@ -4,6 +4,7 @@ import InputField from '../input/input';
 import Link from '../link/link';
 import { signupInputs } from '../../constants/signupInputs';
 import { IAddress, ISignupData } from '../../types/interfaces';
+import { AppRoutesPath } from '../../router/types';
 import './form.scss';
 
 interface InputFilds {
@@ -32,7 +33,7 @@ export default class SignupForm extends BaseComponent<'div'> {
 
     const actionField: HTMLDivElement = new BaseComponent('div', ['form__action']).getElement();
     const buttonSubmit: HTMLButtonElement = new Button('submit', 'Create Account').getElement();
-    const linkOnLogin: HTMLAnchorElement = new Link('Log In', ['link--arrow'], '#login').getElement();
+    const linkOnLogin: HTMLAnchorElement = new Link('Log In', ['link--arrow'], AppRoutesPath.LOGIN).getElement();
     actionField.append(buttonSubmit, linkOnLogin);
 
     const formContent: HTMLDivElement = new BaseComponent('div', ['form__content']).getElement();
