@@ -11,3 +11,9 @@
 3. Place the corresponding build files in the directory (for example, in the 'sprint-1' folder, include index.html, CSS and JS files).
 
 4. Perform deployment to render.com from this branch. Choose the appropriate folder based on the sprint.
+
+## Deploys
+
+### Sprint 1
+
+[https://this-is-this-sprint-1.onrender.com/](https://this-is-this-sprint-1.onrender.com/)
