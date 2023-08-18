@@ -86,7 +86,6 @@ module.exports = {
     new Dotenv(),
   ],
   devServer: {
-    watchFiles: path.resolve(__dirname, 'src'),
     port: 8888,
     open: true,
     hot: true,

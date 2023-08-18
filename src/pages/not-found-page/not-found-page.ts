@@ -3,14 +3,20 @@ import Banner from '../../components/banner/banner';
 import Button from '../../components/button/button';
 import { changeUrlEvent } from '../../utils/change-url-event';
 import { AppRoutesPath } from '../../router/types';
+import { IBannerContent } from '../../types/interfaces';
 import './not-found-page.scss';
 
-const bannerContent = {
+interface ISectionContent {
+  title: string;
+  descr: string;
+}
+
+const bannerContent: IBannerContent = {
   title: 'Wanderlust Dreams: Unveil the World with Exclusive Tours',
   text: 'Satisfy your wanderlust with our collection of exclusive tours tailored to quench your thirst for exploration.',
 };
 
-const sectionContent = {
+const sectionContent: ISectionContent = {
   title: '404: Destination Not Found',
   descr: `Looks like this path hasn't been explored yet. Let's navigate you back to familiar terrain.`,
 };

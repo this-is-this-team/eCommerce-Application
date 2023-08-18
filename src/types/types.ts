@@ -1,6 +1,8 @@
+import { AppRoutesPath } from '../router/types';
+
 interface IMenuLinks {
   title: string;
-  href: string;
+  href: AppRoutesPath;
 }
 
 interface IMenuItems extends IMenuLinks {

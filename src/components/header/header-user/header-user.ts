@@ -1,6 +1,8 @@
 import BaseComponent from '../../base-component';
 import Button from '../../button/button';
 import Link from '../../link/link';
+import { AppRoutesPath } from '../../../router/types';
+import { changeUrlEvent } from '../../../utils/change-url-event';
 import './header-user.scss';
 
 export default class HeaderUser extends BaseComponent<'div'> {
@@ -48,11 +50,13 @@ export default class HeaderUser extends BaseComponent<'div'> {
       'dropdown-menu_closed',
     ]).getElement();
 
-    const loginBtn: HTMLButtonElement = new Button('button', 'Log In', ['dropdown-menu__button']).getElement();
+    const loginBtn: HTMLButtonElement = new Button('button', 'Log In', ['dropdown-menu__button'], false, () =>
+      changeUrlEvent(AppRoutesPath.LOGIN)
+    ).getElement();
     const createAccountBtn: HTMLAnchorElement = new Link(
       'Create Account',
       ['link--arrow', 'dropdown-menu__link'],
-      '#'
+      AppRoutesPath.SIGN_UP
     ).getElement();
 
     dropdownMenu.append(loginBtn, createAccountBtn);
@@ -71,7 +75,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
 
   private drawCart(): HTMLDivElement {
     const cart: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-cart']).getElement();
-    const cartIcon: HTMLAnchorElement = new Link('', ['user-cart__icon'], '#').getElement();
+    const cartIcon: HTMLAnchorElement = new Link('', ['user-cart__icon'], AppRoutesPath.ANCHOR).getElement();
     const cartCounter: HTMLDivElement = new BaseComponent<'div'>('div', ['user-cart__counter'], '0').getElement();
 
     cart.append(cartIcon, cartCounter);

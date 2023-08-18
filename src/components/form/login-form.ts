@@ -3,6 +3,7 @@ import Button from '../button/button';
 import InputField from '../input/input';
 import Link from '../link/link';
 import { ISigninData } from '../../types/interfaces';
+import { AppRoutesPath } from '../../router/types';
 import './form.scss';
 
 export default class LoginForm extends BaseComponent<'div'> {
@@ -30,8 +31,11 @@ export default class LoginForm extends BaseComponent<'div'> {
 
     const actionField: HTMLDivElement = new BaseComponent('div', ['form__action']).getElement();
     const buttonSubmit: HTMLButtonElement = new Button('submit', 'Log in').getElement();
-    // TODO: insert href on registration page
-    const linkOnLogin: HTMLAnchorElement = new Link('Create Account', ['link--arrow'], '#registration').getElement();
+    const linkOnLogin: HTMLAnchorElement = new Link(
+      'Create Account',
+      ['link--arrow'],
+      AppRoutesPath.SIGN_UP
+    ).getElement();
 
     actionField.append(buttonSubmit, linkOnLogin);
 

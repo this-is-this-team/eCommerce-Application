@@ -1,10 +1,10 @@
 import BaseComponent from '../base-component';
+import { AppRoutesPath } from '../../router/types';
 import { changeUrlEvent } from '../../utils/change-url-event';
 import './link.scss';
 
 export default class Link extends BaseComponent<'a'> {
-  // TODO: change href type from string to AppRoutesPath (in #36 issue)
-  constructor(text: string, classes: string[] = [], href: string = '#') {
+  constructor(text: string, classes: string[] = [], href: AppRoutesPath) {
     super('a', ['link', ...classes], text);
     this.node.href = href;
 
