@@ -1,7 +1,8 @@
 import Link from './link';
+import { AppRoutesPath } from '../../router/types';
 
 describe('Link', () => {
-  const link: Link = new Link('Hello', ['link-test-class'], '/login');
+  const link: Link = new Link('Hello', ['link-test-class'], AppRoutesPath.LOGIN);
 
   it('should render correct html-element', () => {
     expect(link.getElement().outerHTML).toBe('<a class="link link-test-class" href="/login">Hello</a>');
