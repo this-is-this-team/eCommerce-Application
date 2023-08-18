@@ -1,3 +1,5 @@
+import { AppRoutesPath } from '../router/types';
+
 export interface IAddress {
   key: string;
   country: string;
@@ -18,4 +20,14 @@ export interface ISignupData {
 export interface ISigninData {
   email: string;
   password: string;
+}
+
+export interface IBreadcrumbLink {
+  pageName: string;
+  pageHref?: AppRoutesPath;
+}
+
+export interface IBannerContent {
+  title: string;
+  text: string;
 }
