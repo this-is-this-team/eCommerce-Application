@@ -17,7 +17,7 @@ describe('Button', () => {
     expect(button.getElement().classList.contains('btn-test-class')).toBe(true);
   });
   it('should button is disabled', () => {
-    const mockCallBack = jest.fn();
+    const mockCallBack: jest.Mock = jest.fn();
     button.getElement().click();
     expect(mockCallBack.mock.calls.length).not.toEqual(1);
   });
