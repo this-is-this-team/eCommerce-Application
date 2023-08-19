@@ -15,6 +15,8 @@ export interface ISignupData {
   password: string;
   birthDate: string;
   addresses: IAddress[];
+  defaultShippingAddress?: number;
+  defaultBillingAddress?: number;
 }
 
 export interface ISigninData {

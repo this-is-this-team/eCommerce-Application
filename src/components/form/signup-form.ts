@@ -6,6 +6,7 @@ import { signupInputs } from '../../constants/signupInputs';
 import { IAddress, ISignupData } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import './form.scss';
+import signupUser from '../../services/signupUser';
 
 interface InputFilds {
   [inputName: string]: InputField;
@@ -15,12 +16,16 @@ export default class SignupForm extends BaseComponent<'div'> {
   private formElement: HTMLFormElement;
   private inputs: InputFilds;
   private checkboxAddress: boolean;
+  private isDefaultShipping: boolean;
+  private isDefaultBilling: boolean;
 
   constructor() {
     super('div', ['form']);
     this.formElement = new BaseComponent('form', ['form__form']).getElement();
     this.inputs = {};
     this.checkboxAddress = false;
+    this.isDefaultShipping = false;
+    this.isDefaultBilling = false;
     this.formElement.addEventListener('submit', (event) => this.onSubmit(event));
     this.createMarkup();
   }
@@ -51,6 +56,18 @@ export default class SignupForm extends BaseComponent<'div'> {
 
       if (name === 'checkboxAddress') {
         inputField.getElement().addEventListener('change', () => this.toggleBillingAddress());
+      }
+
+      if (name === 'checkboxDefaultShipping') {
+        inputField.getElement().addEventListener('change', () => {
+          this.isDefaultShipping = !this.isDefaultShipping;
+        });
+      }
+
+      if (name === 'checkboxDefaultBilling') {
+        inputField.getElement().addEventListener('change', () => {
+          this.isDefaultBilling = !this.isDefaultBilling;
+        });
       }
 
       this.inputs[name] = inputField;
@@ -117,7 +134,7 @@ export default class SignupForm extends BaseComponent<'div'> {
     const password: string | undefined = this.inputs['password'].getValue('password');
     const birthDate: string | undefined = this.inputs['birthDate'].getValue('birthDate');
     const shippingAddress: IAddress | undefined = this.getShippingAddress();
-    const billingAddress: IAddress | undefined = this.getBillingAddress();
+    let billingAddress: IAddress | undefined;
 
     if (!(firstName && lastName && email && password && birthDate && shippingAddress)) {
       return;
@@ -125,7 +142,10 @@ export default class SignupForm extends BaseComponent<'div'> {
 
     const addresses: IAddress[] = [shippingAddress];
 
-    if (billingAddress) addresses.push(billingAddress);
+    if (this.checkboxAddress) {
+      billingAddress = this.getBillingAddress();
+      if (billingAddress) addresses.push(billingAddress);
+    }
 
     return {
       firstName,
@@ -134,20 +154,30 @@ export default class SignupForm extends BaseComponent<'div'> {
       password,
       birthDate,
       addresses,
+      ...(this.isDefaultShipping ? { defaultShippingAddress: 0 } : {}),
+      ...(this.isDefaultBilling ? { defaultBillingAddress: billingAddress ? 1 : 0 } : {}),
     };
   }
 
-  // TODO: send to commerceTools
-  private onSubmit(event: SubmitEvent): void {
+  private async onSubmit(event: SubmitEvent): Promise<void> {
     event.preventDefault();
 
     const values: ISignupData | undefined = this.getSignupData();
 
     if (!values) {
-      console.log('incorrect values');
       return;
     }
 
-    console.log(values);
+    await signupUser(values, () => this.formReset());
+  }
+
+  private formReset(): void {
+    if (this.checkboxAddress) {
+      this.toggleBillingAddress();
+      this.inputs['streetBilling'].clearError();
+      this.inputs['cityBilling'].clearError();
+      this.inputs['postcodeBilling'].clearError();
+    }
+    this.formElement.reset();
   }
 }
