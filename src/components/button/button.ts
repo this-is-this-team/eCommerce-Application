@@ -11,7 +11,7 @@ export default class Button extends BaseComponent<'button'> {
   ) {
     super('button', ['button', ...classes], text);
     this.node.type = type;
-    this.node.disabled = disabled;
+    disabled && this.node.setAttribute('disabled', 'true');
     this.node.addEventListener('click', onClick);
   }
 }
