@@ -142,7 +142,7 @@ export default class SignupForm extends BaseComponent<'div'> {
 
     const addresses: IAddress[] = [shippingAddress];
 
-    if (this.checkboxAddress) {
+    if (!this.checkboxAddress) {
       billingAddress = this.getBillingAddress();
       if (billingAddress) addresses.push(billingAddress);
     }
@@ -154,6 +154,8 @@ export default class SignupForm extends BaseComponent<'div'> {
       password,
       birthDate,
       addresses,
+      shippingAddresses: [0],
+      billingAddresses: [billingAddress ? 1 : 0],
       ...(this.isDefaultShipping ? { defaultShippingAddress: 0 } : {}),
       ...(this.isDefaultBilling ? { defaultBillingAddress: billingAddress ? 1 : 0 } : {}),
     };
@@ -178,6 +180,8 @@ export default class SignupForm extends BaseComponent<'div'> {
       this.inputs['cityBilling'].clearError();
       this.inputs['postcodeBilling'].clearError();
     }
+    this.isDefaultShipping = false;
+    this.isDefaultBilling = false;
     this.formElement.reset();
   }
 }

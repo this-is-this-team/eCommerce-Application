@@ -15,6 +15,8 @@ export interface ISignupData {
   password: string;
   birthDate: string;
   addresses: IAddress[];
+  shippingAddresses?: number[];
+  billingAddresses?: number[];
   defaultShippingAddress?: number;
   defaultBillingAddress?: number;
 }
