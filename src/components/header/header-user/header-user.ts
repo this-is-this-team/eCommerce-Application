@@ -3,6 +3,7 @@ import Button from '../../button/button';
 import Link from '../../link/link';
 import { AppRoutesPath } from '../../../router/types';
 import { changeUrlEvent } from '../../../utils/change-url-event';
+import userStore from '../../../store/user-store';
 import './header-user.scss';
 
 export default class HeaderUser extends BaseComponent<'div'> {
@@ -18,6 +19,8 @@ export default class HeaderUser extends BaseComponent<'div'> {
     this.cart = this.drawCart();
 
     this.node.append(this.account, this.cart);
+
+    this.addSubscribtion();
   }
 
   private drawAccount(): HTMLDivElement {
@@ -81,5 +84,19 @@ export default class HeaderUser extends BaseComponent<'div'> {
     cart.append(cartIcon, cartCounter);
 
     return cart;
+  }
+
+  private drawLoginUser() {
+    const testText = new BaseComponent('span', [], 'You are logged in').getElement();
+
+    this.node.prepend(testText);
+  }
+
+  private addSubscribtion() {
+    userStore.subscribe((state) => {
+      if (state.token) {
+        this.drawLoginUser();
+      }
+    });
   }
 }
