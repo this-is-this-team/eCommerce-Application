@@ -2,7 +2,7 @@ import { ISigninData } from '../types/interfaces';
 import { ClientResponse, CustomerSignInResult } from '@commercetools/platform-sdk';
 import apiRootLogin from './apiRootLogin';
 import MyTokenCache from './TokenCache';
-import saveToLocalStorage from '../utils/saveToLocalStorage';
+import saveToken from '../utils/saveToken';
 
 export default async function signinUser(body: ISigninData): Promise<ClientResponse<CustomerSignInResult>> {
   const tokenCache = new MyTokenCache();
@@ -15,8 +15,8 @@ export default async function signinUser(body: ISigninData): Promise<ClientRespo
     })
     .execute();
 
-  const token = tokenCache.get();
-  saveToLocalStorage('token', token.token);
+  const { token } = tokenCache.get();
+  if (token) saveToken(token);
 
   return customer;
 }
