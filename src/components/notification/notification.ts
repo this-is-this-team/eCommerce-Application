@@ -1,5 +1,6 @@
 import 'toastify-js/src/toastify.css';
 import Toastify from 'toastify-js';
+import './notification.scss';
 
 export default class Notification {
   private message: string;
