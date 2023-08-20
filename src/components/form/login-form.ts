@@ -6,6 +6,7 @@ import { ISigninData } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import './form.scss';
 import signinUser from '../../services/signinUser';
+import Notification from '../notification/notification';
 
 export default class LoginForm extends BaseComponent<'div'> {
   private formElement: HTMLFormElement;
@@ -87,16 +88,20 @@ export default class LoginForm extends BaseComponent<'div'> {
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.add('button--success');
 
+      // TODO: 'HELLO, STATE.NAME' instead 'dear user'
+      new Notification('success', 'Hello, dear user!').showNotification();
+
       // TODO: redirect to the home page
       // TODO: perform state update (add a user or his token to local storage and application storage for update header)
     } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+      }
       console.log(error);
 
       this.buttonSubmit.disabled = false;
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.remove('button--success');
-
-      // TODO: handle the errors https://github.com/orgs/this-is-this-team/projects/3/views/2?pane=issue&itemId=34789670 (use https://apvarun.github.io/toastify-js/)
     }
   }
 }
