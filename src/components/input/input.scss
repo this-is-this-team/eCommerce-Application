@@ -90,11 +90,6 @@
       content: '* currently, the shop only operates in the USA';
       color: $color-secondary-60;
       margin-top: 8px;
-      padding-bottom: 32px;
-
-      @include tablet {
-        padding-bottom: 0;
-      }
     }
   }
 

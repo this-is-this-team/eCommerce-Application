@@ -80,5 +80,17 @@ export const signupInputs = {
       label: 'Billing address (postcode)',
       placeholder: 'Postcode',
     },
+    {
+      type: 'checkbox',
+      name: 'checkboxDefaultShipping',
+      label: 'Set Shipping address as default',
+      placeholder: '',
+    },
+    {
+      type: 'checkbox',
+      name: 'checkboxDefaultBilling',
+      label: 'Set Billing address as default',
+      placeholder: '',
+    },
   ],
 };

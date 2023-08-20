@@ -53,7 +53,6 @@
   },
   "dependencies": {
     "@commercetools/platform-sdk": "^4.11.0",
-    "@commercetools/sdk-client-v2": "^2.2.0",
-    "node-fetch": "^2.6.7"
+    "@commercetools/sdk-client-v2": "^2.2.0"
   }
 }
