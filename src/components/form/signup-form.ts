@@ -8,6 +8,7 @@ import { AppRoutesPath } from '../../router/types';
 import signupUser from '../../services/signupUser';
 import './form.scss';
 import Notification from '../notification/notification';
+import { changeUrlEvent } from '../../utils/change-url-event';
 
 interface InputFilds {
   [inputName: string]: InputField;
@@ -183,9 +184,9 @@ export default class SignupForm extends BaseComponent<'div'> {
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.add('button--success');
 
-      new Notification('success', 'Registration completed successfully').showNotification();
+      changeUrlEvent(AppRoutesPath.MAIN);
 
-      // TODO: redirect to the home page
+      new Notification('success', 'Registration completed successfully').showNotification();
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
