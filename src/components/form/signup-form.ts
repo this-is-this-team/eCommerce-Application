@@ -134,7 +134,7 @@ export default class SignupForm extends BaseComponent<'div'> {
     const password: string | undefined = this.inputs['password'].getValue('password');
     const birthDate: string | undefined = this.inputs['birthDate'].getValue('birthDate');
     const shippingAddress: IAddress | undefined = this.getShippingAddress();
-    let billingAddress: IAddress | undefined;
+    const billingAddress: IAddress | undefined = this.getBillingAddress();
 
     if (!(firstName && lastName && email && password && birthDate && shippingAddress)) {
       return;
@@ -143,8 +143,8 @@ export default class SignupForm extends BaseComponent<'div'> {
     const addresses: IAddress[] = [shippingAddress];
 
     if (!this.checkboxAddress) {
-      billingAddress = this.getBillingAddress();
-      if (billingAddress) addresses.push(billingAddress);
+      if (!billingAddress) return;
+      addresses.push(billingAddress);
     }
 
     return {
