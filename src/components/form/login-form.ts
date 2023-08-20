@@ -5,11 +5,13 @@ import Link from '../link/link';
 import { ISigninData } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import './form.scss';
+import signinUser from '../../services/signinUser';
 
 export default class LoginForm extends BaseComponent<'div'> {
   private formElement: HTMLFormElement;
   private emailField: InputField;
   private passwordField: InputField;
+  private buttonSubmit: HTMLButtonElement;
 
   constructor() {
     super('div', ['form', 'form--login']);
@@ -19,6 +21,7 @@ export default class LoginForm extends BaseComponent<'div'> {
 
     this.emailField = new InputField('email', 'email', 'Email', 'Email');
     this.passwordField = new InputField('password', 'password', 'Password', 'Password');
+    this.buttonSubmit = new Button('submit', 'Log in').getElement();
 
     this.createMarkup();
   }
@@ -30,14 +33,13 @@ export default class LoginForm extends BaseComponent<'div'> {
     const formSubtitle: HTMLParagraphElement = new BaseComponent('p', ['form__subtitle'], subTitle).getElement();
 
     const actionField: HTMLDivElement = new BaseComponent('div', ['form__action']).getElement();
-    const buttonSubmit: HTMLButtonElement = new Button('submit', 'Log in').getElement();
     const linkOnLogin: HTMLAnchorElement = new Link(
       'Create Account',
       ['link--arrow'],
       AppRoutesPath.SIGN_UP
     ).getElement();
 
-    actionField.append(buttonSubmit, linkOnLogin);
+    actionField.append(this.buttonSubmit, linkOnLogin);
 
     const inputsBlock: HTMLDivElement = new BaseComponent('div', ['form__form-block']).getElement();
 
@@ -62,16 +64,39 @@ export default class LoginForm extends BaseComponent<'div'> {
     };
   }
 
-  private onSubmit(event: SubmitEvent): void {
+  private async onSubmit(event: SubmitEvent) {
     event.preventDefault();
+
+    this.buttonSubmit.disabled = true;
+    this.buttonSubmit.classList.add('button--loading');
 
     const values: ISigninData | undefined = this.getLoginData();
 
     if (!values) {
-      console.log('incorrect values');
+      this.buttonSubmit.disabled = false;
+      this.buttonSubmit.classList.remove('button--loading');
+
       return;
     }
 
-    console.log(values);
+    try {
+      const customer = await signinUser(values);
+
+      console.log(customer);
+
+      this.buttonSubmit.classList.remove('button--loading');
+      this.buttonSubmit.classList.add('button--success');
+
+      // TODO: redirect to the home page
+      // TODO: perform state update (add a user or his token to local storage and application storage for update header)
+    } catch (error) {
+      console.log(error);
+
+      this.buttonSubmit.disabled = false;
+      this.buttonSubmit.classList.remove('button--loading');
+      this.buttonSubmit.classList.remove('button--success');
+
+      // TODO: handle the errors https://github.com/orgs/this-is-this-team/projects/3/views/2?pane=issue&itemId=34789670 (use https://apvarun.github.io/toastify-js/)
+    }
   }
 }
