@@ -5,8 +5,8 @@ import Link from '../link/link';
 import { signupInputs } from '../../constants/signupInputs';
 import { IAddress, ISignupData } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
-import './form.scss';
 import signupUser from '../../services/signupUser';
+import './form.scss';
 
 interface InputFilds {
   [inputName: string]: InputField;
@@ -18,6 +18,7 @@ export default class SignupForm extends BaseComponent<'div'> {
   private checkboxAddress: boolean;
   private isDefaultShipping: boolean;
   private isDefaultBilling: boolean;
+  private buttonSubmit: HTMLButtonElement;
 
   constructor() {
     super('div', ['form']);
@@ -27,6 +28,7 @@ export default class SignupForm extends BaseComponent<'div'> {
     this.isDefaultShipping = false;
     this.isDefaultBilling = false;
     this.formElement.addEventListener('submit', (event) => this.onSubmit(event));
+    this.buttonSubmit = new Button('submit', 'Create Account').getElement();
     this.createMarkup();
   }
 
@@ -37,9 +39,8 @@ export default class SignupForm extends BaseComponent<'div'> {
     const formSubtitle: HTMLParagraphElement = new BaseComponent('p', ['form__subtitle'], subTitle).getElement();
 
     const actionField: HTMLDivElement = new BaseComponent('div', ['form__action']).getElement();
-    const buttonSubmit: HTMLButtonElement = new Button('submit', 'Create Account').getElement();
     const linkOnLogin: HTMLAnchorElement = new Link('Log In', ['link--arrow'], AppRoutesPath.LOGIN).getElement();
-    actionField.append(buttonSubmit, linkOnLogin);
+    actionField.append(this.buttonSubmit, linkOnLogin);
 
     const formContent: HTMLDivElement = new BaseComponent('div', ['form__content']).getElement();
     const infoInputsBlock: HTMLDivElement = new BaseComponent('div', ['form__form-block']).getElement();
@@ -163,21 +164,33 @@ export default class SignupForm extends BaseComponent<'div'> {
 
   private async onSubmit(event: SubmitEvent): Promise<void> {
     event.preventDefault();
+    this.buttonSubmit.disabled = true;
+    this.buttonSubmit.classList.add('button--loading');
 
     const values: ISignupData | undefined = this.getSignupData();
 
     if (!values) {
+      this.buttonSubmit.disabled = false;
+      this.buttonSubmit.classList.remove('button--loading');
       return;
     }
 
     try {
       const customer = await signupUser(values);
-
       console.log(customer);
+
+      this.buttonSubmit.classList.remove('button--loading');
+      this.buttonSubmit.classList.add('button--success');
+
       // TODO: redirect to the home page
       // TODO: perform state update (add a user or his token to local storage and application storage for update header)
     } catch (error) {
       console.error(error);
+
+      this.buttonSubmit.disabled = false;
+      this.buttonSubmit.classList.remove('button--loading');
+      this.buttonSubmit.classList.remove('button--success');
+
       // TODO: handle the errors https://github.com/orgs/this-is-this-team/projects/3/views/2?pane=issue&itemId=34789670 (use https://apvarun.github.io/toastify-js/)
     }
   }
