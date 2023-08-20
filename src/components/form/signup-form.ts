@@ -170,18 +170,15 @@ export default class SignupForm extends BaseComponent<'div'> {
       return;
     }
 
-    await signupUser(values, () => this.formReset());
-  }
+    try {
+      const customer = await signupUser(values);
 
-  private formReset(): void {
-    if (this.checkboxAddress) {
-      this.toggleBillingAddress();
-      this.inputs['streetBilling'].clearError();
-      this.inputs['cityBilling'].clearError();
-      this.inputs['postcodeBilling'].clearError();
+      console.log(customer);
+      // TODO: redirect to the home page
+      // TODO: perform state update (add a user or his token to local storage and application storage for update header)
+    } catch (error) {
+      console.error(error);
+      // TODO: handle the errors https://github.com/orgs/this-is-this-team/projects/3/views/2?pane=issue&itemId=34789670 (use https://apvarun.github.io/toastify-js/)
     }
-    this.isDefaultShipping = false;
-    this.isDefaultBilling = false;
-    this.formElement.reset();
   }
 }
