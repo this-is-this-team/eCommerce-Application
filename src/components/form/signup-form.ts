@@ -195,7 +195,7 @@ export default class SignupForm extends BaseComponent<'div'> {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
       } else {
-        console.log(error);
+        console.error(error);
       }
 
       this.buttonSubmit.disabled = false;

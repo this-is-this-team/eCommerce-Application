@@ -99,8 +99,9 @@ export default class LoginForm extends BaseComponent<'div'> {
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
+      } else {
+        console.error(error);
       }
-      console.log(error);
 
       this.buttonSubmit.disabled = false;
       this.buttonSubmit.classList.remove('button--loading');
