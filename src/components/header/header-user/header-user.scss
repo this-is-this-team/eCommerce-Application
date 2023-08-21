@@ -39,6 +39,11 @@
 
       &__icon {
         @include account-icon;
+
+        &_authorized {
+          background: salmon;
+          border-radius: 100%;
+        }
       }
     }
 

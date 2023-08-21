@@ -14,57 +14,80 @@ export default class HeaderUser extends BaseComponent<'div'> {
   constructor() {
     super('div', ['header__user']);
 
-    this.dropdownMenu = this.drawDropdownMenu();
-    this.account = this.drawAccount();
+    this.account = new BaseComponent<'div'>('div', ['header__user-account']).getElement();
+    this.dropdownMenu = new BaseComponent<'div'>('div', ['dropdown-menu', 'dropdown-menu_closed']).getElement();
+
+    this.account.append(...this.drawAccount());
+
     this.cart = this.drawCart();
 
     this.node.append(this.account, this.cart);
 
+    this.setListeners();
     this.addSubscribtion();
   }
 
-  private drawAccount(): HTMLDivElement {
-    const account: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-account']).getElement();
-    const accountIcon: HTMLSpanElement = new BaseComponent<'span'>('span', ['user-account__icon']).getElement();
-    const accountTitle: HTMLParagraphElement = new BaseComponent<'p'>(
-      'p',
-      ['user-account__title'],
-      'Account'
-    ).getElement();
+  private drawAccount(isAuthorized: boolean = false): HTMLElement[] {
+    const accountIcon = new BaseComponent<'span'>('span', ['user-account__icon']).getElement();
+    const accountTitle = new BaseComponent<'p'>('p', ['user-account__title'], 'Account').getElement();
 
+    if (isAuthorized) {
+      const userName = `${userStore.getState().customer?.firstName}`;
+
+      accountIcon.classList.add('user-account__icon_authorized');
+      accountIcon.textContent = `${userName[0]}`;
+      accountTitle.textContent = userName;
+    }
     const bridge: HTMLDivElement = new BaseComponent('div', ['header__bridge']).getElement();
 
-    account.onmouseenter = (event) => {
-      if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
-    };
+    this.dropdownMenu = new BaseComponent<'div'>('div', ['dropdown-menu', 'dropdown-menu_closed']).getElement();
+    this.dropdownMenu.append(...this.drawDropdownMenu(isAuthorized));
 
-    account.onmouseleave = (event) => {
-      if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
-    };
-
-    account.append(accountIcon, accountTitle, bridge, this.dropdownMenu);
-
-    return account;
+    return [accountIcon, accountTitle, bridge, this.dropdownMenu];
   }
 
-  private drawDropdownMenu(): HTMLDivElement {
-    const dropdownMenu: HTMLDivElement = new BaseComponent<'div'>('div', [
-      'dropdown-menu',
-      'dropdown-menu_closed',
-    ]).getElement();
+  private setListeners() {
+    this.account.onmouseenter = (event) => {
+      if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
+    };
+
+    this.account.onmouseleave = (event) => {
+      if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
+    };
+  }
+
+  private drawDropdownMenu(isAuthorized: boolean = false) {
+    if (isAuthorized) {
+      const profileBtn = new Link(
+        'My profile',
+        ['link--unset', 'dropdown-menu__link'],
+        AppRoutesPath.MAIN
+      ).getElement();
+      const logoutBtn = new Link(
+        'Logout',
+        ['link--unset', 'link--logout', 'dropdown-menu__link'],
+        AppRoutesPath.LOGIN
+      ).getElement();
+
+      logoutBtn.onclick = () => {
+        userStore.dispatch({ type: 'REMOVE_TOKEN' });
+        userStore.dispatch({ type: 'REMOVE_CUSTOMER' });
+      };
+
+      return [profileBtn, logoutBtn];
+    }
 
     const loginBtn: HTMLButtonElement = new Button('button', 'Log In', ['dropdown-menu__button'], false, () =>
       changeUrlEvent(AppRoutesPath.LOGIN)
     ).getElement();
+
     const createAccountBtn: HTMLAnchorElement = new Link(
       'Create Account',
       ['link--arrow', 'dropdown-menu__link'],
       AppRoutesPath.SIGN_UP
     ).getElement();
 
-    dropdownMenu.append(loginBtn, createAccountBtn);
-
-    return dropdownMenu;
+    return [loginBtn, createAccountBtn];
   }
 
   private toggleDropdownMenu(): void {
@@ -86,16 +109,18 @@ export default class HeaderUser extends BaseComponent<'div'> {
     return cart;
   }
 
-  private drawLoginUser() {
-    const testText = new BaseComponent('span', [], 'You are logged in').getElement();
+  private updateAccount(isAuthorized: boolean): void {
+    this.account.innerHTML = '';
 
-    this.node.prepend(testText);
+    this.account.append(...this.drawAccount(isAuthorized));
   }
 
-  private addSubscribtion() {
+  private addSubscribtion(): void {
     userStore.subscribe((state) => {
       if (state.token) {
-        this.drawLoginUser();
+        this.updateAccount(true);
+      } else {
+        this.updateAccount(false);
       }
     });
   }
