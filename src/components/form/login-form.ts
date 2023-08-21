@@ -87,16 +87,15 @@ export default class LoginForm extends BaseComponent<'div'> {
 
       userStore.dispatch({ type: 'ADD_CUSTOMER', customer: response?.body?.customer });
 
-      this.buttonSubmit.classList.remove('button--loading');
-      this.buttonSubmit.classList.add('button--success');
-
       const userFullName = `${response?.body?.customer?.firstName} ${response?.body?.customer?.lastName}`;
 
       new Notification('success', `Hello, ${userFullName}!`).showNotification();
 
       changeUrlEvent(AppRoutesPath.MAIN);
 
-      // TODO: perform state update (add a user or his token to local storage and application storage for update header)
+      this.buttonSubmit.classList.remove('button--loading');
+      this.formElement.reset();
+      this.buttonSubmit.disabled = false;
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
@@ -105,13 +104,6 @@ export default class LoginForm extends BaseComponent<'div'> {
 
       this.buttonSubmit.disabled = false;
       this.buttonSubmit.classList.remove('button--loading');
-      this.buttonSubmit.classList.remove('button--success');
     }
-  }
-
-  public resetButton(): void {
-    this.buttonSubmit.disabled = false;
-    this.buttonSubmit.classList.remove('button--loading');
-    this.buttonSubmit.classList.remove('button--success');
   }
 }
