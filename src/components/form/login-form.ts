@@ -7,6 +7,7 @@ import { AppRoutesPath } from '../../router/types';
 import './form.scss';
 import signinUser from '../../services/signinUser';
 import Notification from '../notification/notification';
+import { changeUrlEvent } from '../../utils/change-url-event';
 import userStore from '../../store/user-store';
 
 export default class LoginForm extends BaseComponent<'div'> {
@@ -93,7 +94,8 @@ export default class LoginForm extends BaseComponent<'div'> {
 
       new Notification('success', `Hello, ${userFullName}!`).showNotification();
 
-      // TODO: redirect to the home page
+      changeUrlEvent(AppRoutesPath.MAIN);
+
       // TODO: perform state update (add a user or his token to local storage and application storage for update header)
     } catch (error) {
       if (error instanceof Error) {
