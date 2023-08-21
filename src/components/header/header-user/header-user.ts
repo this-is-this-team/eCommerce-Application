@@ -63,10 +63,8 @@ export default class HeaderUser extends BaseComponent<'div'> {
         ['link--unset', 'dropdown-menu__link'],
         AppRoutesPath.MAIN
       ).getElement();
-      const logoutBtn = new Link(
-        'Logout',
-        ['link--unset', 'link--logout', 'dropdown-menu__link'],
-        AppRoutesPath.LOGIN
+      const logoutBtn: HTMLButtonElement = new Button('button', 'Log Out', ['dropdown-menu__button'], false, () =>
+        changeUrlEvent(AppRoutesPath.MAIN)
       ).getElement();
 
       logoutBtn.onclick = () => {
