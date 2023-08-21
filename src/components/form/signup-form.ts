@@ -184,9 +184,9 @@ export default class SignupForm extends BaseComponent<'div'> {
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.add('button--success');
 
-      changeUrlEvent(AppRoutesPath.MAIN);
-
       new Notification('success', 'Registration completed successfully').showNotification();
+
+      changeUrlEvent(AppRoutesPath.MAIN);
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
