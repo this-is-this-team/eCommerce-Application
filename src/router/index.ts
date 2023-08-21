@@ -47,6 +47,11 @@ export function createRouter(routerOutlet: HTMLElement): Router {
     if (route) {
       routerOutlet.innerHTML = '';
       routerOutlet.append(route.component);
+
+      document.body?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }
   });
 }
