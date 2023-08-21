@@ -7,6 +7,7 @@ import { AppRoutesPath } from '../../router/types';
 import './form.scss';
 import signinUser from '../../services/signinUser';
 import Notification from '../notification/notification';
+import userStore from '../../store/user-store';
 
 export default class LoginForm extends BaseComponent<'div'> {
   private formElement: HTMLFormElement;
@@ -81,14 +82,15 @@ export default class LoginForm extends BaseComponent<'div'> {
     }
 
     try {
-      const customer = await signinUser(values);
+      const response = await signinUser(values);
 
-      console.log(customer);
+      userStore.dispatch({ type: 'ADD_CUSTOMER', customer: response?.body?.customer });
 
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.add('button--success');
 
-      const userFullName = `${customer?.body?.customer?.firstName} ${customer?.body?.customer?.lastName}`;
+      const userFullName = `${response?.body?.customer?.firstName} ${response?.body?.customer?.lastName}`;
+
       new Notification('success', `Hello, ${userFullName}!`).showNotification();
 
       // TODO: redirect to the home page
@@ -103,5 +105,11 @@ export default class LoginForm extends BaseComponent<'div'> {
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.remove('button--success');
     }
+  }
+
+  public resetButton(): void {
+    this.buttonSubmit.disabled = false;
+    this.buttonSubmit.classList.remove('button--loading');
+    this.buttonSubmit.classList.remove('button--success');
   }
 }

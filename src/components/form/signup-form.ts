@@ -8,6 +8,7 @@ import { AppRoutesPath } from '../../router/types';
 import signupUser from '../../services/signupUser';
 import './form.scss';
 import Notification from '../notification/notification';
+import userStore from '../../store/user-store';
 
 interface InputFilds {
   [inputName: string]: InputField;
@@ -177,8 +178,9 @@ export default class SignupForm extends BaseComponent<'div'> {
     }
 
     try {
-      const customer = await signupUser(values);
-      console.log(customer);
+      const response = await signupUser(values);
+
+      userStore.dispatch({ type: 'ADD_CUSTOMER', customer: response?.body?.customer });
 
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.add('button--success');
