@@ -1,15 +1,15 @@
 import {
   ClientBuilder,
-  type AnonymousAuthMiddlewareOptions,
+  type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
-  TokenCache,
+  type TokenCache,
 } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 
-const projectKey: string = process.env.CTP_PROJECT_KEY || '';
+export default function apiRoot(tokenCache: TokenCache) {
+  const projectKey: string = process.env.CTP_PROJECT_KEY || '';
 
-export default function apiRootLogin(tokenCache: TokenCache) {
-  const options: AnonymousAuthMiddlewareOptions = {
+  const authMiddlewareOptions: AuthMiddlewareOptions = {
     host: process.env.CTP_AUTH_URL || '',
     projectKey,
     credentials: {
@@ -28,7 +28,7 @@ export default function apiRootLogin(tokenCache: TokenCache) {
 
   const ctpClient = new ClientBuilder()
     .withProjectKey(projectKey)
-    .withAnonymousSessionFlow(options)
+    .withClientCredentialsFlow(authMiddlewareOptions)
     .withHttpMiddleware(httpMiddlewareOptions)
     .withLoggerMiddleware()
     .build();
