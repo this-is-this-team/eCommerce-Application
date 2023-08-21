@@ -89,8 +89,8 @@ export default class LoginForm extends BaseComponent<'div'> {
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.add('button--success');
 
-      // TODO: 'HELLO, STATE.NAME' instead 'dear user'
-      new Notification('success', 'Hello, dear user!').showNotification();
+      const userFullName = `${customer?.body?.customer?.firstName} ${customer?.body?.customer?.lastName}`;
+      new Notification('success', `Hello, ${userFullName}!`).showNotification();
 
       changeUrlEvent(AppRoutesPath.MAIN);
 
