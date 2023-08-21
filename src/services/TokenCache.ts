@@ -1,7 +1,7 @@
 import { TokenCache, TokenStore } from '@commercetools/sdk-client-v2';
 
 export default class MyTokenCache implements TokenCache {
-  token: TokenStore | undefined;
+  private token: TokenStore | undefined;
 
   constructor() {
     this.token = undefined;
