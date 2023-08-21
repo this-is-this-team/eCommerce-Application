@@ -94,7 +94,6 @@ export default class LoginForm extends BaseComponent<'div'> {
 
       changeUrlEvent(AppRoutesPath.MAIN);
 
-      // TODO: redirect to the home page
       // TODO: perform state update (add a user or his token to local storage and application storage for update header)
     } catch (error) {
       if (error instanceof Error) {
