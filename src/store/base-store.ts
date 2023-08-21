@@ -21,7 +21,6 @@ export default class BaseStore<T, A> implements IStore<T, A> {
 
   subscribe(fn: (state: T) => void) {
     this.subscribers.push(fn);
-    fn(this.currentState);
   }
 
   dispatch(action: A) {
