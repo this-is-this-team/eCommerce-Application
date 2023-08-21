@@ -3,6 +3,8 @@ import { ROUTES, NOT_FOUND_ROUTE, MAIN_ROUTE } from './routes';
 import routerMiddleware from '../utils/router-middleware';
 import Notification from '../components/notification/notification';
 
+const LOGGED_IN_ERROR_DURATION: number = 3000;
+
 export class Router {
   constructor(
     private readonly routes: AppRoute[],
@@ -34,7 +36,7 @@ export class Router {
       this.onHashChange(NOT_FOUND_ROUTE);
     } else if (routerMiddleware(matchedRoute.path)) {
       window.history.pushState({}, '', AppRoutesPath.MAIN);
-      new Notification('error', 'You are already logged in!', 3000).showNotification();
+      new Notification('error', 'You are already logged in!', LOGGED_IN_ERROR_DURATION).showNotification();
       this.onHashChange(MAIN_ROUTE);
     } else {
       this.onHashChange(matchedRoute);
@@ -47,6 +49,11 @@ export function createRouter(routerOutlet: HTMLElement): Router {
     if (route) {
       routerOutlet.innerHTML = '';
       routerOutlet.append(route.component);
+
+      document.body?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }
   });
 }

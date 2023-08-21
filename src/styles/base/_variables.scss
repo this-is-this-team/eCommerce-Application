@@ -113,7 +113,9 @@ $font-xs: 600 12px/1.5 $font-family-jakarta;
 }
 
 @mixin account-icon {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 20px;
   height: 20px;
   background: url('../../../assets/icons/account-icon.svg') center/cover;

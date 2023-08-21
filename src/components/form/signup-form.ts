@@ -9,6 +9,7 @@ import signupUser from '../../services/signupUser';
 import './form.scss';
 import Notification from '../notification/notification';
 import { changeUrlEvent } from '../../utils/change-url-event';
+import userStore from '../../store/user-store';
 
 interface InputFilds {
   [inputName: string]: InputField;
@@ -178,25 +179,37 @@ export default class SignupForm extends BaseComponent<'div'> {
     }
 
     try {
-      const customer = await signupUser(values);
-      console.log(customer);
+      const response = await signupUser(values);
+
+      userStore.dispatch({ type: 'ADD_CUSTOMER', customer: response?.body?.customer });
 
       this.buttonSubmit.classList.remove('button--loading');
-      this.buttonSubmit.classList.add('button--success');
 
       new Notification('success', 'Registration completed successfully').showNotification();
 
       changeUrlEvent(AppRoutesPath.MAIN);
+
+      this.buttonSubmit.disabled = false;
+      this.formReset();
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
       } else {
-        console.log(error);
+        console.error(error);
       }
 
       this.buttonSubmit.disabled = false;
       this.buttonSubmit.classList.remove('button--loading');
-      this.buttonSubmit.classList.remove('button--success');
     }
+  }
+
+  private formReset(): void {
+    if (this.checkboxAddress) {
+      this.toggleBillingAddress();
+      this.inputs['streetBilling'].clearError();
+      this.inputs['cityBilling'].clearError();
+      this.inputs['postcodeBilling'].clearError();
+    }
+    this.formElement.reset();
   }
 }

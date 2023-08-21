@@ -71,11 +71,13 @@ export default class Footer extends BaseComponent<'footer'> {
     const pagesMenu: HTMLUListElement = new BaseComponent<'ul'>('ul', ['footer__menu']).getElement();
 
     const pagesItem: HTMLLIElement = this.createListItem('Pages', ['menu__item', 'menu__title'], AppRoutesPath.ANCHOR);
+    const signupItem: HTMLLIElement = this.createListItem('Create Account', ['menu__item'], AppRoutesPath.SIGN_UP);
+    const loginItem: HTMLLIElement = this.createListItem('Log In', ['menu__item'], AppRoutesPath.LOGIN);
     const aboutUsItem: HTMLLIElement = this.createListItem('About Us', ['menu__item'], AppRoutesPath.ANCHOR);
     const accountItem: HTMLLIElement = this.createListItem('Account', ['menu__item'], AppRoutesPath.ANCHOR);
     const shoppingCartItem: HTMLLIElement = this.createListItem('Shopping Cart', ['menu__item'], AppRoutesPath.ANCHOR);
 
-    pagesMenu.append(pagesItem, aboutUsItem, accountItem, shoppingCartItem);
+    pagesMenu.append(pagesItem, signupItem, loginItem, aboutUsItem, accountItem, shoppingCartItem);
 
     navigation.append(pagesMenu);
 
