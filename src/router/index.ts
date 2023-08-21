@@ -1,5 +1,7 @@
-import { AppRoute } from './types';
-import { NOT_FOUND_COMPONENT, ROUTES } from './routes';
+import { AppRoute, AppRoutesPath } from './types';
+import { ROUTES, NOT_FOUND_ROUTE, MAIN_ROUTE } from './routes';
+import routerMiddleware from '../utils/router-middleware';
+import Notification from '../components/notification/notification';
 
 export class Router {
   constructor(
@@ -28,7 +30,15 @@ export class Router {
       return match;
     });
 
-    this.onHashChange(matchedRoute ?? NOT_FOUND_COMPONENT);
+    if (!matchedRoute) {
+      this.onHashChange(NOT_FOUND_ROUTE);
+    } else if (routerMiddleware(matchedRoute.path)) {
+      window.history.pushState({}, '', AppRoutesPath.MAIN);
+      new Notification('error', 'You are already logged in!', 3000).showNotification();
+      this.onHashChange(MAIN_ROUTE);
+    } else {
+      this.onHashChange(matchedRoute);
+    }
   }
 }
 
