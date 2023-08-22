@@ -46,17 +46,37 @@ export default class HeaderUser extends BaseComponent<'div'> {
     return [accountIcon, accountTitle, bridge, this.dropdownMenu];
   }
 
-  private setListeners() {
-    this.account.onmouseenter = (event) => {
-      if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
-    };
+  private setListeners(): void {
+    const isHoverDevice: boolean = window.matchMedia('(hover: hover)').matches;
 
-    this.account.onmouseleave = (event) => {
-      if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
-    };
+    if (isHoverDevice) {
+      this.account.onmouseenter = (event) => {
+        if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
+      };
+
+      this.account.onmouseleave = (event) => {
+        if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
+      };
+    } else {
+      this.account.onmousedown = (event) => {
+        setTimeout(() => {
+          if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
+        });
+      };
+
+      document.onclick = (event) => {
+        if (this.dropdownMenu.classList.contains('dropdown-menu_opened')) {
+          if (event.target instanceof HTMLElement) {
+            if (event.target !== this.account && !event.target.closest('.header__user-account')) {
+              this.toggleDropdownMenu();
+            }
+          }
+        }
+      };
+    }
   }
 
-  private drawDropdownMenu(isAuthorized: boolean = false) {
+  private drawDropdownMenu(isAuthorized: boolean = false): HTMLElement[] {
     if (isAuthorized) {
       const profileBtn = new Link(
         'My profile',
