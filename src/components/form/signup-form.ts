@@ -9,7 +9,6 @@ import signupUser from '../../services/signupUser';
 import './form.scss';
 import Notification from '../notification/notification';
 import { changeUrlEvent } from '../../utils/change-url-event';
-import userStore from '../../store/user-store';
 
 interface InputFilds {
   [inputName: string]: InputField;
@@ -179,9 +178,7 @@ export default class SignupForm extends BaseComponent<'div'> {
     }
 
     try {
-      const response = await signupUser(values);
-
-      userStore.dispatch({ type: 'ADD_CUSTOMER', customer: response?.body?.customer });
+      await signupUser(values);
 
       this.buttonSubmit.classList.remove('button--loading');
 

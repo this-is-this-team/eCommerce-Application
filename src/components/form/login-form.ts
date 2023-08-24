@@ -83,11 +83,11 @@ export default class LoginForm extends BaseComponent<'div'> {
     }
 
     try {
-      const response = await signinUser(values);
+      await signinUser(values);
 
-      userStore.dispatch({ type: 'ADD_CUSTOMER', customer: response?.body?.customer });
+      const { customer } = userStore.getState();
 
-      const userFullName = `${response?.body?.customer?.firstName} ${response?.body?.customer?.lastName}`;
+      const userFullName = `${customer?.firstName} ${customer?.lastName}`;
 
       new Notification('success', `Hello, ${userFullName}!`).showNotification();
 
