@@ -21,7 +21,7 @@ const reducer = (state: IUserState, action: IUserAction): IUserState => {
   const newState: IUserState = JSON.parse(JSON.stringify(state));
   switch (action.type) {
     case 'SET_IS_AUTH':
-      if (action.isAuth) newState.isAuth = action.isAuth;
+      if (action.isAuth !== undefined) newState.isAuth = action.isAuth;
       return newState;
     case 'ADD_CUSTOMER':
       if (action.customer) newState.customer = action.customer;
