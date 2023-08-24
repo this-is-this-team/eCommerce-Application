@@ -4,20 +4,46 @@ import Link from '../../link/link';
 import { AppRoutesPath } from '../../../router/types';
 import { changeUrlEvent } from '../../../utils/change-url-event';
 import userStore from '../../../store/user-store';
+import userLogout from '../../../services/userLogout';
 import './header-user.scss';
 
 export default class HeaderUser extends BaseComponent<'div'> {
   private account: HTMLDivElement;
   private dropdownMenu: HTMLDivElement;
   private cart: HTMLDivElement;
+  private accountIcon: HTMLSpanElement;
+  private accountTitle: HTMLParagraphElement;
+  private loginBtn: HTMLButtonElement;
+  private createAccountBtn: HTMLAnchorElement;
+  private logoutBtn: HTMLButtonElement;
+  private profileBtn: HTMLAnchorElement;
+  private bridge: HTMLDivElement;
 
   constructor() {
     super('div', ['header__user']);
 
     this.account = new BaseComponent<'div'>('div', ['header__user-account']).getElement();
+    this.accountIcon = new BaseComponent<'span'>('span', ['user-account__icon']).getElement();
+    this.accountTitle = new BaseComponent<'p'>('p', ['user-account__title'], 'Account').getElement();
     this.dropdownMenu = new BaseComponent<'div'>('div', ['dropdown-menu', 'dropdown-menu_closed']).getElement();
+    this.profileBtn = new Link('My profile', ['link--unset', 'dropdown-menu__link'], AppRoutesPath.MAIN).getElement();
+    this.loginBtn = new Button('button', 'Log In', ['dropdown-menu__button'], false, () =>
+      changeUrlEvent(AppRoutesPath.LOGIN)
+    ).getElement();
+    this.createAccountBtn = new Link(
+      'Create Account',
+      ['link--arrow', 'dropdown-menu__link'],
+      AppRoutesPath.SIGN_UP
+    ).getElement();
 
-    this.account.append(...this.drawAccount());
+    this.logoutBtn = new Button('button', 'Log Out', ['dropdown-menu__button'], false, () => {
+      userLogout();
+      changeUrlEvent(AppRoutesPath.MAIN);
+    }).getElement();
+
+    this.bridge = new BaseComponent('div', ['header__bridge']).getElement();
+
+    this.drawAccount(userStore.getState().isAuth);
 
     this.cart = this.drawCart();
 
@@ -27,94 +53,44 @@ export default class HeaderUser extends BaseComponent<'div'> {
     this.addSubscribtion();
   }
 
-  private drawAccount(isAuthorized: boolean = false): HTMLElement[] {
-    const accountIcon = new BaseComponent<'span'>('span', ['user-account__icon']).getElement();
-    const accountTitle = new BaseComponent<'p'>('p', ['user-account__title'], 'Account').getElement();
-
-    if (isAuthorized) {
+  private drawAccount(isAuth: boolean): void {
+    if (isAuth) {
       const userName = `${userStore.getState().customer?.firstName}`;
 
-      accountIcon.classList.add('user-account__icon_authorized');
-      accountIcon.textContent = `${userName[0]}`;
-      accountTitle.textContent = userName;
-    }
-    const bridge: HTMLDivElement = new BaseComponent('div', ['header__bridge']).getElement();
+      this.accountIcon.classList.add('user-account__icon_authorized');
+      this.accountIcon.textContent = `${userName[0]}`;
+      this.accountTitle.textContent = userName;
 
-    this.dropdownMenu = new BaseComponent<'div'>('div', ['dropdown-menu', 'dropdown-menu_closed']).getElement();
-    this.dropdownMenu.append(...this.drawDropdownMenu(isAuthorized));
-
-    return [accountIcon, accountTitle, bridge, this.dropdownMenu];
-  }
-
-  private setListeners(): void {
-    const isHoverDevice: boolean = window.matchMedia('(hover: hover)').matches;
-
-    if (isHoverDevice) {
-      this.account.onmouseenter = (event) => {
-        if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
-      };
-
-      this.account.onmouseleave = (event) => {
-        if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
-      };
+      this.dropdownMenu.innerHTML = '';
+      this.dropdownMenu.append(this.profileBtn, this.logoutBtn);
     } else {
-      this.account.onmousedown = (event) => {
-        setTimeout(() => {
-          if (event.target instanceof HTMLElement) this.toggleDropdownMenu();
-        });
-      };
+      this.accountIcon.classList.remove('user-account__icon_authorized');
+      this.accountIcon.textContent = '';
+      this.accountTitle.textContent = 'Account';
 
-      document.onclick = (event) => {
-        if (this.dropdownMenu.classList.contains('dropdown-menu_opened')) {
-          if (event.target instanceof HTMLElement) {
-            if (event.target !== this.account && !event.target.closest('.header__user-account')) {
-              this.toggleDropdownMenu();
-            }
-          }
-        }
-      };
-    }
-  }
-
-  private drawDropdownMenu(isAuthorized: boolean = false): HTMLElement[] {
-    if (isAuthorized) {
-      const profileBtn = new Link(
-        'My profile',
-        ['link--unset', 'dropdown-menu__link'],
-        AppRoutesPath.MAIN
-      ).getElement();
-      const logoutBtn: HTMLButtonElement = new Button('button', 'Log Out', ['dropdown-menu__button'], false, () =>
-        changeUrlEvent(AppRoutesPath.MAIN)
-      ).getElement();
-
-      logoutBtn.onclick = () => {
-        userStore.dispatch({ type: 'REMOVE_TOKEN' });
-        userStore.dispatch({ type: 'REMOVE_CUSTOMER' });
-      };
-
-      return [profileBtn, logoutBtn];
+      this.dropdownMenu.innerHTML = '';
+      this.dropdownMenu.append(this.loginBtn, this.createAccountBtn);
     }
 
-    const loginBtn: HTMLButtonElement = new Button('button', 'Log In', ['dropdown-menu__button'], false, () =>
-      changeUrlEvent(AppRoutesPath.LOGIN)
-    ).getElement();
-
-    const createAccountBtn: HTMLAnchorElement = new Link(
-      'Create Account',
-      ['link--arrow', 'dropdown-menu__link'],
-      AppRoutesPath.SIGN_UP
-    ).getElement();
-
-    return [loginBtn, createAccountBtn];
+    this.account.innerHTML = '';
+    this.account.append(this.accountIcon, this.accountTitle, this.bridge, this.dropdownMenu);
   }
 
-  private toggleDropdownMenu(): void {
-    const classOpened = 'dropdown-menu_opened';
-    const classClosed = 'dropdown-menu_closed';
-    const isDropDownMenuClosed = this.dropdownMenu.classList.contains(classClosed);
+  private setListeners() {
+    this.account.addEventListener('click', () => this.onOpenDropdownMenu());
+    this.account.addEventListener('mouseenter', () => this.onOpenDropdownMenu());
+    this.account.addEventListener('blur', () => this.onCloseDropdownMenu());
+    this.account.addEventListener('mouseleave', () => this.onCloseDropdownMenu());
+  }
 
-    this.dropdownMenu.classList.toggle(classOpened, isDropDownMenuClosed);
-    this.dropdownMenu.classList.toggle(classClosed, !isDropDownMenuClosed);
+  private onOpenDropdownMenu() {
+    this.dropdownMenu.classList.remove('dropdown-menu_closed');
+    this.dropdownMenu.classList.add('dropdown-menu_opened');
+  }
+
+  private onCloseDropdownMenu() {
+    this.dropdownMenu.classList.remove('dropdown-menu_opened');
+    this.dropdownMenu.classList.add('dropdown-menu_closed');
   }
 
   private drawCart(): HTMLDivElement {
@@ -127,19 +103,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
     return cart;
   }
 
-  private updateAccount(isAuthorized: boolean): void {
-    this.account.innerHTML = '';
-
-    this.account.append(...this.drawAccount(isAuthorized));
-  }
-
   private addSubscribtion(): void {
-    userStore.subscribe((state) => {
-      if (state.token) {
-        this.updateAccount(true);
-      } else {
-        this.updateAccount(false);
-      }
-    });
+    userStore.subscribe((state) => this.drawAccount(state.isAuth));
   }
 }
