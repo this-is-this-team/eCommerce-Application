@@ -2,29 +2,26 @@ import BaseStore, { IStore } from './base-store';
 import { Customer } from '@commercetools/platform-sdk';
 
 interface IUserState {
-  token: string;
+  isAuth: boolean;
   customer: Customer | null;
 }
 
 interface IUserAction {
   type: string;
-  token?: string;
+  isAuth?: boolean;
   customer?: Customer;
 }
 
 const initialState: IUserState = {
-  token: '',
+  isAuth: false,
   customer: null,
 };
 
 const reducer = (state: IUserState, action: IUserAction): IUserState => {
   const newState: IUserState = JSON.parse(JSON.stringify(state));
   switch (action.type) {
-    case 'ADD_TOKEN':
-      if (action.token) newState.token = action.token;
-      return newState;
-    case 'REMOVE_TOKEN':
-      newState.token = '';
+    case 'SET_IS_AUTH':
+      if (action.isAuth) newState.isAuth = action.isAuth;
       return newState;
     case 'ADD_CUSTOMER':
       if (action.customer) newState.customer = action.customer;

@@ -1,13 +1,13 @@
-import { ClientResponse, CustomerSignInResult } from '@commercetools/platform-sdk';
+import { ClientResponse, Customer, CustomerSignInResult } from '@commercetools/platform-sdk';
 import { ISigninData } from '../types/interfaces';
-import apiRoot from './apiRoot';
+import apiRootLogin from './apiRootLogin';
 import MyTokenCache from './TokenCache';
-import saveToken from '../utils/saveToken';
+import userStore from '../store/user-store';
 
-export default async function signinUser(body: ISigninData): Promise<ClientResponse<CustomerSignInResult>> {
+export default async function signinUser(body: ISigninData): Promise<Customer> {
   const tokenCache = new MyTokenCache();
 
-  const customer: ClientResponse<CustomerSignInResult> = await apiRoot(tokenCache)
+  const response: ClientResponse<CustomerSignInResult> = await apiRootLogin(body.email, body.password, tokenCache)
     .me()
     .login()
     .post({
@@ -16,7 +16,9 @@ export default async function signinUser(body: ISigninData): Promise<ClientRespo
     .execute();
 
   const { token } = tokenCache.get();
-  if (token) saveToken(token);
+  if (token) localStorage.setItem('token', JSON.stringify(token));
+  userStore.dispatch({ type: 'SET_IS_AUTH', isAuth: true });
+  userStore.dispatch({ type: 'ADD_CUSTOMER', customer: response?.body?.customer });
 
-  return customer;
+  return response?.body?.customer;
 }

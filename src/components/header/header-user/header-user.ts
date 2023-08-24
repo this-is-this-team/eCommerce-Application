@@ -4,6 +4,7 @@ import Link from '../../link/link';
 import { AppRoutesPath } from '../../../router/types';
 import { changeUrlEvent } from '../../../utils/change-url-event';
 import userStore from '../../../store/user-store';
+import userLogout from '../../../services/userLogout';
 import './header-user.scss';
 
 export default class HeaderUser extends BaseComponent<'div'> {
@@ -68,8 +69,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
       ).getElement();
 
       logoutBtn.onclick = () => {
-        userStore.dispatch({ type: 'REMOVE_TOKEN' });
-        userStore.dispatch({ type: 'REMOVE_CUSTOMER' });
+        userLogout();
       };
 
       return [profileBtn, logoutBtn];
@@ -115,7 +115,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
 
   private addSubscribtion(): void {
     userStore.subscribe((state) => {
-      if (state.token) {
+      if (state.isAuth) {
         this.updateAccount(true);
       } else {
         this.updateAccount(false);
