@@ -79,18 +79,31 @@ export default class HeaderUser extends BaseComponent<'div'> {
   private setListeners() {
     this.account.addEventListener('click', () => this.onOpenDropdownMenu());
     this.account.addEventListener('mouseenter', () => this.onOpenDropdownMenu());
-    this.account.addEventListener('blur', () => this.onCloseDropdownMenu());
     this.account.addEventListener('mouseleave', () => this.onCloseDropdownMenu());
+  }
+
+  private closeDropdownOnMobile(event: TouchEvent) {
+    if (this.dropdownMenu.classList.contains('dropdown-menu_opened')) {
+      if (event.target instanceof HTMLElement) {
+        if (this.account && event.target !== this.account && !event.target.closest('.header__user-account')) {
+          this.onCloseDropdownMenu();
+        }
+      }
+    }
   }
 
   private onOpenDropdownMenu() {
     this.dropdownMenu.classList.remove('dropdown-menu_closed');
     this.dropdownMenu.classList.add('dropdown-menu_opened');
+
+    document.body?.addEventListener('touchstart', (event) => this.closeDropdownOnMobile(event));
   }
 
   private onCloseDropdownMenu() {
     this.dropdownMenu.classList.remove('dropdown-menu_opened');
     this.dropdownMenu.classList.add('dropdown-menu_closed');
+
+    document.body?.removeEventListener('touchstart', (event) => this.closeDropdownOnMobile(event));
   }
 
   private drawCart(): HTMLDivElement {
