@@ -63,9 +63,6 @@ export default class HeaderUser extends BaseComponent<'div'> {
 
       this.dropdownMenu.innerHTML = '';
       this.dropdownMenu.append(this.profileBtn, this.logoutBtn);
-
-      this.account.innerHTML = '';
-      this.account.append(this.accountIcon, this.accountTitle, this.bridge, this.dropdownMenu);
     } else {
       this.accountIcon.classList.remove('user-account__icon_authorized');
       this.accountIcon.textContent = '';
