@@ -1,0 +1,102 @@
+.footer {
+  background-color: $color-primary;
+
+  &__container {
+    @include container;
+    padding: 80px 120px;
+    display: flex;
+    justify-content: space-between;
+
+    @include tablet {
+      padding: 40px 60px;
+    }
+
+    @include mobile {
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 40px;
+      padding: 20px;
+    }
+  }
+
+  &__information {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    gap: 16px;
+    max-width: 400px;
+
+    @include mobile {
+      order: 2;
+      max-width: unset;
+    }
+
+    @include tablet {
+      max-width: 300px;
+    }
+  }
+
+  &__subtitle {
+    color: $color-white;
+  }
+
+  &__post-subtitle {
+    color: $color-white;
+    font-size: 14px;
+    opacity: 0.5;
+
+    @include mobile {
+      font-size: 12px;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    gap: 64px;
+
+    @include tablet {
+      gap: 30px;
+    }
+
+    @include mobile {
+      order: 1;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+  }
+
+  &__menu {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include mobile {
+      gap: 5px;
+    }
+
+    .menu {
+      &__title > a {
+        color: $color-white;
+
+        @include tablet {
+          display: block;
+        }
+      }
+
+      &__item:not(.menu__title) > a {
+        color: $color-gray;
+        opacity: 0.5;
+        transition: all 0.2s ease;
+
+        @include tablet {
+          display: block;
+        }
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

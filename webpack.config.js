@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const EslintPlugin = require('eslint-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const mode = process.env.NODE_ENV || 'development';
 const devMode = mode === 'development';
@@ -82,11 +83,12 @@ module.exports = {
       filename: 'style.[contenthash:8].css',
     }),
     new EslintPlugin({ extensions: ['ts', 'js'] }),
+    new Dotenv(),
   ],
   devServer: {
-    watchFiles: path.resolve(__dirname, 'src'),
     port: 8888,
     open: true,
     hot: true,
+    historyApiFallback: true,
   },
 };

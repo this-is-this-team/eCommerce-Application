@@ -1,0 +1,117 @@
+.header {
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+  }
+
+  &__user-account {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    height: 100%;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &:hover > .user-account__title {
+      opacity: 1;
+    }
+
+    .user-account {
+      &__title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.5;
+        user-select: none;
+        cursor: unset;
+
+        @include tablet {
+          display: none;
+        }
+
+        @include mobile {
+          display: none;
+        }
+      }
+
+      &__icon {
+        @include account-icon;
+
+        &_authorized {
+          background: salmon;
+          border-radius: 100%;
+        }
+      }
+    }
+
+    .dropdown-menu {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 20px 24px;
+
+      @include tablet {
+        top: 35px;
+        right: 0;
+      }
+
+      &_opened {
+        display: flex;
+      }
+
+      &__button {
+        padding: 16px 40px;
+        white-space: nowrap;
+      }
+
+      &__link {
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &__user-cart {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 16px;
+    border-left: 2px solid $color-border;
+    gap: 4px;
+    height: 100%;
+    padding-left: 16px;
+
+    .user-cart {
+      &__icon {
+        @include cart-icon;
+      }
+
+      &__counter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 25px;
+        width: 25px;
+        background-color: $color-gray;
+        border-radius: 100%;
+        pointer-events: none;
+
+        @include mobile {
+          position: absolute;
+          transform: scale(0.7);
+          top: -10px;
+          right: -10px;
+        }
+      }
+    }
+
+    @include mobile {
+      padding: 0;
+      border: 0;
+    }
+  }
+}
