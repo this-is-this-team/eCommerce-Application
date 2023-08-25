@@ -11,9 +11,6 @@ const breadcrumbsLinks: IBreadcrumbLink[] = [
     pageName: 'Home',
     pageHref: AppRoutesPath.MAIN,
   },
-  {
-    pageName: 'Log In',
-  },
 ];
 
 const bannerContent: IBannerContent = {
@@ -29,7 +26,7 @@ export default class LoginPage extends BaseComponent<'div'> {
   constructor() {
     super('div', ['login-page']);
 
-    this.breadcrumbs = new Breadcrumbs(breadcrumbsLinks).getElement();
+    this.breadcrumbs = new Breadcrumbs(breadcrumbsLinks, 'Log In').getElement();
 
     this.loginSection = new BaseComponent('section', ['login-section']).getElement();
     this.renderSignupSection();

@@ -11,9 +11,6 @@ const breadcrumbsLinks: IBreadcrumbLink[] = [
     pageName: 'Home',
     pageHref: AppRoutesPath.MAIN,
   },
-  {
-    pageName: 'Create Account',
-  },
 ];
 
 const bannerContent: IBannerContent = {
@@ -29,7 +26,7 @@ export default class SignupPage extends BaseComponent<'div'> {
   constructor() {
     super('div', ['signup-page']);
 
-    this.breadcrumbs = new Breadcrumbs(breadcrumbsLinks).getElement();
+    this.breadcrumbs = new Breadcrumbs(breadcrumbsLinks, 'Create Account').getElement();
 
     this.signupSection = new BaseComponent('section', ['signup-section']).getElement();
     this.renderSignupSection();

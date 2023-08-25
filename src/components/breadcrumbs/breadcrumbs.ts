@@ -1,30 +1,28 @@
 import BaseComponent from '../base-component';
 import Link from '../link/link';
-import { AppRoutesPath } from '../../router/types';
 import { IBreadcrumbLink } from '../../types/interfaces';
 import './breadcrumbs.scss';
 
 export default class Breadcrumbs extends BaseComponent<'div'> {
-  constructor(links: IBreadcrumbLink[]) {
+  constructor(links: IBreadcrumbLink[], currentPage: string) {
     super('div', ['breadcrumbs']);
 
-    this.renderBreadcrumbs(links);
+    this.renderBreadcrumbs(links, currentPage);
   }
 
-  renderBreadcrumbs(links: IBreadcrumbLink[]) {
+  renderBreadcrumbs(links: IBreadcrumbLink[], currentPage: string) {
     const container: HTMLDivElement = new BaseComponent('div', ['breadcrumbs__container']).getElement();
     const linksElement: HTMLDivElement = new BaseComponent('div', ['breadcrumbs__links']).getElement();
-    const activeLinks: IBreadcrumbLink[] = links.slice(0, links.length - 1);
-    const activeLinksElements: HTMLAnchorElement[] = activeLinks.map((link) =>
-      new Link('Home', ['link--breadcrumbs'], link.pageHref || AppRoutesPath.MAIN).getElement()
+    const activeLinksElements: HTMLAnchorElement[] = links.map((link) =>
+      new Link(link.pageName, ['link--breadcrumbs'], link.pageHref).getElement()
     );
-    const currentPage: HTMLParagraphElement = new BaseComponent(
+    const currentPageElement: HTMLParagraphElement = new BaseComponent(
       'p',
       ['breadcrumbs__current'],
-      links.at(-1)?.pageName
+      currentPage
     ).getElement();
 
-    linksElement.append(...activeLinksElements, currentPage);
+    linksElement.append(...activeLinksElements, currentPageElement);
 
     container.append(linksElement);
 
