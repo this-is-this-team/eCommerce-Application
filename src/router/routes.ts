@@ -4,6 +4,7 @@ import MainPage from '../pages/main-page/main-page';
 import LoginPage from '../pages/login-page/login-page';
 import SignupPage from '../pages/signup-page/signup-page';
 import NotFoundPage from '../pages/not-found-page/not-found-page';
+import CatalogPage from '../pages/catalog-page/catalog-page';
 
 export const MAIN_ROUTE: AppRoute = {
   path: AppRoutesPath.MAIN,
@@ -24,6 +25,10 @@ export const ROUTES: AppRoute[] = [
   {
     path: AppRoutesPath.SIGN_UP,
     component: new SignupPage().getElement(),
+  },
+  {
+    path: AppRoutesPath.SHOP,
+    component: new CatalogPage().getElement(),
   },
   NOT_FOUND_ROUTE,
 ];
