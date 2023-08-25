@@ -3,6 +3,7 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { IBreadcrumbLink } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import './catalog-page.scss';
+import ProductList from '../../components/product-list/product-list';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -14,6 +15,7 @@ const breadcrumbsLinks: IBreadcrumbLink[] = [
 export default class CatalogPage extends BaseComponent<'div'> {
   private breadcrumbs: HTMLElement;
   private heroSection: HTMLElement;
+  private catalogSection: HTMLElement;
 
   constructor() {
     super('div', ['catalog-page']);
@@ -22,11 +24,14 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.heroSection = new BaseComponent('section', ['shop-hero']).getElement();
     this.renderHeroSection();
 
-    this.node.append(this.breadcrumbs, this.heroSection);
+    this.catalogSection = new ProductList().getElement();
+
+    this.node.append(this.breadcrumbs, this.heroSection, this.catalogSection);
   }
 
-  private renderHeroSection() {
+  private renderHeroSection(): void {
     const container: HTMLDivElement = new BaseComponent('div', ['shop-hero__container']).getElement();
+    const wrapper: HTMLDivElement = new BaseComponent('div', ['shop-hero__wrapper']).getElement();
     const content: HTMLDivElement = new BaseComponent('div', ['shop-hero__content']).getElement();
     const title: HTMLHeadingElement = new BaseComponent('h2', ['shop-hero__title'], 'Shop All').getElement();
     const text: HTMLParagraphElement = new BaseComponent(
@@ -37,7 +42,8 @@ export default class CatalogPage extends BaseComponent<'div'> {
     const imageBlock = new BaseComponent('div', ['shop-hero__image']).getElement();
 
     content.append(title, text);
-    container.append(content, imageBlock);
+    wrapper.append(content, imageBlock);
+    container.append(wrapper);
     this.heroSection.append(container);
   }
 }

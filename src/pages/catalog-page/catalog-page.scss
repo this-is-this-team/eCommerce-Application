@@ -1,8 +1,14 @@
 .shop-hero {
   &__container {
     @include container;
+  }
+
+  &__wrapper {
     display: flex;
     gap: 72px;
+    width: 100%;
+    padding-bottom: 104px;
+    border-bottom: 1px solid $color-border;
   }
 
   &__content {
@@ -31,5 +37,9 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+
+    @include tablet {
+      display: none;
+    }
   }
 }
