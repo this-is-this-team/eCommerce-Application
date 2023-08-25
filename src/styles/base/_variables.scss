@@ -72,6 +72,18 @@ $font-xs: 600 12px/1.5 $font-family-jakarta;
 }
 
 @mixin font-h3 {
+  font: 400 32px/1.4 $font-family-gloock;
+
+  @include tablet {
+    font-size: 28px;
+  }
+
+  @include mobile {
+    font-size: 22px;
+  }
+}
+
+@mixin font-h4 {
   font: 400 24px/1.4 $font-family-gloock;
 
   @include tablet {
