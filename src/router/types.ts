@@ -1,6 +1,6 @@
 export interface AppRoute {
   path: AppRoutesPath;
-  component: HTMLElement;
+  component: () => HTMLElement;
 }
 
 export const enum AppRoutesPath {
