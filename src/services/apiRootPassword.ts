@@ -8,7 +8,7 @@ import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 
 const projectKey: string = process.env.CTP_PROJECT_KEY || '';
 
-export default function apiRootLogin(email: string, password: string, tokenCache: TokenCache) {
+export default function apiRootPassword(email: string, password: string, tokenCache: TokenCache) {
   const options: PasswordAuthMiddlewareOptions = {
     host: process.env.CTP_AUTH_URL || '',
     projectKey,

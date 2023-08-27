@@ -1,7 +1,7 @@
 import { ClientBuilder, type AuthMiddlewareOptions, type HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 
-export default function apiRoot() {
+export default function apiRootCredentials() {
   const projectKey: string = process.env.CTP_PROJECT_KEY || '';
 
   const authMiddlewareOptions: AuthMiddlewareOptions = {
