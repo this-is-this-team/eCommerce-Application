@@ -1,7 +1,8 @@
 .product-list {
+  padding: 48px 0;
+
   &__container {
     @include container;
-    padding-top: 48px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
@@ -17,5 +18,9 @@
     @include mobile {
       grid-template-columns: 1fr;
     }
+  }
+
+  &__empty {
+    @include font-h4;
   }
 }

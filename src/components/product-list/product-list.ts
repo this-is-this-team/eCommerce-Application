@@ -18,7 +18,7 @@ export default class ProductList extends BaseComponent<'section'> {
   }
 
   private async createMarkup(): Promise<void> {
-    const container: HTMLDivElement = new BaseComponent<'div'>('div', ['product-list__container']).getElement();
+    const container: HTMLDivElement = new BaseComponent('div', ['product-list__container']).getElement();
     try {
       this.items = await getProducts();
 
@@ -34,7 +34,13 @@ export default class ProductList extends BaseComponent<'section'> {
       console.log(error);
     }
 
-    container.append(...this.cards);
+    if (this.cards.length) {
+      container.append(...this.cards);
+    } else {
+      const emptyListText = new BaseComponent('div', ['product-list__empty'], 'No tours available').getElement();
+      container.append(emptyListText);
+    }
+
     this.node.append(container);
   }
 }
