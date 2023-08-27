@@ -86,16 +86,13 @@ export default class LoginForm extends BaseComponent<'div'> {
       await signinUser(values);
 
       const { customer } = userStore.getState();
-
       const userFullName = `${customer?.firstName} ${customer?.lastName}`;
-
       new Notification('success', `Hello, ${userFullName}!`).showNotification();
 
-      changeUrlEvent(AppRoutesPath.MAIN);
-
       this.buttonSubmit.classList.remove('button--loading');
-      this.formElement.reset();
-      this.buttonSubmit.disabled = false;
+      this.buttonSubmit.classList.add('button--success');
+
+      changeUrlEvent(AppRoutesPath.MAIN);
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
@@ -105,6 +102,7 @@ export default class LoginForm extends BaseComponent<'div'> {
 
       this.buttonSubmit.disabled = false;
       this.buttonSubmit.classList.remove('button--loading');
+      this.buttonSubmit.classList.remove('button--success');
     }
   }
 }

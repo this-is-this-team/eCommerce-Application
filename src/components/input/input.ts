@@ -74,7 +74,7 @@ export default class InputField extends BaseComponent<'div'> {
     this.node.append(this.errorElement);
   }
 
-  public clearError(): void {
+  private clearError(): void {
     this.inputElement.classList.remove('valid-error');
     this.errorElement.textContent = '';
     this.errorElement.remove();
