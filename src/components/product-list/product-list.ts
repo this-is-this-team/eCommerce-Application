@@ -25,7 +25,7 @@ export default class ProductList extends BaseComponent<'section'> {
       this.cards = this.items.map((item) => {
         const title: string = item.masterData.staged.name['en-US'];
         const description: string = item.masterData.staged.description?.['en-US'] || '';
-        const image: string = item.masterData.staged.masterVariant.images?.[0].url || '';
+        const image: string = item.masterData.staged.masterVariant.images?.[0]?.url || '';
         return new ProductCard(title, description, image).getElement();
       });
 

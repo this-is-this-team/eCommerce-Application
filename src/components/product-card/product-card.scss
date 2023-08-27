@@ -14,6 +14,13 @@
       object-fit: cover;
       object-position: center;
     }
+
+    &--placeholder {
+      background-image: url('../../assets/img/placeholder-image.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
   }
 
   &__content {

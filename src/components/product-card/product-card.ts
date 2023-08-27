@@ -14,6 +14,8 @@ export default class ProductCard extends BaseComponent<'div'> {
     if (image) {
       cardImage.src = image;
       cardMedia.append(cardImage);
+    } else {
+      cardMedia.classList.add('product-card__media--placeholder');
     }
 
     const cardContent = new BaseComponent('div', ['product-card__content']).getElement();
