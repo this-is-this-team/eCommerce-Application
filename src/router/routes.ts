@@ -27,12 +27,20 @@ export const ROUTES: AppRoute[] = [
     component: () => new SignupPage().getElement(),
   },
   {
+    path: AppRoutesPath.ACCOUNT,
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+  },
+  {
+    path: AppRoutesPath.ACCOUNT_ADDRESSES,
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+  },
+  {
     path: AppRoutesPath.SHOP,
     component: () => new CatalogPage().getElement(),
   },
   {
     path: AppRoutesPath.CATEGORY,
-    component: () => new CatalogPage().getElement(), // TODO: Change page-component when implemented
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
   },
   {
     path: AppRoutesPath.PRODUCT,
