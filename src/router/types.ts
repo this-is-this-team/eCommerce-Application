@@ -3,7 +3,7 @@ export interface AppRoute {
   component: () => HTMLElement;
 }
 
-export const enum AppRoutesPath {
+export enum AppRoutesPath {
   MAIN = '/',
   LOGIN = '/login',
   SIGN_UP = '/registration',
@@ -14,4 +14,9 @@ export const enum AppRoutesPath {
   PRODUCT = '/shop/category/:id',
   NOT_FOUND = '/404',
   ANCHOR = '#',
+}
+
+export enum MiddlewareTypes {
+  AUTH = 'auth',
+  ACCOUNT = 'account',
 }
