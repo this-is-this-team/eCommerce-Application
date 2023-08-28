@@ -4,11 +4,11 @@ import { IMenuItems } from '../../../types/types';
 const menuItems: IMenuItems[] = [
   {
     title: 'Shop',
-    href: AppRoutesPath.ANCHOR,
+    href: AppRoutesPath.SHOP,
     innerItems: [
       {
         title: 'Shop All',
-        href: AppRoutesPath.ANCHOR,
+        href: AppRoutesPath.SHOP,
       },
       {
         title: 'Best Sellers',

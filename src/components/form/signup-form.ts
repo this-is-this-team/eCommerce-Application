@@ -180,14 +180,12 @@ export default class SignupForm extends BaseComponent<'div'> {
     try {
       await signupUser(values);
 
-      this.buttonSubmit.classList.remove('button--loading');
-
       new Notification('success', 'Registration completed successfully').showNotification();
 
-      changeUrlEvent(AppRoutesPath.MAIN);
+      this.buttonSubmit.classList.remove('button--loading');
+      this.buttonSubmit.classList.add('button--success');
 
-      this.buttonSubmit.disabled = false;
-      this.formReset();
+      changeUrlEvent(AppRoutesPath.MAIN);
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
@@ -197,16 +195,7 @@ export default class SignupForm extends BaseComponent<'div'> {
 
       this.buttonSubmit.disabled = false;
       this.buttonSubmit.classList.remove('button--loading');
+      this.buttonSubmit.classList.remove('button--success');
     }
-  }
-
-  private formReset(): void {
-    if (this.checkboxAddress) {
-      this.toggleBillingAddress();
-      this.inputs['streetBilling'].clearError();
-      this.inputs['cityBilling'].clearError();
-      this.inputs['postcodeBilling'].clearError();
-    }
-    this.formElement.reset();
   }
 }

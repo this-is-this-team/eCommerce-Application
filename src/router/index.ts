@@ -48,7 +48,7 @@ export function createRouter(routerOutlet: HTMLElement): Router {
   return new Router(ROUTES, (route) => {
     if (route) {
       routerOutlet.innerHTML = '';
-      routerOutlet.append(route.component);
+      routerOutlet.append(route.component());
 
       document.body?.scrollIntoView({
         behavior: 'smooth',

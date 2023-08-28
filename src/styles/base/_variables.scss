@@ -3,6 +3,7 @@ $color-white: #ffffff;
 $color-primary: #001329;
 $color-secondary-40: #99a1a9;
 $color-secondary-60: #66717f;
+$color-bg-secondary: #d9d9d9;
 $color-gray: #f2f2f2;
 $color-price: #2b8813;
 $color-rating: #fcc400;
@@ -17,6 +18,7 @@ $color-success: #45d845;
 // breakpoints
 $width-mobile: 768px;
 $width-tablet: 1024px;
+$width-pre-tablet: 1360px;
 
 @mixin mobile {
   @media (max-width: $width-mobile) {
@@ -26,6 +28,12 @@ $width-tablet: 1024px;
 
 @mixin tablet {
   @media (max-width: $width-tablet) {
+    @content;
+  }
+}
+
+@mixin pre-tablet {
+  @media (max-width: $width-pre-tablet) {
     @content;
   }
 }
@@ -72,6 +80,18 @@ $font-xs: 600 12px/1.5 $font-family-jakarta;
 }
 
 @mixin font-h3 {
+  font: 400 32px/1.4 $font-family-gloock;
+
+  @include tablet {
+    font-size: 28px;
+  }
+
+  @include mobile {
+    font-size: 22px;
+  }
+}
+
+@mixin font-h4 {
   font: 400 24px/1.4 $font-family-gloock;
 
   @include tablet {
