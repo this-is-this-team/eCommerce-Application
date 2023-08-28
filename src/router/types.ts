@@ -10,8 +10,9 @@ export enum AppRoutesPath {
   ACCOUNT = '/account',
   ACCOUNT_ADDRESSES = '/account/addresses',
   SHOP = '/shop',
-  CATEGORY = '/shop/category',
-  PRODUCT = '/shop/category/:id',
+  CATEGORY = '/shop/:category',
+  SUBCATEGORY = '/shop/:category/:subcategory',
+  PRODUCT = '/shop/:category/:subcategory/:id',
   NOT_FOUND = '/404',
   ANCHOR = '#',
 }

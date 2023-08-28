@@ -45,6 +45,10 @@ export const ROUTES: AppRoute[] = [
     component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
   },
   {
+    path: AppRoutesPath.SUBCATEGORY,
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+  },
+  {
     path: AppRoutesPath.PRODUCT,
     component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
   },
