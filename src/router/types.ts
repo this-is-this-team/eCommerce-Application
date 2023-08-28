@@ -8,6 +8,8 @@ export const enum AppRoutesPath {
   LOGIN = '/login',
   SIGN_UP = '/registration',
   SHOP = '/shop',
+  CATEGORY = '/shop/category',
+  PRODUCT = '/shop/category/:id',
   NOT_FOUND = '/404',
   ANCHOR = '#',
 }

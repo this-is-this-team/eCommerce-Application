@@ -30,5 +30,13 @@ export const ROUTES: AppRoute[] = [
     path: AppRoutesPath.SHOP,
     component: () => new CatalogPage().getElement(),
   },
+  {
+    path: AppRoutesPath.CATEGORY,
+    component: () => new CatalogPage().getElement(), // TODO: Change page-component when implemented
+  },
+  {
+    path: AppRoutesPath.PRODUCT,
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+  },
   NOT_FOUND_ROUTE,
 ];
