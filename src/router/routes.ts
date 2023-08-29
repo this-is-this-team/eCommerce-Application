@@ -11,6 +11,11 @@ export const MAIN_ROUTE: AppRoute = {
   component: () => new MainPage().getElement(),
 };
 
+export const LOGIN_ROUTE: AppRoute = {
+  path: AppRoutesPath.LOGIN,
+  component: () => new LoginPage().getElement(),
+};
+
 export const NOT_FOUND_ROUTE: AppRoute = {
   path: AppRoutesPath.NOT_FOUND,
   component: () => new NotFoundPage().getElement(),
@@ -18,17 +23,34 @@ export const NOT_FOUND_ROUTE: AppRoute = {
 
 export const ROUTES: AppRoute[] = [
   MAIN_ROUTE,
-  {
-    path: AppRoutesPath.LOGIN,
-    component: () => new LoginPage().getElement(),
-  },
+  LOGIN_ROUTE,
   {
     path: AppRoutesPath.SIGN_UP,
     component: () => new SignupPage().getElement(),
   },
   {
+    path: AppRoutesPath.ACCOUNT,
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+  },
+  {
+    path: AppRoutesPath.ACCOUNT_ADDRESSES,
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+  },
+  {
     path: AppRoutesPath.SHOP,
     component: () => new CatalogPage().getElement(),
+  },
+  {
+    path: AppRoutesPath.CATEGORY,
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+  },
+  {
+    path: AppRoutesPath.SUBCATEGORY,
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+  },
+  {
+    path: AppRoutesPath.PRODUCT,
+    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
   },
   NOT_FOUND_ROUTE,
 ];

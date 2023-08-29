@@ -26,7 +26,11 @@ export default class HeaderUser extends BaseComponent<'div'> {
     this.accountIcon = new BaseComponent<'span'>('span', ['user-account__icon']).getElement();
     this.accountTitle = new BaseComponent<'p'>('p', ['user-account__title'], 'Account').getElement();
     this.dropdownMenu = new BaseComponent<'div'>('div', ['dropdown-menu', 'dropdown-menu_closed']).getElement();
-    this.profileBtn = new Link('My profile', ['link--unset', 'dropdown-menu__link'], AppRoutesPath.MAIN).getElement();
+    this.profileBtn = new Link(
+      'My profile',
+      ['link--unset', 'dropdown-menu__link'],
+      AppRoutesPath.ACCOUNT
+    ).getElement();
     this.loginBtn = new Button('button', 'Log In', ['dropdown-menu__button'], false, () =>
       changeUrlEvent(AppRoutesPath.LOGIN)
     ).getElement();
