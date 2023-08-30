@@ -4,6 +4,7 @@ $color-primary: #001329;
 $color-secondary-40: #99a1a9;
 $color-secondary-60: #66717f;
 $color-bg-secondary: #d9d9d9;
+$color-bg-light: #f5f6f7;
 $color-gray: #f2f2f2;
 $color-price: #2b8813;
 $color-rating: #fcc400;
@@ -18,7 +19,8 @@ $color-success: #45d845;
 // breakpoints
 $width-mobile: 768px;
 $width-tablet: 1024px;
-$width-pre-tablet: 1360px;
+$width-pre-tablet: 1200px;
+$width-laptop: 1440px;
 
 @mixin mobile {
   @media (max-width: $width-mobile) {
@@ -34,6 +36,12 @@ $width-pre-tablet: 1360px;
 
 @mixin pre-tablet {
   @media (max-width: $width-pre-tablet) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (max-width: $width-laptop) {
     @content;
   }
 }
