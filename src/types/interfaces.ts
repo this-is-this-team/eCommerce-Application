@@ -13,7 +13,7 @@ export interface ISignupData {
   lastName: string;
   email: string;
   password: string;
-  birthDate: string;
+  dateOfBirth: string;
   addresses: IAddress[];
   shippingAddresses?: number[];
   billingAddresses?: number[];
