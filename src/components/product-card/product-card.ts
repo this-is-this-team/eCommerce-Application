@@ -1,7 +1,9 @@
 import { Product, ProductData } from '@commercetools/platform-sdk';
 import BaseComponent from '../base-component';
-import './product-card.scss';
 import Button from '../button/button';
+import Link from '../link/link';
+import { AppRoutesPath } from '../../router/types';
+import './product-card.scss';
 
 export default class ProductCard extends BaseComponent<'div'> {
   constructor(product: Product) {
@@ -22,7 +24,8 @@ export default class ProductCard extends BaseComponent<'div'> {
     const days: string = productData.masterVariant.attributes?.[2]?.value || '';
     const rating: string = productData.masterVariant.attributes?.[0]?.value || '';
 
-    const cardMedia = new BaseComponent('div', ['product-card__media']).getElement();
+    // TODO: change AppRoutesPath.MAIN to AppRoutesPath.PRODUCT
+    const cardMedia = new Link('', ['product-card__media'], AppRoutesPath.MAIN).getElement();
     const cardImage: HTMLImageElement = new BaseComponent('img', ['product-card__image']).getElement();
     const cardRating = new BaseComponent('div', ['product-card__rating'], rating).getElement();
     if (image) {
@@ -31,11 +34,6 @@ export default class ProductCard extends BaseComponent<'div'> {
     } else {
       cardMedia.classList.add('product-card__media--placeholder');
     }
-
-    // TODO: insert callback for redirect
-    cardMedia.addEventListener('click', () => {
-      console.log(productId);
-    });
 
     const cardContent = new BaseComponent('div', ['product-card__content']).getElement();
     const cardTitle = new BaseComponent('h4', ['product-card__title'], title).getElement();
@@ -62,12 +60,19 @@ export default class ProductCard extends BaseComponent<'div'> {
 
     const cardBottom = new BaseComponent('div', ['product-card__bottom']).getElement();
     const cardReviews = new BaseComponent('p', ['product-card__reviews'], `${reviews}+ Reviews`).getElement();
-    // TODO: insert as last argument to cartButton callback for add to cart
-    const cartButton = new Button('button', '', ['product-card__button', 'button--cart']).getElement();
+
+    // TODO: change this.addToCart to global func add to cart
+    const cartButton = new Button('button', '', ['product-card__button', 'button--cart'], false, () =>
+      this.addToCart(productId)
+    ).getElement();
     cardBottom.append(cardReviews, cartButton);
 
     cardContent.append(cardRating, cardTitle, cardDescription, cardMiddle, cardBottom);
 
     this.node.append(cardMedia, cardContent);
+  }
+
+  private addToCart(id: string) {
+    console.log(`TODO: create func add to cart. Product ID: ${id}`);
   }
 }
