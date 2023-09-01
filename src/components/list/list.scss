@@ -9,12 +9,19 @@
     }
 
     &__key {
-      width: 140px;
+      min-width: 140px;
       font: $font-button;
+
+      @include mobile {
+        min-width: 100px;
+      }
     }
 
     &__value {
       font-size: 15px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 }

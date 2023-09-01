@@ -13,8 +13,8 @@ export default class List extends BaseComponent<'ul'> {
 
     for (const key in data) {
       const newElement = new BaseComponent('li', ['list-item']).getElement();
-      const newElementKey = new BaseComponent('li', ['list-item__key'], key).getElement();
-      const newElementValue = new BaseComponent('li', ['list-item__value'], data[key]).getElement();
+      const newElementKey = new BaseComponent('p', ['list-item__key'], key).getElement();
+      const newElementValue = new BaseComponent('p', ['list-item__value'], data[key]).getElement();
 
       newElement.append(newElementKey, newElementValue);
 
