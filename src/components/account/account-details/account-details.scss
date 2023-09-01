@@ -1,0 +1,19 @@
+.account-details {
+  &__title {
+    @include font-h3;
+  }
+
+  &__wrapp {
+    margin-top: 24px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    background: $color-bg-card;
+    border-radius: 8px;
+  }
+
+  &__edit-btn {
+    margin-top: 32px;
+    max-width: 212px;
+  }
+}
