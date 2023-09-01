@@ -4,7 +4,6 @@ import AccountDetails from '../../components/account/account-details/account-det
 import AccountAddresses from '../../components/account/account-addresses/account-addresses';
 import { IBreadcrumbLink } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
-
 import './account-page.scss';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [

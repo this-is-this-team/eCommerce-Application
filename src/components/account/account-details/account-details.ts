@@ -3,7 +3,6 @@ import Button from '../../button/button';
 import List from '../../list/list';
 import userStore from '../../../store/user-store';
 import { ListDataType } from '../../../types/types';
-
 import './account-details.scss';
 
 export default class AccountDetails extends BaseComponent<'div'> {

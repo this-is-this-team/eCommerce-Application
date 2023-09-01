@@ -1,8 +1,7 @@
 import BaseComponent from '../../base-component';
 import userStore from '../../../store/user-store';
-
-import './account-addresses.scss';
 import Button from '../../button/button';
+import './account-addresses.scss';
 
 export default class AccountAddresses extends BaseComponent<'div'> {
   private detailsTitle: HTMLElement;
