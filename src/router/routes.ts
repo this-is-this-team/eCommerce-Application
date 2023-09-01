@@ -5,6 +5,7 @@ import LoginPage from '../pages/login-page/login-page';
 import SignupPage from '../pages/signup-page/signup-page';
 import NotFoundPage from '../pages/not-found-page/not-found-page';
 import CatalogPage from '../pages/catalog-page/catalog-page';
+import AccountPage from '../pages/account-page/account-page';
 
 export const MAIN_ROUTE: AppRoute = {
   path: AppRoutesPath.MAIN,
@@ -30,7 +31,7 @@ export const ROUTES: AppRoute[] = [
   },
   {
     path: AppRoutesPath.ACCOUNT,
-    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+    component: () => new AccountPage().getElement(),
   },
   {
     path: AppRoutesPath.ACCOUNT_ADDRESSES,
