@@ -1,5 +1,6 @@
 .header {
   height: 80px;
+  border-bottom: 1px solid rgba(0, 19, 41, 0.12);
 
   &__container {
     @include container;
