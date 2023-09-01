@@ -89,4 +89,44 @@
       background-size: cover;
     }
   }
+
+  &--logout {
+    position: relative;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    color: $color-secondary-40;
+    transition: transform 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: none;
+      transform: scale(1.06);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: -22px;
+      transform: translate(0, -50%);
+      background-image: url('../../assets/icons/logout-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 81px;
+      height: 1px;
+      top: 67%;
+      left: -21px;
+      transform: translate(0, -50%);
+      background-color: $color-secondary-40;
+    }
+  }
 }
