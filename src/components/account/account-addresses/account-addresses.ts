@@ -17,12 +17,23 @@ export default class AccountAddresses extends BaseComponent<'div'> {
   private addressBookInfo(): HTMLElement {
     const { customer } = userStore.getState();
 
+    const defaultBillingAddressId = customer?.defaultBillingAddressId;
+    const defaultShippingAddressId = customer?.defaultShippingAddressId;
+
     const addressesWrapp = new BaseComponent('div', ['account-addresses__wrapp']).getElement();
 
     if (customer && customer?.addresses.length > 0) {
       customer?.addresses.forEach((address) => {
         const addressElementText = `${address.streetName}, ${address.city}, ${address.postalCode} ${address.country}`;
         const addressElement = new BaseComponent('p', ['account-addresses__item'], addressElementText).getElement();
+
+        if (address.id === defaultBillingAddressId) {
+          addressElement.insertAdjacentHTML('beforeend', '<sup>Default Billing</sup>');
+        }
+        if (address.id === defaultShippingAddressId) {
+          addressElement.insertAdjacentHTML('beforeend', '<sup>Default Shipping</sup>');
+        }
+
         addressesWrapp.append(addressElement);
       });
 
