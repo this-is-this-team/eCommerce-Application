@@ -3,16 +3,12 @@ import Button from '../button/button';
 import InputField from '../input/input';
 import Link from '../link/link';
 import { signupInputs } from '../../constants/signupInputs';
-import { IAddress, ISignupData } from '../../types/interfaces';
+import { IAddress, InputFilds, ISignupData } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import signupUser from '../../services/signupUser';
-import './form.scss';
 import Notification from '../notification/notification';
 import { changeUrlEvent } from '../../utils/change-url-event';
-
-interface InputFilds {
-  [inputName: string]: InputField;
-}
+import './form.scss';
 
 export default class SignupForm extends BaseComponent<'div'> {
   private formElement: HTMLFormElement;

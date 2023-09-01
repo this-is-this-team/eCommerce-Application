@@ -10,12 +10,18 @@ export default class AccountDetails extends BaseComponent<'div'> {
   private detailsWrapp: HTMLElement;
   private buttonEdit: HTMLButtonElement;
 
-  constructor() {
+  constructor(onChange: () => void = () => {}) {
     super('div', ['account-details']);
 
     this.detailsTitle = new BaseComponent('h3', ['account-details__title'], 'Account Details').getElement();
     this.detailsWrapp = new BaseComponent('div', ['account-details__wrapp']).getElement();
-    this.buttonEdit = new Button('button', 'Edit account details', ['account-details__edit-btn']).getElement();
+    this.buttonEdit = new Button(
+      'button',
+      'Edit account details',
+      ['account-details__edit-btn'],
+      false,
+      onChange
+    ).getElement();
 
     this.detailsWrapp.append(this.createDetailsList(), this.buttonEdit);
 

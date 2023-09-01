@@ -1,3 +1,4 @@
+import InputField from '../components/input/input';
 import { AppRoutesPath } from '../router/types';
 
 export interface IAddress {
@@ -34,4 +35,8 @@ export interface IBreadcrumbLink {
 export interface IBannerContent {
   title: string;
   text: string;
+}
+
+export interface InputFilds {
+  [inputName: string]: InputField;
 }

@@ -45,6 +45,10 @@ export default class InputField extends BaseComponent<'div'> {
     return this.inputElement.value.trim();
   }
 
+  public setValue(value: string): void {
+    this.inputElement.value = value;
+  }
+
   private setAttributes(type: string = 'text', name: string = '', placeholder: string = ''): void {
     this.inputElement.type = type;
     this.inputElement.name = name;
