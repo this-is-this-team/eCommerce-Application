@@ -106,9 +106,9 @@ export default class SignupForm extends BaseComponent<'div'> {
     return {
       key: 'shipping',
       country: 'US',
-      street: streetShipping,
+      streetName: streetShipping,
       city: cityShipping,
-      postcode: postcodeShipping,
+      postalCode: postcodeShipping,
     };
   }
 
@@ -124,9 +124,9 @@ export default class SignupForm extends BaseComponent<'div'> {
     return {
       key: 'billing',
       country: 'US',
-      street: streetBilling,
+      streetName: streetBilling,
       city: cityBilling,
-      postcode: postcodeBilling,
+      postalCode: postcodeBilling,
     };
   }
 
