@@ -1,14 +1,14 @@
-import { MyCustomerUpdateAction } from '@commercetools/platform-sdk';
-import { detailsEditInputs } from '../../constants/detailsEditInputs';
-import updateUser from '../../services/updateUser';
-import userStore from '../../store/user-store';
-import { IDetailsData, InputFilds } from '../../types/interfaces';
-import { removePopupFromBody } from '../../utils/remove-popup';
 import BaseComponent from '../base-component';
 import Button from '../button/button';
 import InputField from '../input/input';
 import Notification from '../notification/notification';
 import PopupPassword from '../popup/popup-password';
+import updateUser from '../../services/updateUser';
+import userStore from '../../store/user-store';
+import { MyCustomerUpdateAction } from '@commercetools/platform-sdk';
+import { detailsEditInputs } from '../../constants/detailsEditInputs';
+import { IDetailsData, InputFilds } from '../../types/interfaces';
+import { removePopupFromBody } from '../../utils/remove-popup';
 import './form.scss';
 
 export default class DetailsForm extends BaseComponent<'form'> {

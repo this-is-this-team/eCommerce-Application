@@ -2,11 +2,11 @@ import BaseComponent from '../base-component';
 import Button from '../button/button';
 import InputField from '../input/input';
 import Link from '../link/link';
+import signupUser from '../../services/signupUser';
+import Notification from '../notification/notification';
 import { signupInputs } from '../../constants/signupInputs';
 import { IAddress, InputFilds, ISignupData } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
-import signupUser from '../../services/signupUser';
-import Notification from '../notification/notification';
 import { changeUrlEvent } from '../../utils/change-url-event';
 import './form.scss';
 

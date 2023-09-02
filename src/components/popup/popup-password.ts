@@ -3,11 +3,11 @@ import Button from '../button/button';
 import InputField from '../input/input';
 import Notification from '../notification/notification';
 import changePassword from '../../services/changePassword';
+import signinUser from '../../services/signinUser';
+import userStore from '../../store/user-store';
 import { detailsEditInputs } from '../../constants/detailsEditInputs';
 import { IDetailsPasswordData, InputFilds } from '../../types/interfaces';
 import './popup.scss';
-import signinUser from '../../services/signinUser';
-import userStore from '../../store/user-store';
 
 export default class PopupPassword extends BaseComponent<'div'> {
   private inputs: InputFilds = {};

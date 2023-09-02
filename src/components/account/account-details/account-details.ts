@@ -1,12 +1,11 @@
-import './account-details.scss';
 import BaseComponent from '../../base-component';
 import Button from '../../button/button';
 import List from '../../list/list';
+import DetailsForm from '../../form/details-form';
 import userStore from '../../../store/user-store';
 import { ListDataType } from '../../../types/types';
 import { UserProfileMode } from '../../../types/enums';
-import DetailsForm from '../../form/details-form';
-// import DetailsPasswordForm from '../../form/details-password-form';
+import './account-details.scss';
 
 export default class AccountDetails extends BaseComponent<'div'> {
   private mode: UserProfileMode;
