@@ -3,9 +3,9 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import AccountDetails from '../../components/account/account-details/account-details';
 import AccountAddresses from '../../components/account/account-addresses/account-addresses';
 import { IBreadcrumbLink } from '../../types/interfaces';
+import { UserProfileMode } from '../../types/enums';
 import { AppRoutesPath } from '../../router/types';
 import './account-page.scss';
-import AccountDetailsEdit from '../../components/account/account-details-edit/account-details-edit';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -13,11 +13,6 @@ const breadcrumbsLinks: IBreadcrumbLink[] = [
     pageHref: AppRoutesPath.MAIN,
   },
 ];
-
-enum UserProfileMode {
-  EDIT = 'edit',
-  SHOW = 'show',
-}
 
 export default class AccountPage extends BaseComponent<'div'> {
   private breadcrumbs: HTMLElement;
@@ -34,7 +29,7 @@ export default class AccountPage extends BaseComponent<'div'> {
     this.detailsSection = new BaseComponent('section', ['account-page__details']).getElement();
     this.addressesSection = new BaseComponent('section', ['account-page__addresses']).getElement();
 
-    this.detailsSection.append(new AccountDetails(this.changeUserProfileMode).getElement());
+    this.detailsSection.append(new AccountDetails(this.userProfileMode, this.changeUserProfileMode).getElement());
     this.addressesSection.append(new AccountAddresses().getElement());
 
     this.container.append(this.detailsSection, this.addressesSection);
@@ -44,13 +39,7 @@ export default class AccountPage extends BaseComponent<'div'> {
 
   private changeUserProfileMode = (): void => {
     this.detailsSection.innerHTML = '';
-
-    if (this.userProfileMode === UserProfileMode.SHOW) {
-      this.detailsSection.append(new AccountDetailsEdit(this.changeUserProfileMode).getElement());
-      this.userProfileMode = UserProfileMode.EDIT;
-    } else {
-      this.detailsSection.append(new AccountDetails(this.changeUserProfileMode).getElement());
-      this.userProfileMode = UserProfileMode.SHOW;
-    }
+    this.userProfileMode = this.userProfileMode === UserProfileMode.SHOW ? UserProfileMode.EDIT : UserProfileMode.SHOW;
+    this.detailsSection.append(new AccountDetails(this.userProfileMode, this.changeUserProfileMode).getElement());
   };
 }
