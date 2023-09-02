@@ -6,6 +6,8 @@ import changePassword from '../../services/changePassword';
 import { detailsEditInputs } from '../../constants/detailsEditInputs';
 import { IDetailsPasswordData, InputFilds } from '../../types/interfaces';
 import './popup.scss';
+import signinUser from '../../services/signinUser';
+import userStore from '../../store/user-store';
 
 export default class PopupPassword extends BaseComponent<'div'> {
   private inputs: InputFilds = {};
@@ -92,7 +94,11 @@ export default class PopupPassword extends BaseComponent<'div'> {
     }
 
     try {
+      const { customer } = userStore.getState();
+
       await changePassword(values.currentPassword, values.newPassword);
+
+      await signinUser({ email: customer?.email || '', password: values.newPassword });
 
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.add('button--success');
