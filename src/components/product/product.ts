@@ -1,4 +1,3 @@
-import getProductById from '../../services/getProductById';
 import BaseComponent from '../base-component';
 import Button from '../button/button';
 import { ProductData } from '@commercetools/platform-sdk';
@@ -21,15 +20,19 @@ export default class Product extends BaseComponent<'div'> {
     adventureStyle: 'Relax',
     aboutTour: 'No information about this tour',
   };
+  private productId: string = '';
 
-  constructor(id: string) {
+  constructor(productData: ProductData) {
     super('div', ['product']);
 
-    this.addToCartBtn = new Button('button', 'Add To Card', [], false, () => this.addToCart(id)).getElement();
+    this.productData = productData;
+    this.productId = String(productData.masterVariant.id);
+    this.addToCartBtn = new Button('button', 'Add To Card', [], false, () => this.addToCart()).getElement();
+
+    this.createMarkup();
   }
 
-  async createMarkup(id: string) {
-    await this.getProductData(id);
+  private createMarkup() {
     this.getProductAttributes();
 
     const productInfo = this.drawProductInfo();
@@ -40,7 +43,7 @@ export default class Product extends BaseComponent<'div'> {
   }
 
   private drawProductInfo() {
-    const title = this.getProductName();
+    const title = this.productData?.name.en || 'Unnamed tour';
     const { rating, reviews, inStock, shortDescription, adventureStyle } = this.productAttributes;
 
     const productRoutes = new BaseComponent('p', ['product__routes'], adventureStyle).getElement();
@@ -56,10 +59,6 @@ export default class Product extends BaseComponent<'div'> {
     productInfo.append(productRoutes, productTitle, productOpinion, productDescription, productStock);
 
     return productInfo;
-  }
-
-  getProductName() {
-    return this.productData?.name.en || 'Product name';
   }
 
   private getProductAttributes() {
@@ -106,17 +105,7 @@ export default class Product extends BaseComponent<'div'> {
     return productAbout;
   }
 
-  private addToCart(id: string) {
-    console.log(`TODO: create func add to cart. Product ID: ${id}`);
-  }
-
-  private async getProductData(id: string) {
-    try {
-      const product = await getProductById(id);
-
-      this.productData = product.masterData.current;
-    } catch (err) {
-      console.log(err);
-    }
+  private addToCart() {
+    console.log(`TODO: create func add to cart. Product ID: ${this.productId}`);
   }
 }

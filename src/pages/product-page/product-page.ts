@@ -4,6 +4,8 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { IBreadcrumbLink } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import Product from '../../components/product/product';
+import getProductById from '../../services/getProductById';
+import { ProductData } from '@commercetools/platform-sdk';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -17,21 +19,35 @@ const breadcrumbsLinks: IBreadcrumbLink[] = [
 ];
 
 export default class ProductPage extends BaseComponent<'div'> {
-  constructor(id: string) {
+  private productData: ProductData | null = null;
+  private productId: string = '0b2e67b2-dfa9-4107-af01-052e4c3463eb'; // TODO FUNCTION TO GET ID FROM URL
+
+  constructor() {
     super('div', ['product-page']);
 
-    this.createMarkup(id);
+    this.createMarkup();
   }
 
-  private async createMarkup(id: string) {
-    const product = new Product(id);
-    await product.createMarkup(id);
-    const productElement = product.getElement();
+  private async getProductData(id: string) {
+    try {
+      const product = await getProductById(id);
 
-    const breadcrumbs = new Breadcrumbs(breadcrumbsLinks, product.getProductName()).getElement();
+      this.productData = product.masterData.current;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  private async createMarkup() {
+    await this.getProductData(this.productId);
+
+    const product = new Product(this.productData!).getElement();
+    const productName = this.productData?.name.en || 'Unnamed tour';
+
+    const breadcrumbs = new Breadcrumbs(breadcrumbsLinks, productName).getElement();
     const container = new BaseComponent('div', ['product-page__container']).getElement();
 
-    container.append(productElement);
+    container.append(product);
 
     this.node.append(breadcrumbs, container);
   }

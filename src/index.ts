@@ -11,7 +11,7 @@ class App {
   public async start() {
     const header = new Header().getElement();
     const main = document.createElement('main');
-    const productPage = new ProductPage('0b2e67b2-dfa9-4107-af01-052e4c3463eb').getElement();
+    const productPage = new ProductPage().getElement();
     const footer = new Footer().getElement();
 
     document.body.append(header, main, productPage, footer);
