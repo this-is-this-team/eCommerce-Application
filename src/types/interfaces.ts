@@ -27,6 +27,18 @@ export interface ISigninData {
   password: string;
 }
 
+export interface IDetailsData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  dateOfBirth: string;
+}
+
+export interface IDetailsPasswordData {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface IBreadcrumbLink {
   pageName: string;
   pageHref: AppRoutesPath;
