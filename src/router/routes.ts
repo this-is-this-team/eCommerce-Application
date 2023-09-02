@@ -5,6 +5,7 @@ import LoginPage from '../pages/login-page/login-page';
 import SignupPage from '../pages/signup-page/signup-page';
 import NotFoundPage from '../pages/not-found-page/not-found-page';
 import CatalogPage from '../pages/catalog-page/catalog-page';
+import ProductPage from '../pages/product-page/product-page';
 
 export const MAIN_ROUTE: AppRoute = {
   path: AppRoutesPath.MAIN,
@@ -50,7 +51,7 @@ export const ROUTES: AppRoute[] = [
   },
   {
     path: AppRoutesPath.PRODUCT,
-    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+    component: () => new ProductPage('0b2e67b2-dfa9-4107-af01-052e4c3463eb').getElement(), // TODO: Change page-component when implemented
   },
   NOT_FOUND_ROUTE,
 ];
