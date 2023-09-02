@@ -3,8 +3,13 @@
   flex-direction: column;
   gap: 40px;
   max-width: 686px;
-  padding: 64px 64px 42px 64px;
+  padding: 64px;
   background-color: $color-bg-card;
+
+  @include tablet {
+    gap: 20px;
+    padding: 32px;
+  }
 
   &__routes {
     font-size: 11px;
@@ -17,6 +22,10 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+
+    @include tablet {
+      gap: 8px;
+    }
   }
 
   &__title {
@@ -81,6 +90,10 @@
     flex-direction: column;
     gap: 16px;
 
+    @include tablet {
+      gap: 8px;
+    }
+
     &-item {
       display: flex;
       flex-direction: column;
@@ -88,7 +101,12 @@
       padding-bottom: 16px;
       border-bottom: 1px solid rgba(0, 19, 41, 0.12);
 
+      @include tablet {
+        padding-bottom: 8px;
+      }
+
       &:nth-last-child(1) {
+        padding-bottom: 0;
         border: none;
       }
 
