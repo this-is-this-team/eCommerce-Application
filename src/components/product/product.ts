@@ -32,7 +32,7 @@ export default class Product extends BaseComponent<'div'> {
     this.createMarkup();
   }
 
-  private createMarkup() {
+  private createMarkup(): void {
     this.getProductAttributes();
 
     const productInfo = this.drawProductInfo();
@@ -42,7 +42,7 @@ export default class Product extends BaseComponent<'div'> {
     this.node.append(productInfo, productForm, productAbout);
   }
 
-  private drawProductInfo() {
+  private drawProductInfo(): HTMLDivElement {
     const title = this.productData?.name.en || 'Unnamed tour';
     const { rating, reviews, inStock, shortDescription, adventureStyle } = this.productAttributes;
 
@@ -61,7 +61,7 @@ export default class Product extends BaseComponent<'div'> {
     return productInfo;
   }
 
-  private getProductAttributes() {
+  private getProductAttributes(): void {
     const attributes = this.productData?.masterVariant.attributes;
 
     if (attributes) {
@@ -73,7 +73,7 @@ export default class Product extends BaseComponent<'div'> {
     }
   }
 
-  private drawProductForm() {
+  private drawProductForm(): HTMLDivElement {
     const productForm = new BaseComponent('div', ['product__add-to-cart']).getElement();
 
     productForm.append(this.addToCartBtn);
@@ -81,7 +81,7 @@ export default class Product extends BaseComponent<'div'> {
     return productForm;
   }
 
-  private drawProductAbout() {
+  private drawProductAbout(): HTMLUListElement {
     const { aboutTour, location } = this.productAttributes;
 
     const productAbout = new BaseComponent('ul', ['product__about']).getElement();
@@ -105,7 +105,7 @@ export default class Product extends BaseComponent<'div'> {
     return productAbout;
   }
 
-  private addToCart() {
+  private addToCart(): void {
     console.log(`TODO: create func add to cart. Product ID: ${this.productId}`);
   }
 }

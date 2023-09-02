@@ -28,17 +28,17 @@ export default class ProductPage extends BaseComponent<'div'> {
     this.createMarkup();
   }
 
-  private async getProductData(id: string) {
+  private async getProductData(id: string): Promise<void> {
     try {
       const product = await getProductById(id);
 
       this.productData = product.masterData.current;
     } catch (err) {
-      console.log(err);
+      console.log(err); // TODO Redirect to page 404
     }
   }
 
-  private async createMarkup() {
+  private async createMarkup(): Promise<void> {
     await this.getProductData(this.productId);
 
     const product = new Product(this.productData!).getElement();
