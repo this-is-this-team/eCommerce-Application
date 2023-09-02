@@ -26,8 +26,6 @@ export default class Product extends BaseComponent<'div'> {
     super('div', ['product']);
 
     this.addToCartBtn = new Button('button', 'Add To Card', [], false, () => this.addToCart(id)).getElement();
-
-    this.createMarkup(id);
   }
 
   async createMarkup(id: string) {
@@ -42,7 +40,7 @@ export default class Product extends BaseComponent<'div'> {
   }
 
   private drawProductInfo() {
-    const title = this.productData?.name.en || 'This is the best tour in your life!';
+    const title = this.getProductName();
     const { rating, reviews, inStock, shortDescription, adventureStyle } = this.productAttributes;
 
     const productRoutes = new BaseComponent('p', ['product__routes'], adventureStyle).getElement();
@@ -58,6 +56,10 @@ export default class Product extends BaseComponent<'div'> {
     productInfo.append(productRoutes, productTitle, productOpinion, productDescription, productStock);
 
     return productInfo;
+  }
+
+  getProductName() {
+    return this.productData?.name.en || 'Product name';
   }
 
   private getProductAttributes() {
