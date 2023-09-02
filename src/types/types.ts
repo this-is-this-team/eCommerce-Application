@@ -12,3 +12,9 @@ interface IMenuItems extends IMenuLinks {
 type ListDataType = { [key: string]: string };
 
 export { IMenuItems, ListDataType };
+
+export interface ICategory {
+  label: string;
+  url: string;
+  slug: string;
+}

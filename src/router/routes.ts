@@ -44,11 +44,11 @@ export const ROUTES: AppRoute[] = [
   },
   {
     path: AppRoutesPath.CATEGORY,
-    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+    component: () => new CatalogPage().getElement(),
   },
   {
     path: AppRoutesPath.SUBCATEGORY,
-    component: () => new NotFoundPage().getElement(), // TODO: Change page-component when implemented
+    component: () => new CatalogPage().getElement(),
   },
   {
     path: AppRoutesPath.PRODUCT,

@@ -1,4 +1,4 @@
-import { Product, ProductData } from '@commercetools/platform-sdk';
+import { type ProductProjection } from '@commercetools/platform-sdk';
 import BaseComponent from '../base-component';
 import Button from '../button/button';
 import Link from '../link/link';
@@ -6,23 +6,22 @@ import { AppRoutesPath } from '../../router/types';
 import './product-card.scss';
 
 export default class ProductCard extends BaseComponent<'div'> {
-  constructor(product: Product) {
+  constructor(product: ProductProjection) {
     super('div', ['product-card']);
 
     this.createMarkup(product);
   }
 
-  private createMarkup(product: Product) {
+  private createMarkup(product: ProductProjection) {
     const productId: string = product.id;
-    const productData: ProductData = product.masterData.current;
-    const title: string = productData.name.en;
-    const description: string = productData.metaDescription?.en || '';
-    const image: string = productData.masterVariant.images?.[0]?.url || '';
-    const reviews: string = productData.masterVariant.attributes?.[1]?.value || '0';
-    const price: number | undefined = productData.masterVariant.prices?.[0]?.value?.centAmount;
-    const priceDisc: number | undefined = productData.masterVariant.prices?.[0]?.discounted?.value.centAmount;
-    const days: string = productData.masterVariant.attributes?.[2]?.value || '';
-    const rating: string = productData.masterVariant.attributes?.[0]?.value || '';
+    const title: string = product.name.en;
+    const description: string = product.metaDescription?.en || '';
+    const image: string = product.masterVariant.images?.[0]?.url || '';
+    const reviews: string = product.masterVariant.attributes?.[1]?.value || '0';
+    const price: number | undefined = product.masterVariant.prices?.[0]?.value?.centAmount;
+    const priceDisc: number | undefined = product.masterVariant.prices?.[0]?.discounted?.value.centAmount;
+    const days: string = product.masterVariant.attributes?.[2]?.value || '';
+    const rating: string = product.masterVariant.attributes?.[0]?.value || '';
 
     // TODO: change AppRoutesPath.MAIN to AppRoutesPath.PRODUCT
     const cardMedia = new Link('', ['product-card__media'], AppRoutesPath.MAIN).getElement();

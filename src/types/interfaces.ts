@@ -28,7 +28,7 @@ export interface ISigninData {
 
 export interface IBreadcrumbLink {
   pageName: string;
-  pageHref: AppRoutesPath;
+  pageHref: AppRoutesPath | string;
 }
 
 export interface IBannerContent {
