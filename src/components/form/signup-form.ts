@@ -106,9 +106,9 @@ export default class SignupForm extends BaseComponent<'div'> {
     return {
       key: 'shipping',
       country: 'US',
-      street: streetShipping,
+      streetName: streetShipping,
       city: cityShipping,
-      postcode: postcodeShipping,
+      postalCode: postcodeShipping,
     };
   }
 
@@ -124,9 +124,9 @@ export default class SignupForm extends BaseComponent<'div'> {
     return {
       key: 'billing',
       country: 'US',
-      street: streetBilling,
+      streetName: streetBilling,
       city: cityBilling,
-      postcode: postcodeBilling,
+      postalCode: postcodeBilling,
     };
   }
 
@@ -135,11 +135,11 @@ export default class SignupForm extends BaseComponent<'div'> {
     const lastName: string | undefined = this.inputs['lastName'].getValue('lastName');
     const email: string | undefined = this.inputs['email'].getValue('email');
     const password: string | undefined = this.inputs['password'].getValue('password');
-    const birthDate: string | undefined = this.inputs['birthDate'].getValue('birthDate');
+    const dateOfBirth: string | undefined = this.inputs['birthDate'].getValue('birthDate');
     const shippingAddress: IAddress | undefined = this.getShippingAddress();
     const billingAddress: IAddress | undefined = this.getBillingAddress();
 
-    if (!(firstName && lastName && email && password && birthDate && shippingAddress)) {
+    if (!(firstName && lastName && email && password && dateOfBirth && shippingAddress)) {
       return;
     }
 
@@ -155,7 +155,7 @@ export default class SignupForm extends BaseComponent<'div'> {
       lastName,
       email,
       password,
-      birthDate,
+      dateOfBirth,
       addresses,
       shippingAddresses: [0],
       billingAddresses: [billingAddress ? 1 : 0],

@@ -1,6 +1,8 @@
 .breadcrumbs {
   &__container {
     @include container;
+    display: flex;
+    justify-content: space-between;
   }
 
   &__links {

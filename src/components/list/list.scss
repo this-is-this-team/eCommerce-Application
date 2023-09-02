@@ -1,0 +1,27 @@
+.list {
+  &-item {
+    display: flex;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba($color-primary, 0.08);
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &__key {
+      min-width: 140px;
+      font: $font-button;
+
+      @include mobile {
+        min-width: 100px;
+      }
+    }
+
+    &__value {
+      font-size: 15px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}

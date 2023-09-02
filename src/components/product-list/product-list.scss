@@ -6,17 +6,28 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
+    position: relative;
 
-    @include pre-tablet {
+    @include laptop {
       grid-template-columns: repeat(3, 1fr);
     }
 
-    @include tablet {
+    @include pre-tablet {
       grid-template-columns: repeat(2, 1fr);
     }
 
     @include mobile {
       grid-template-columns: 1fr;
+    }
+
+    &--loading {
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateY(-50%);
+        content: 'Loading';
+      }
     }
   }
 

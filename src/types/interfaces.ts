@@ -3,9 +3,9 @@ import { AppRoutesPath } from '../router/types';
 export interface IAddress {
   key: string;
   country: string;
-  street: string;
+  streetName: string;
   city: string;
-  postcode: string;
+  postalCode: string;
 }
 
 export interface ISignupData {
@@ -13,7 +13,7 @@ export interface ISignupData {
   lastName: string;
   email: string;
   password: string;
-  birthDate: string;
+  dateOfBirth: string;
   addresses: IAddress[];
   shippingAddresses?: number[];
   billingAddresses?: number[];

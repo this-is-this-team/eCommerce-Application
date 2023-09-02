@@ -9,4 +9,6 @@ interface IMenuItems extends IMenuLinks {
   innerItems?: IMenuLinks[];
 }
 
-export { IMenuItems };
+type ListDataType = { [key: string]: string };
+
+export { IMenuItems, ListDataType };

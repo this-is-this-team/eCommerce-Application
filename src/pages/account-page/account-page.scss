@@ -1,0 +1,29 @@
+.account-page {
+  padding-bottom: 50px;
+
+  &__container {
+    @include container;
+    display: flex;
+
+    @include tablet {
+      flex-direction: column;
+    }
+  }
+
+  &__details {
+    width: 50%;
+    margin-right: 24px;
+    @include tablet {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+
+  &__addresses {
+    width: 50%;
+    @include tablet {
+      margin-top: 30px;
+      width: 100%;
+    }
+  }
+}
