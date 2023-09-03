@@ -1,6 +1,7 @@
 import BaseComponent from '../base-component';
 import Button from '../button/button';
-import { ProductData } from '@commercetools/platform-sdk';
+import { Price, ProductData, TypedMoney } from '@commercetools/platform-sdk';
+import formatPrice from '../../services/formatPrice';
 import './product.scss';
 
 interface ProductAttributes {
@@ -42,6 +43,38 @@ export default class Product extends BaseComponent<'div'> {
     this.node.append(productInfo, productForm, productAbout);
   }
 
+  private drawProductPrice(): HTMLDivElement {
+    const productPrices = new BaseComponent('div', ['product__prices']).getElement();
+
+    const prices: Price[] | undefined = this.productData?.masterVariant.prices;
+
+    if (prices?.length) {
+      const standardPrice: TypedMoney = prices[0].value;
+      const discountedPrice: TypedMoney | undefined = prices[0].discounted?.value;
+
+      const productPrice = new BaseComponent(
+        'span',
+        ['product-card__price'],
+        formatPrice(standardPrice.currencyCode, standardPrice.centAmount, standardPrice.fractionDigits)
+      ).getElement();
+
+      productPrices.append(productPrice);
+
+      if (discountedPrice) {
+        const productDiscountedPrice = new BaseComponent(
+          'span',
+          ['product-card__price--new'],
+          formatPrice(discountedPrice.currencyCode, discountedPrice.centAmount, discountedPrice.fractionDigits)
+        ).getElement();
+
+        productPrice.classList.add('product-card__price--old');
+        productPrices.append(productDiscountedPrice);
+      }
+    }
+
+    return productPrices;
+  }
+
   private drawProductInfo(): HTMLDivElement {
     const title = this.productData?.name.en || 'Unnamed tour';
     const { rating, reviews, inStock, shortDescription, adventureStyle } = this.productAttributes;
@@ -50,13 +83,14 @@ export default class Product extends BaseComponent<'div'> {
     const productInfo = new BaseComponent('div', ['product__info']).getElement();
     const productOpinion = new BaseComponent('div', ['product__opinion']).getElement();
     const productTitle = new BaseComponent('h2', ['product__title'], title).getElement();
+    const productPrice = this.drawProductPrice();
     const productRating = new BaseComponent('p', ['product__rating'], rating).getElement();
     const productReviews = new BaseComponent('p', ['product__reviews'], `${reviews}+ Reviews`).getElement();
     const productDescription = new BaseComponent('p', ['product__description'], shortDescription).getElement();
     const productStock = new BaseComponent('p', ['product__stock'], `${inStock} In Stock`).getElement();
 
     productOpinion.append(productRating, productReviews);
-    productInfo.append(productRoutes, productTitle, productOpinion, productDescription, productStock);
+    productInfo.append(productRoutes, productTitle, productPrice, productOpinion, productDescription, productStock);
 
     return productInfo;
   }
