@@ -27,7 +27,7 @@ export default class Product extends BaseComponent<'div'> {
     super('div', ['product']);
 
     this.productData = productData;
-    this.productId = String(productData.masterVariant.id);
+    this.productId = String(productData?.masterVariant.id);
     this.addToCartBtn = new Button('button', 'Add To Card', [], false, () => this.addToCart()).getElement();
 
     this.createMarkup();

@@ -6,6 +6,8 @@ import { AppRoutesPath } from '../../router/types';
 import Product from '../../components/product/product';
 import getProductById from '../../services/getProductById';
 import { ProductData } from '@commercetools/platform-sdk';
+import { changeUrlEvent } from '../../utils/change-url-event';
+import Notification from '../../components/notification/notification';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -34,7 +36,9 @@ export default class ProductPage extends BaseComponent<'div'> {
 
       this.productData = product.masterData.current;
     } catch (err) {
-      console.log(err); // TODO Redirect to page 404
+      if (err instanceof Error) new Notification('error', err.message).showNotification();
+
+      changeUrlEvent(AppRoutesPath.NOT_FOUND);
     }
   }
 
