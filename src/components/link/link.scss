@@ -14,10 +14,6 @@
     }
   }
 
-  &--logout {
-    font: $font-button;
-  }
-
   &--arrow,
   &--unset {
     font: $font-button;
@@ -82,11 +78,30 @@
     }
   }
 
-  &--logout {
+  &--return {
+    position: relative;
+    font: $font-button;
+    color: $color-secondary-40;
+    transition: all 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      color: $color-secondary-60;
+
+      &::after {
+        background: $color-secondary-60;
+      }
+    }
+
     &::after {
-      width: 15px;
-      height: 15px;
-      background-image: url('../../assets/icons/link-logout.svg');
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      left: 0;
+      bottom: -1px;
+      background: $color-secondary-40;
+      transition: all 0.3s ease-in-out;
     }
   }
 }
