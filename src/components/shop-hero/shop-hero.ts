@@ -1,7 +1,7 @@
 import BaseComponent from '../base-component';
-import './hero-shop.scss';
+import './shop-hero.scss';
 
-export default class HeroShop extends BaseComponent<'section'> {
+export default class ShopHero extends BaseComponent<'section'> {
   constructor(titleText: string) {
     super('section', ['shop-hero']);
 
