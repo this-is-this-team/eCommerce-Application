@@ -14,6 +14,7 @@ import { changeUrlEvent } from '../../utils/change-url-event';
 import ShopFilters from '../../components/shop-flters/shop-filters';
 import shopStore from '../../store/shop-store';
 import './catalog-page.scss';
+import ShopSort from '../../components/shop-sort/shop-sort';
 
 export default class CatalogPage extends BaseComponent<'div'> {
   private products: ProductProjection[];
@@ -48,7 +49,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
       this.renderBreadcrumbs();
       this.renderHeroSection();
       this.renderCategoryList();
-      this.renderFilters();
+      this.renderControls();
       this.renderProductList();
     }
   }
@@ -109,9 +110,16 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.node.append(heroSection);
   }
 
-  private renderFilters(): void {
+  private renderControls(): void {
+    const shopControls: HTMLDivElement = new BaseComponent('div', ['shop-controls']).getElement();
+    const container: HTMLDivElement = new BaseComponent('div', ['shop-controls__container']).getElement();
     const filtersElement: HTMLElement = new ShopFilters().getElement();
-    this.node.append(filtersElement);
+    const sortElement: HTMLElement = new ShopSort().getElement();
+
+    container.append(filtersElement, sortElement);
+    shopControls.append(container);
+
+    this.node.append(shopControls);
   }
 
   private renderCategoryList(): void {
@@ -139,9 +147,10 @@ export default class CatalogPage extends BaseComponent<'div'> {
     const loadingElement = new BaseComponent('div', ['catalog-page__loading'], 'Loading...').getElement();
     this.node.append(loadingElement);
 
-    const { filterPrice, filterDays } = shopStore.getState();
+    const { filterPrice, filterDays, sortValue } = shopStore.getState();
 
-    this.products = (await getProducts(this.categorySlug, this.subcategorySlug, filterPrice, filterDays)) || [];
+    this.products =
+      (await getProducts(this.categorySlug, this.subcategorySlug, filterPrice, filterDays, sortValue)) || [];
 
     this.catalogSection = new ProductList(this.products).getElement();
     loadingElement.remove();

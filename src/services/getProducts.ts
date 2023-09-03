@@ -11,21 +11,20 @@ export default async function getProducts(
   categoryName?: string,
   subcategoryName?: string,
   filterPrice: string = '',
-  filterDays: string = ''
+  filterDays: string = '',
+  sortValue: string = ''
 ): Promise<ProductProjection[] | undefined> {
   try {
     const allCategories: Category[] = await getAllCategories();
 
     let categoryId = '';
     const filter: string[] = [];
-    const queryArgs = {
-      filter,
-    };
     let filterQuery: string = '';
+    let sort: string = '';
 
     if (subcategoryName) {
       categoryId = allCategories.find((item) => item.key === subcategoryName)?.id || '';
-      queryArgs.filter.push(`categories.id:"${categoryId}"`);
+      filter.push(`categories.id:"${categoryId}"`);
     } else if (categoryName) {
       categoryId = allCategories.find((item) => item.key === categoryName)?.id || '';
       filter.push(`categories.id: subtree("${categoryId}")`);
@@ -39,6 +38,10 @@ export default async function getProducts(
       filter.push(`variants.attributes.days:${filterDays}`);
     }
 
+    if (sortValue) {
+      sort = sortValue;
+    }
+
     const response: ClientResponse<ProductProjectionPagedQueryResponse> = await apiRootCredentials()
       .productProjections()
       .search()
@@ -46,6 +49,7 @@ export default async function getProducts(
         queryArgs: {
           ...(filter.length ? { filter } : {}),
           ...(filterQuery ? { 'filter.query': filterQuery } : {}),
+          ...(sort ? { sort } : {}),
         },
       })
       .execute();

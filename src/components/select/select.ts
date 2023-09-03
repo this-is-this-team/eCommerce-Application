@@ -23,8 +23,6 @@ export default class SelectField extends BaseComponent<'div'> {
     this.selectElement.id = name;
     this.selectElement.name = name;
 
-    const test = new BaseComponent('div', [], 'test').getElement();
-
     const optionsElements = options.map((option) => {
       const optionEl = new BaseComponent('option', ['select-field__option'], option.label).getElement();
       optionEl.value = option.value;
@@ -34,10 +32,13 @@ export default class SelectField extends BaseComponent<'div'> {
       if (name === 'days' && shopStore.getState().filterDays === option.value) {
         optionEl.selected = true;
       }
+      if (name === 'sort' && shopStore.getState().sortValue === option.value) {
+        optionEl.selected = true;
+      }
       return optionEl;
     });
 
-    this.selectElement.append(test, ...optionsElements);
+    this.selectElement.append(...optionsElements);
 
     this.node.append(this.selectElement);
   }
@@ -50,6 +51,9 @@ export default class SelectField extends BaseComponent<'div'> {
       }
       if (event.currentTarget instanceof HTMLSelectElement && event.currentTarget.id === 'days') {
         shopStore.dispatch({ type: 'SET_FILTER_DAYS', newFilterDays: event.currentTarget.value });
+      }
+      if (event.currentTarget instanceof HTMLSelectElement && event.currentTarget.id === 'sort') {
+        shopStore.dispatch({ type: 'SET_SORT_VALUE', newSortValue: event.currentTarget.value });
       }
     });
   }

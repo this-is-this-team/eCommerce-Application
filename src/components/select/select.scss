@@ -41,6 +41,10 @@
   &__option {
     &[value=''] {
       display: none;
+
+      .select--sort & {
+        display: block;
+      }
     }
   }
 }

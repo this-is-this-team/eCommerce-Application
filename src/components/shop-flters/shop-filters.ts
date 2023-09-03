@@ -32,13 +32,11 @@ export default class ShopFilters extends BaseComponent<'div'> {
   }
 
   private renderFilters(): void {
-    const container: HTMLDivElement = new BaseComponent('div', ['shop-filters__container']).getElement();
     const selectPrice: HTMLDivElement = new Select('price', priceFilterOptions).getElement();
     const selectDays: HTMLDivElement = new Select('days', daysFilterOptions).getElement();
 
     this.formFilter.append(selectPrice, selectDays, this.resetButton);
-    container.append(this.formFilter);
-    this.node.append(container);
+    this.node.append(this.formFilter);
   }
 
   private addSubscribtion(): void {

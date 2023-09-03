@@ -3,17 +3,20 @@ import BaseStore, { IStore } from './base-store';
 interface IShopState {
   filterPrice: string;
   filterDays: string;
+  sortValue: string;
 }
 
 interface IShopAction {
   type: string;
   newFilterPrice?: string;
   newFilterDays?: string;
+  newSortValue?: string;
 }
 
 const initialState: IShopState = {
   filterPrice: '',
   filterDays: '',
+  sortValue: '',
 };
 
 const reducer = (state: IShopState, action: IShopAction): IShopState => {
@@ -24,6 +27,9 @@ const reducer = (state: IShopState, action: IShopAction): IShopState => {
       return newState;
     case 'SET_FILTER_DAYS':
       if (action.newFilterDays) newState.filterDays = action.newFilterDays;
+      return newState;
+    case 'SET_SORT_VALUE':
+      if (action.newSortValue) newState.sortValue = action.newSortValue;
       return newState;
     case 'RESET_FILTER_PRICE':
       newState.filterPrice = '';

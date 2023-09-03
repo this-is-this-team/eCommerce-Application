@@ -1,13 +1,8 @@
 .shop-filters {
-  margin-top: 48px;
-
-  &__container {
-    @include container;
-  }
-
   &__form {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 24px;
   }
 }
