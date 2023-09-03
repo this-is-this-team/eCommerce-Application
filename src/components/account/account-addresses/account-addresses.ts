@@ -4,6 +4,7 @@ import Button from '../../button/button';
 import { changeUrlEvent } from '../../../utils/change-url-event';
 import './account-addresses.scss';
 import { AppRoutesPath } from '../../../router/types';
+import Sup from '../../sup/sup';
 
 export default class AccountAddresses extends BaseComponent<'div'> {
   private detailsTitle: HTMLElement;
@@ -30,10 +31,10 @@ export default class AccountAddresses extends BaseComponent<'div'> {
         const addressElement = new BaseComponent('p', ['account-addresses__item'], addressElementText).getElement();
 
         if (address.id === defaultBillingAddressId) {
-          addressElement.insertAdjacentHTML('beforeend', '<sup>Default Billing</sup>');
+          addressElement.append(new Sup('Default Billing').getElement());
         }
         if (address.id === defaultShippingAddressId) {
-          addressElement.insertAdjacentHTML('beforeend', '<sup>Default Shipping</sup>');
+          addressElement.append(new Sup('Default Shipping').getElement());
         }
 
         addressesWrapp.append(addressElement);
