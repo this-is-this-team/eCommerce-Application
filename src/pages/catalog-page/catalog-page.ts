@@ -135,7 +135,6 @@ export default class CatalogPage extends BaseComponent<'div'> {
   }
 
   private async renderProductList(): Promise<void> {
-    console.log(shopStore.getState());
     this.catalogSection.remove();
     const loadingElement = new BaseComponent('div', ['catalog-page__loading'], 'Loading...').getElement();
     this.node.append(loadingElement);

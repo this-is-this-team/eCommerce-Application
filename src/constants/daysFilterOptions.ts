@@ -5,23 +5,23 @@ const daysFilterOptions = [
   },
   {
     label: '0 - 5 days',
-    value: 'range (* to 5)',
+    value: '"0","1","2","3","4","5"',
   },
   {
     label: '6 - 10 days',
-    value: 'range (6 to 10)',
+    value: '"6","7","8","9","10"',
   },
   {
     label: '11 - 15 days',
-    value: 'range (11 to 15)',
+    value: '"11","12","13","14","15"',
   },
   {
     label: '16 - 20 days',
-    value: 'range (16 to 20)',
+    value: '"16","17","18","19","20"',
   },
   {
     label: 'over 20 days',
-    value: 'range (20 to *)',
+    value: '"21","22","23","24","25"',
   },
 ];
 
