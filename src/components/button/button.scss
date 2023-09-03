@@ -136,12 +136,17 @@
     border-radius: 0;
     padding: 0;
     color: $color-secondary-40;
-    transition: transform 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out;
 
     &:not(:disabled):hover,
     &:not(:disabled):active {
       background: none;
-      transform: scale(1.06);
+      color: $color-secondary-60;
+
+      &::after {
+        background: $color-secondary-60;
+        width: 0;
+      }
     }
 
     &::after {
@@ -151,8 +156,8 @@
       height: 1px;
       left: 0;
       bottom: 0px;
-      transform: translate(0, -50%);
       background-color: $color-secondary-40;
+      transition: all 0.3s ease-in-out;
     }
   }
 
@@ -184,6 +189,37 @@
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
+    }
+  }
+
+  &--add-address {
+    position: relative;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    color: $color-button;
+    transition: all 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: none;
+      color: $color-button-hover;
+
+      &::after {
+        background: $color-button-hover;
+        width: 0;
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      left: 0;
+      bottom: 0px;
+      background: $color-button;
+      transition: all 0.3s ease-in-out;
     }
   }
 }
