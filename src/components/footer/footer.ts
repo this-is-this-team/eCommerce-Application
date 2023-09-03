@@ -84,7 +84,7 @@ export default class Footer extends BaseComponent<'footer'> {
     return navigation;
   }
 
-  private createListItem(name: string, classNames: string[], href: AppRoutesPath): HTMLLIElement {
+  private createListItem(name: string, classNames: string[], href: AppRoutesPath | string): HTMLLIElement {
     const listItem: HTMLLIElement = new BaseComponent<'li'>('li', [...classNames]).getElement();
     const itemLink: HTMLAnchorElement = new Link(name, ['menu__link'], href).getElement();
 

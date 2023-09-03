@@ -12,21 +12,33 @@ const menuItems: IMenuItems[] = [
       },
       {
         title: 'Best Sellers',
-        href: AppRoutesPath.ANCHOR,
+        href: AppRoutesPath.SHOP,
       },
       {
         title: 'New Tours',
-        href: AppRoutesPath.ANCHOR,
+        href: AppRoutesPath.SHOP,
       },
     ],
   },
   {
     title: 'Categories',
-    href: AppRoutesPath.ANCHOR,
+    href: AppRoutesPath.SHOP,
     innerItems: [
       {
-        title: 'Exotic',
-        href: AppRoutesPath.ANCHOR,
+        title: 'Europe',
+        href: '/shop/europe',
+      },
+      {
+        title: 'Asia',
+        href: '/shop/asia',
+      },
+      {
+        title: 'America',
+        href: '/shop/america',
+      },
+      {
+        title: 'Africa',
+        href: '/shop/africa',
       },
     ],
   },
