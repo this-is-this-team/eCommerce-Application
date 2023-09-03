@@ -4,15 +4,15 @@ import List from '../../list/list';
 import DetailsForm from '../../form/details-form';
 import userStore from '../../../store/user-store';
 import { ListDataType } from '../../../types/types';
-import { UserProfileMode } from '../../../types/enums';
+import { AccountInfoMode } from '../../../types/enums';
 import './account-details.scss';
 
 export default class AccountDetails extends BaseComponent<'div'> {
-  private mode: UserProfileMode;
+  private mode: AccountInfoMode;
   private detailsTitle: HTMLElement;
   private detailsWrapp: HTMLElement;
 
-  constructor(mode: UserProfileMode, onChange: () => void = () => {}) {
+  constructor(mode: AccountInfoMode, onChange: () => void = () => {}) {
     super('div', ['account-details']);
 
     this.mode = mode;
@@ -27,7 +27,7 @@ export default class AccountDetails extends BaseComponent<'div'> {
   private createDetailsList(onChange: () => void = () => {}): void {
     const { customer } = userStore.getState();
 
-    if (this.mode === UserProfileMode.SHOW) {
+    if (this.mode === AccountInfoMode.SHOW) {
       const buttonEdit = new Button(
         'button',
         'Edit account details',
