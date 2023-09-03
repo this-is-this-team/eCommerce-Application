@@ -1,0 +1,46 @@
+.select-field {
+  position: relative;
+  display: flex;
+  border-radius: 6px;
+  overflow: hidden;
+
+  &__select {
+    appearance: none;
+    outline: none;
+    border: 0;
+    box-shadow: none;
+    flex: 1;
+    padding: 16px 24px;
+    width: 260px;
+    font: $font-main;
+    color: $color-primary;
+    background-color: rgba($color-primary, 0.03);
+    background-image: none;
+    cursor: pointer;
+  }
+
+  &__select::-ms-expand {
+    display: none;
+  }
+
+  &::after {
+    position: absolute;
+    top: 50%;
+    right: 24px;
+    display: block;
+    content: '';
+    width: 20px;
+    height: 20px;
+    background-image: url('../../assets/icons/chevron-up.svg');
+    transform: translateY(-50%) rotate(180deg);
+    background-position: center;
+    background-size: cover;
+    pointer-events: none;
+  }
+
+  &__option {
+    &[value=''] {
+      display: none;
+    }
+  }
+}
