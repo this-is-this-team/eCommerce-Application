@@ -29,7 +29,7 @@ const reducer = (state: IShopState, action: IShopAction): IShopState => {
       if (action.newFilterDays) newState.filterDays = action.newFilterDays;
       return newState;
     case 'SET_SORT_VALUE':
-      if (action.newSortValue) newState.sortValue = action.newSortValue;
+      if (action.newSortValue !== undefined) newState.sortValue = action.newSortValue;
       return newState;
     case 'RESET_FILTER_PRICE':
       newState.filterPrice = '';
