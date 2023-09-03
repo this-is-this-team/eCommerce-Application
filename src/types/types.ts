@@ -2,7 +2,7 @@ import { AppRoutesPath } from '../router/types';
 
 interface IMenuLinks {
   title: string;
-  href: AppRoutesPath;
+  href: AppRoutesPath | string;
 }
 
 interface IMenuItems extends IMenuLinks {
@@ -12,3 +12,9 @@ interface IMenuItems extends IMenuLinks {
 type ListDataType = { [key: string]: string };
 
 export { IMenuItems, ListDataType };
+
+export interface ICategory {
+  label: string;
+  url: string;
+  slug: string;
+}

@@ -1,31 +1,33 @@
-import { Product, ProductData } from '@commercetools/platform-sdk';
+import { type ProductProjection } from '@commercetools/platform-sdk';
+import { ICategory } from '../../types/types';
 import BaseComponent from '../base-component';
 import Button from '../button/button';
 import Link from '../link/link';
-import { AppRoutesPath } from '../../router/types';
+import categories from '../../constants/categories';
+import subcategories from '../../constants/subcategories';
 import './product-card.scss';
 
 export default class ProductCard extends BaseComponent<'div'> {
-  constructor(product: Product) {
+  constructor(product: ProductProjection) {
     super('div', ['product-card']);
 
     this.createMarkup(product);
   }
 
-  private createMarkup(product: Product) {
+  private createMarkup(product: ProductProjection): void {
     const productId: string = product.id;
-    const productData: ProductData = product.masterData.current;
-    const title: string = productData.name.en;
-    const description: string = productData.metaDescription?.en || '';
-    const image: string = productData.masterVariant.images?.[0]?.url || '';
-    const reviews: string = productData.masterVariant.attributes?.[1]?.value || '0';
-    const price: number | undefined = productData.masterVariant.prices?.[0]?.value?.centAmount;
-    const priceDisc: number | undefined = productData.masterVariant.prices?.[0]?.discounted?.value.centAmount;
-    const days: string = productData.masterVariant.attributes?.[2]?.value || '';
-    const rating: string = productData.masterVariant.attributes?.[0]?.value || '';
+    const title: string = product.name.en;
+    const description: string = product.metaDescription?.en || '';
+    const image: string = product.masterVariant.images?.[0]?.url || '';
+    const reviews: string = product.masterVariant.attributes?.[1]?.value || '0';
+    const price: number | undefined = product.masterVariant.prices?.[0]?.value?.centAmount;
+    const priceDisc: number | undefined = product.masterVariant.prices?.[0]?.discounted?.value.centAmount;
+    const days: string = product.masterVariant.attributes?.[2]?.value || '';
+    const rating: string = product.masterVariant.attributes?.[0]?.value || '';
 
-    // TODO: change AppRoutesPath.MAIN to AppRoutesPath.PRODUCT
-    const cardMedia = new Link('', ['product-card__media'], AppRoutesPath.MAIN).getElement();
+    const linkToProduct = this.createLinkToProduct(product.slug.en, productId);
+
+    const cardMedia = new Link('', ['product-card__media'], linkToProduct).getElement();
     const cardImage: HTMLImageElement = new BaseComponent('img', ['product-card__image']).getElement();
     const cardRating = new BaseComponent('div', ['product-card__rating'], rating).getElement();
     if (image) {
@@ -70,6 +72,23 @@ export default class ProductCard extends BaseComponent<'div'> {
     cardContent.append(cardRating, cardTitle, cardDescription, cardMiddle, cardBottom);
 
     this.node.append(cardMedia, cardContent);
+  }
+
+  private createLinkToProduct(slug: string, id: string): string {
+    const parts: string[] = slug.split('---');
+
+    const [categorySlug, subcategorySlug] = parts;
+
+    const currentCategory: ICategory | undefined = categories.find((item) => item.slug === categorySlug);
+    const currentsubCategory: ICategory | undefined = subcategories[categorySlug]?.find(
+      (item) => item.slug === subcategorySlug
+    );
+
+    if (currentCategory && !currentsubCategory) return `/shop/${categorySlug}/${id}`;
+    if (!currentCategory && !currentsubCategory) return `/shop/${id}`;
+    if (!currentCategory) return `/shop/${id}`;
+
+    return `/shop/${categorySlug}/${subcategorySlug}/${id}`;
   }
 
   private addToCart(id: string) {

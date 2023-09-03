@@ -41,7 +41,7 @@ export interface IDetailsPasswordData {
 
 export interface IBreadcrumbLink {
   pageName: string;
-  pageHref: AppRoutesPath;
+  pageHref: AppRoutesPath | string;
 }
 
 export interface IBannerContent {

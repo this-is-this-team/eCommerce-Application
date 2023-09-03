@@ -28,6 +28,6 @@ describe('Footer', () => {
   it('renders correct number of menu items', () => {
     const menuItems = footer.querySelectorAll('.menu__item');
 
-    expect(menuItems.length).toBe(12);
+    expect(menuItems.length).toBe(15);
   });
 });
