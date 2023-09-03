@@ -1,8 +1,10 @@
 import { type ProductProjection } from '@commercetools/platform-sdk';
+import { ICategory } from '../../types/types';
 import BaseComponent from '../base-component';
 import Button from '../button/button';
 import Link from '../link/link';
-import { AppRoutesPath } from '../../router/types';
+import categories from '../../constants/categories';
+import subcategories from '../../constants/subcategories';
 import './product-card.scss';
 
 export default class ProductCard extends BaseComponent<'div'> {
@@ -12,7 +14,7 @@ export default class ProductCard extends BaseComponent<'div'> {
     this.createMarkup(product);
   }
 
-  private createMarkup(product: ProductProjection) {
+  private createMarkup(product: ProductProjection): void {
     const productId: string = product.id;
     const title: string = product.name.en;
     const description: string = product.metaDescription?.en || '';
@@ -23,8 +25,9 @@ export default class ProductCard extends BaseComponent<'div'> {
     const days: string = product.masterVariant.attributes?.[2]?.value || '';
     const rating: string = product.masterVariant.attributes?.[0]?.value || '';
 
-    // TODO: change AppRoutesPath.MAIN to AppRoutesPath.PRODUCT
-    const cardMedia = new Link('', ['product-card__media'], AppRoutesPath.MAIN).getElement();
+    const linkToProduct = this.createLinkToProduct(product.slug.en, productId);
+
+    const cardMedia = new Link('', ['product-card__media'], linkToProduct).getElement();
     const cardImage: HTMLImageElement = new BaseComponent('img', ['product-card__image']).getElement();
     const cardRating = new BaseComponent('div', ['product-card__rating'], rating).getElement();
     if (image) {
@@ -69,6 +72,23 @@ export default class ProductCard extends BaseComponent<'div'> {
     cardContent.append(cardRating, cardTitle, cardDescription, cardMiddle, cardBottom);
 
     this.node.append(cardMedia, cardContent);
+  }
+
+  private createLinkToProduct(slug: string, id: string): string {
+    const parts: string[] = slug.split('---');
+
+    const [categorySlug, subcategorySlug] = parts;
+
+    const currentCategory: ICategory | undefined = categories.find((item) => item.slug === categorySlug);
+    const currentsubCategory: ICategory | undefined = subcategories[categorySlug]?.find(
+      (item) => item.slug === subcategorySlug
+    );
+
+    if (currentCategory && !currentsubCategory) return `/shop/${categorySlug}/${id}`;
+    if (!currentCategory && !currentsubCategory) return `/shop/${id}`;
+    if (!currentCategory) return `/shop/${id}`;
+
+    return `/shop/${categorySlug}/${subcategorySlug}/${id}`;
   }
 
   private addToCart(id: string) {
