@@ -1,3 +1,4 @@
+import InputField from '../components/input/input';
 import { AppRoutesPath } from '../router/types';
 
 export interface IAddress {
@@ -26,6 +27,18 @@ export interface ISigninData {
   password: string;
 }
 
+export interface IDetailsData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  dateOfBirth: string;
+}
+
+export interface IDetailsPasswordData {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface IBreadcrumbLink {
   pageName: string;
   pageHref: AppRoutesPath;
@@ -34,4 +47,8 @@ export interface IBreadcrumbLink {
 export interface IBannerContent {
   title: string;
   text: string;
+}
+
+export interface InputFilds {
+  [inputName: string]: InputField;
 }

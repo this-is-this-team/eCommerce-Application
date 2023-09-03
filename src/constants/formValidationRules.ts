@@ -1,10 +1,12 @@
 interface IValidationRule {
   rule: RegExp;
   errorText: string;
+  secondErrorText?: string;
 }
 
 interface IValidationRules {
   password: IValidationRule;
+  newPassword: IValidationRule;
   firstName: IValidationRule;
   lastName: IValidationRule;
   email: IValidationRule;
@@ -21,6 +23,11 @@ const formValidationRules: IValidationRules = {
   password: {
     rule: /^(?=.*\p{Lu})(?=.*\p{Ll})(?=.*\d).{8,}$/u,
     errorText: 'Requires minimum 8 characters, 1 uppercase, 1 lowercase and 1 number',
+  },
+  newPassword: {
+    rule: /^(?=.*\p{Lu})(?=.*\p{Ll})(?=.*\d).{8,}$/u,
+    errorText: 'Requires minimum 8 characters, 1 uppercase, 1 lowercase and 1 number',
+    secondErrorText: 'The new password must be different from the current password',
   },
   firstName: {
     rule: /^[^\d!@#$%^&*()_+[\]{};':"\\|,.<>/?]+$/,
