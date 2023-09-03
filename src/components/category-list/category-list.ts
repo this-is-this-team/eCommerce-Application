@@ -10,7 +10,7 @@ export default class CategoryList extends BaseComponent<'div'> {
     this.drawList(title, categories, currentSlug);
   }
 
-  private drawList(title: string, items: ICategory[], currentSlug: string) {
+  private drawList(title: string, items: ICategory[], currentSlug: string): void {
     const container: HTMLDivElement = new BaseComponent('div', ['category-list__container']).getElement();
     const titleElelemt: HTMLHeadingElement = new BaseComponent('h4', ['category-list__title'], title).getElement();
     const categoryList: HTMLDivElement = new BaseComponent('div', ['category-list__list']).getElement();

@@ -34,7 +34,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.renderPage();
   }
 
-  private renderPage() {
+  private renderPage(): void {
     const isPage = this.parseUrl();
 
     if (!isPage) {
