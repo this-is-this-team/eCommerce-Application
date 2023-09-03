@@ -10,6 +10,7 @@ import getProducts from '../../services/getProducts';
 import subcategories from '../../constants/subcategories';
 import categories from '../../constants/categories';
 import HeroShop from '../../components/hero-shop/hero-shop';
+import { changeUrlEvent } from '../../utils/change-url-event';
 import './catalog-page.scss';
 
 export default class CatalogPage extends BaseComponent<'div'> {
@@ -30,44 +31,66 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.currentPage = 'Shop';
     this.heroTitleText = 'Shop All';
 
-    this.getCategoryFromUrl();
-    this.renderBreadcrumbs();
-    this.renderHeroSection();
-    this.renderCategoryList();
-    this.renderProductList();
+    this.renderPage();
   }
 
-  private getCategoryFromUrl(): void {
+  private renderPage() {
+    const isPage = this.parseUrl();
+
+    if (!isPage) {
+      changeUrlEvent(AppRoutesPath.NOT_FOUND);
+    } else {
+      this.renderBreadcrumbs();
+      this.renderHeroSection();
+      this.renderCategoryList();
+      this.renderProductList();
+    }
+  }
+
+  private parseUrl(): boolean {
     const url: string = window.location.pathname;
     const parts: string[] = url.split('/').filter((part) => part !== '');
-    let labelPage: string = '';
 
-    switch (parts.length) {
-      case 3:
-        this.categorySlug = parts[parts.length - 2];
-        this.subcategorySlug = parts[parts.length - 1];
-        labelPage = categories.find((item) => item.slug === this.categorySlug)?.label || 'Category';
-        this.breadcrumbsLinks = [
-          { pageName: 'Home', pageHref: AppRoutesPath.MAIN },
-          { pageName: 'Shop', pageHref: AppRoutesPath.SHOP },
-          { pageName: labelPage, pageHref: `/shop/${this.categorySlug}` },
-        ];
-        this.currentPage =
-          subcategories[this.categorySlug].find((item) => item.slug === this.subcategorySlug)?.label || 'Subcategory';
-        this.heroTitleText = this.currentPage;
-        break;
-      case 2:
-        this.categorySlug = parts[parts.length - 1];
-        this.breadcrumbsLinks = [
-          { pageName: 'Home', pageHref: AppRoutesPath.MAIN },
-          { pageName: 'Shop', pageHref: AppRoutesPath.SHOP },
-        ];
-        this.currentPage = categories.find((item) => item.slug === this.categorySlug)?.label || 'Category';
-        this.heroTitleText = this.currentPage;
-        break;
-      default:
-        break;
+    if (parts.length === 3) {
+      this.categorySlug = parts[parts.length - 2];
+      this.subcategorySlug = parts[parts.length - 1];
+
+      const currentCategory: ICategory | undefined = categories.find((item) => item.slug === this.categorySlug);
+      const currentsubCategory: ICategory | undefined = subcategories[this.categorySlug]?.find(
+        (item) => item.slug === this.subcategorySlug
+      );
+
+      if (!currentCategory || !currentsubCategory) return false;
+
+      this.breadcrumbsLinks = [
+        { pageName: 'Home', pageHref: AppRoutesPath.MAIN },
+        { pageName: 'Shop', pageHref: AppRoutesPath.SHOP },
+        { pageName: currentCategory.label, pageHref: `/shop/${this.categorySlug}` },
+      ];
+      this.currentPage = currentsubCategory.label;
+      this.heroTitleText = this.currentPage;
+
+      return true;
     }
+
+    if (parts.length === 2) {
+      this.categorySlug = parts[parts.length - 1];
+
+      const currentCategory: ICategory | undefined = categories.find((item) => item.slug === this.categorySlug);
+
+      if (!currentCategory) return false;
+
+      this.breadcrumbsLinks = [
+        { pageName: 'Home', pageHref: AppRoutesPath.MAIN },
+        { pageName: 'Shop', pageHref: AppRoutesPath.SHOP },
+      ];
+      this.currentPage = currentCategory.label;
+      this.heroTitleText = this.currentPage;
+
+      return true;
+    }
+
+    return true;
   }
 
   private renderBreadcrumbs(): void {
