@@ -41,5 +41,29 @@
     @include tablet {
       display: none;
     }
+
+    &--europe {
+      background-image: url('../../assets/img/shop_hero-image_europe.jpg');
+    }
+
+    &--asia {
+      background-image: url('../../assets/img/shop_hero-image_asia.jpg');
+    }
+
+    &--africa {
+      background-image: url('../../assets/img/shop_hero-image_africa.jpg');
+    }
+
+    &--america {
+      background-image: url('../../assets/img/shop_hero-image_america.jpg');
+    }
+
+    &--hiking {
+      background-image: url('../../assets/img/shop_hero-image_hiking.jpg');
+    }
+
+    &--sailing {
+      background-image: url('../../assets/img/shop_hero-image_sailing.jpg');
+    }
   }
 }
