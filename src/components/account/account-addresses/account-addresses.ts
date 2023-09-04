@@ -1,7 +1,10 @@
 import BaseComponent from '../../base-component';
 import userStore from '../../../store/user-store';
 import Button from '../../button/button';
+import { changeUrlEvent } from '../../../utils/change-url-event';
 import './account-addresses.scss';
+import { AppRoutesPath } from '../../../router/types';
+import Sup from '../../sup/sup';
 
 export default class AccountAddresses extends BaseComponent<'div'> {
   private detailsTitle: HTMLElement;
@@ -28,18 +31,22 @@ export default class AccountAddresses extends BaseComponent<'div'> {
         const addressElement = new BaseComponent('p', ['account-addresses__item'], addressElementText).getElement();
 
         if (address.id === defaultBillingAddressId) {
-          addressElement.insertAdjacentHTML('beforeend', '<sup>Default Billing</sup>');
+          addressElement.append(new Sup('Default Billing').getElement());
         }
         if (address.id === defaultShippingAddressId) {
-          addressElement.insertAdjacentHTML('beforeend', '<sup>Default Shipping</sup>');
+          addressElement.append(new Sup('Default Shipping').getElement());
         }
 
         addressesWrapp.append(addressElement);
       });
 
-      const viewAddressesBtn = new Button('button', `View Addresses (${customer.addresses.length})`, [
-        'account-addresses__view-btn',
-      ]).getElement();
+      const viewAddressesBtn = new Button(
+        'button',
+        `View Addresses (${customer.addresses.length})`,
+        ['account-addresses__view-btn'],
+        false,
+        () => changeUrlEvent(AppRoutesPath.ACCOUNT_ADDRESSES)
+      ).getElement();
 
       addressesWrapp.append(viewAddressesBtn);
     } else {
@@ -55,7 +62,9 @@ export default class AccountAddresses extends BaseComponent<'div'> {
         'Investor focus research & development value proposition graphical user interface investor. '
       ).getElement();
 
-      const addAddressesBtn = new Button('button', `Add Address`, ['account-addresses__add-btn']).getElement();
+      const addAddressesBtn = new Button('button', `Add Address`, ['account-addresses__add-btn'], false, () =>
+        changeUrlEvent(AppRoutesPath.ACCOUNT_ADDRESSES)
+      ).getElement();
 
       addressesWrapp.classList.add('centered');
       addressesWrapp.append(addressEmptyImg, addressEmptyTitle, addressEmptyDescr, addAddressesBtn);

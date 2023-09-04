@@ -1,0 +1,24 @@
+.addresses-page {
+  padding-bottom: 50px;
+
+  &__container {
+    @include container;
+  }
+
+  &__title-wrapp {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__title {
+    @include font-h3;
+  }
+
+  &__add-btn {
+    margin-top: 32px;
+    &.hidden {
+      display: none;
+    }
+  }
+}

@@ -3,7 +3,7 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import AccountDetails from '../../components/account/account-details/account-details';
 import AccountAddresses from '../../components/account/account-addresses/account-addresses';
 import { IBreadcrumbLink } from '../../types/interfaces';
-import { UserProfileMode } from '../../types/enums';
+import { AccountInfoMode } from '../../types/enums';
 import { AppRoutesPath } from '../../router/types';
 import './account-page.scss';
 
@@ -19,7 +19,7 @@ export default class AccountPage extends BaseComponent<'div'> {
   private container: HTMLElement;
   private detailsSection: HTMLElement;
   private addressesSection: HTMLElement;
-  private userProfileMode: UserProfileMode = UserProfileMode.SHOW;
+  private userProfileMode: AccountInfoMode = AccountInfoMode.SHOW;
 
   constructor() {
     super('div', ['account-page']);
@@ -39,7 +39,7 @@ export default class AccountPage extends BaseComponent<'div'> {
 
   private changeUserProfileMode = (): void => {
     this.detailsSection.innerHTML = '';
-    this.userProfileMode = this.userProfileMode === UserProfileMode.SHOW ? UserProfileMode.EDIT : UserProfileMode.SHOW;
+    this.userProfileMode = this.userProfileMode === AccountInfoMode.SHOW ? AccountInfoMode.EDIT : AccountInfoMode.SHOW;
     this.detailsSection.append(new AccountDetails(this.userProfileMode, this.changeUserProfileMode).getElement());
   };
 }

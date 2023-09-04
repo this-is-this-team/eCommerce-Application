@@ -18,10 +18,17 @@ $color-error: #ef4444;
 $color-success: #45d845;
 
 // breakpoints
+$width-small-mobile: 500px;
 $width-mobile: 768px;
 $width-tablet: 1024px;
 $width-pre-tablet: 1200px;
 $width-laptop: 1440px;
+
+@mixin small-mobile {
+  @media (max-width: $width-small-mobile) {
+    @content;
+  }
+}
 
 @mixin mobile {
   @media (max-width: $width-mobile) {
