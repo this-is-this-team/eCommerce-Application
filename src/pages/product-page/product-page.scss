@@ -1,7 +1,15 @@
 .product-page {
   padding-bottom: 48px;
+
   &__container {
+    @include container;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+    gap: 24px;
+
+    @include laptop {
+      flex-direction: column;
+      align-items: center;
+    }
   }
 }

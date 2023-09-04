@@ -3,6 +3,7 @@
     font: $font-xs;
     color: $color-secondary-40;
     transition: color 0.3s ease-in-out;
+    white-space: nowrap;
 
     &::after {
       content: '/';
