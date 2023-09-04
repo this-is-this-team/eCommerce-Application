@@ -2,13 +2,17 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
-  max-width: 686px;
+  width: calc(50% - 12px);
   padding: 64px;
   background-color: $color-bg-card;
 
   @include tablet {
     gap: 20px;
     padding: 32px;
+  }
+
+  @media (max-width: 1400px) {
+    width: calc(100% - 20px);
   }
 
   &__routes {
