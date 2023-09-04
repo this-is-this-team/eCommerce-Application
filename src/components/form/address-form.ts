@@ -7,6 +7,7 @@ import addAddress from '../../services/addresses/addAddress';
 import setDefaultTypeAddress from '../../services/addresses/setDefaultTypeAddress';
 import addTypeAddressID from '../../services/addresses/addTypeAddressID';
 import changeAddress from '../../services/addresses/changeAddress';
+import removeTypeAddressID from '../../services/addresses/removeTypeAddressID';
 import { AddressInputs } from '../../constants/addressInputs';
 import { IAddressData, IAddressFormData, InputFilds } from '../../types/interfaces';
 import { AddressesMode } from '../../types/enums';
@@ -15,8 +16,8 @@ import './form.scss';
 export default class AddressForm extends BaseComponent<'form'> {
   private inputs: InputFilds;
   private selectType: SelectTypeField;
-  private isDefaultShipping: boolean;
-  private isDefaultBilling: boolean;
+  private isDefaultBilling: boolean = false;
+  private isDefaultShipping: boolean = false;
   private buttonSubmit: HTMLButtonElement;
   private buttonCancel: HTMLButtonElement;
   private firstBtnAction: (type: AddressesMode) => void;
@@ -31,9 +32,11 @@ export default class AddressForm extends BaseComponent<'form'> {
     super('form', ['form__form']);
     this.inputs = {};
     this.selectType = new SelectTypeField();
-    this.isDefaultShipping = false;
-    this.isDefaultBilling = false;
     this.addressData = addressData;
+    if (addressData) {
+      this.isDefaultBilling = addressData?.defaultBillingAddressId === addressData?.address.id;
+      this.isDefaultShipping = addressData?.defaultShippingAddressId === addressData?.address.id;
+    }
     this.firstBtnAction = firstCallback;
     this.secondBtnAction = secondCallback;
     this.node.addEventListener('submit', (event) => this.onSubmit(event));
@@ -97,6 +100,12 @@ export default class AddressForm extends BaseComponent<'form'> {
     const chackboxesWrapp = new BaseComponent('div', []).getElement();
     chackboxesWrapp.append(...addressCheckboxesInputs);
 
+    if (this.addressData)
+      this.selectType.setValue(
+        this.addressData?.billingAddressIds?.includes(this.addressData?.address.id || ''),
+        this.addressData?.shippingAddressIds?.includes(this.addressData?.address.id || '')
+      );
+
     formContent.append(this.selectType.getElement(), ...addressMainInputs, chackboxesWrapp);
 
     this.node.append(formContent, actionField);
@@ -146,16 +155,33 @@ export default class AddressForm extends BaseComponent<'form'> {
         addressId = addresses[addresses.length - 1].id || '';
       }
 
-      if (this.isDefaultBilling) await setDefaultTypeAddress('Billing', addressId);
-      if (this.isDefaultShipping) await setDefaultTypeAddress('Shhipping', addressId);
-
       if (values.type === 'Billing') {
         await addTypeAddressID('Billing', addressId);
+        if (this.addressData?.shippingAddressIds?.includes(addressId)) await removeTypeAddressID('Shipping', addressId);
       } else if (values.type === 'Shipping') {
         await addTypeAddressID('Shipping', addressId);
+        if (this.addressData?.billingAddressIds?.includes(addressId)) await removeTypeAddressID('Billing', addressId);
       } else {
         await addTypeAddressID('Billing', addressId);
         await addTypeAddressID('Shipping', addressId);
+      }
+
+      if (this.isDefaultBilling && this.isDefaultShipping) {
+        await setDefaultTypeAddress('Billing', addressId);
+        await setDefaultTypeAddress('Shhipping', addressId);
+      } else if (this.isDefaultBilling) {
+        await setDefaultTypeAddress('Billing', addressId);
+        if (this.addressData?.defaultBillingAddressId === this.addressData?.address.id) {
+          await setDefaultTypeAddress('Shipping', '');
+        }
+      } else if (this.isDefaultShipping) {
+        await setDefaultTypeAddress('Shipping', addressId);
+        if (this.addressData?.defaultShippingAddressId === this.addressData?.address.id) {
+          await setDefaultTypeAddress('Billing', '');
+        }
+      } else {
+        await setDefaultTypeAddress('Billing', '');
+        await setDefaultTypeAddress('Shipping', '');
       }
 
       if (this.addressData?.address.id) {

@@ -1,21 +1,21 @@
 import {
   ClientResponse,
   Customer,
-  MyCustomerSetDefaultBillingAddressAction,
-  MyCustomerSetDefaultShippingAddressAction,
+  MyBusinessUnitRemoveBillingAddressIdAction,
+  MyBusinessUnitRemoveShippingAddressIdAction,
 } from '@commercetools/platform-sdk';
 import userStore from '../../store/user-store';
 import apiExistingToken from '../apiExistingToken';
 
-export default async function setDefaultTypeAddress(type: string, id: string): Promise<Customer> {
+export default async function removeTypeAddressID(type: string, id: string): Promise<Customer> {
   const { customer } = userStore.getState();
 
   const currentToken = localStorage.getItem('token');
   const parsenToken = currentToken ? JSON.parse(currentToken) : '';
 
-  const action: MyCustomerSetDefaultBillingAddressAction | MyCustomerSetDefaultShippingAddressAction = {
-    action: type === 'Billing' ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress',
-    addressId: id.trim() === '' ? undefined : id,
+  const action: MyBusinessUnitRemoveBillingAddressIdAction | MyBusinessUnitRemoveShippingAddressIdAction = {
+    action: type === 'Billing' ? 'removeBillingAddressId' : 'removeShippingAddressId',
+    addressId: id,
   };
 
   const body = {

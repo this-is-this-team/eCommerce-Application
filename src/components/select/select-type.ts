@@ -22,8 +22,14 @@ export default class SelectTypeField extends BaseComponent<'div'> {
     return this.selectElement.value.trim();
   }
 
-  public setValue(value: string): void {
-    this.selectElement.value = value;
+  public setValue(firstValue: boolean | undefined, secondValue: boolean | undefined): void {
+    if (firstValue && secondValue) {
+      this.selectElement.value = 'Billing, Shipping';
+    } else if (firstValue) {
+      this.selectElement.value = 'Billing';
+    } else {
+      this.selectElement.value = 'Shipping';
+    }
   }
 
   private setAttributes(name: string = ''): void {
