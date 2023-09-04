@@ -1,18 +1,18 @@
 const sortShopOptions = [
   {
-    label: 'not selected',
+    label: 'Not selected',
     value: '',
   },
   {
-    label: 'by price (ascending)',
+    label: 'By price (ascending)',
     value: 'price asc',
   },
   {
-    label: 'by price (descending)',
+    label: 'By price (descending)',
     value: 'price desc',
   },
   {
-    label: 'by title (alphabetically)',
+    label: 'By title (alphabetically)',
     value: 'name.en asc',
   },
 ];

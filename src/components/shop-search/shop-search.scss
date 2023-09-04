@@ -1,0 +1,46 @@
+.shop-search {
+  margin-top: 48px;
+
+  &__container {
+    @include container;
+  }
+
+  &__form {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  &__input {
+    width: 544px;
+
+    label {
+      display: none;
+    }
+
+    input {
+      height: 56px;
+      border: solid 1px $color-border;
+      transition: border 0.3s ease-in-out;
+
+      &:focus,
+      &:active,
+      &:hover {
+        border: 1px solid $color-secondary-60;
+      }
+    }
+
+    @include tablet {
+      width: auto;
+      min-width: 0;
+    }
+  }
+
+  &__button {
+    height: 56px;
+
+    @include tablet {
+      padding: 16px;
+    }
+  }
+}
