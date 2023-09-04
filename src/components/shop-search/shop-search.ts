@@ -53,6 +53,7 @@ export default class ShopSearch extends BaseComponent<'div'> {
   private resetSearch(): void {
     this.formSearch.reset();
     this.resetButton.classList.remove('shop-search__reset--visible');
+    this.searchButton.disabled = true;
 
     if (shopStore.getState().searchValue !== '') {
       shopStore.dispatch({ type: 'SET_SEARCH_VALUE', newSearchValue: '' });
@@ -65,8 +66,7 @@ export default class ShopSearch extends BaseComponent<'div'> {
         this.searchButton.disabled = false;
         this.resetButton.classList.add('shop-search__reset--visible');
       } else {
-        this.searchButton.disabled = true;
-        this.resetButton.classList.remove('shop-search__reset--visible');
+        this.resetSearch();
       }
     });
     this.formSearch.addEventListener('submit', (event) => this.onSubmit(event));
