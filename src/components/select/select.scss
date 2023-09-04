@@ -1,99 +1,50 @@
-.form-field {
+.select-field {
+  position: relative;
   display: flex;
-  flex-direction: column;
+  border-radius: 6px;
+  overflow: hidden;
 
-  &__label {
-    font: $font-label;
-    color: $color-primary;
-    margin-bottom: 8px;
-  }
-
-  &__input {
-    padding: 10px 24px;
-    height: 48px;
+  &__select {
+    appearance: none;
+    outline: none;
+    border: 0;
+    box-shadow: none;
+    flex: 1;
+    padding: 16px 24px;
+    width: 260px;
     font: $font-main;
     color: $color-primary;
-    background: $color-white;
-    border: 1px solid $color-white;
-    border-radius: 6px;
-    transition:
-      color 0.3s ease-in-out,
-      border 0.3s ease-in-out;
-
-    &:focus,
-    &:hover {
-      border: 1px solid $color-border;
-    }
-
-    &.valid-error {
-      border: 1px solid $color-error;
-      color: $color-error;
-    }
-
-    &::placeholder {
-      opacity: 0.4;
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      border: 1px solid $color-white;
-    }
+    background-color: rgba($color-primary, 0.03);
+    background-image: none;
+    cursor: pointer;
   }
 
-  &-password {
-    position: relative;
-
-    .form-field__input {
-      padding-right: 46px;
-    }
+  &__select::-ms-expand {
+    display: none;
   }
 
-  &__check {
+  &::after {
     position: absolute;
+    top: 50%;
     right: 24px;
-    top: 44.5px;
+    display: block;
+    content: '';
     width: 20px;
     height: 20px;
-    background-image: url('../../assets/icons/visibility.svg');
+    background-image: url('../../assets/icons/chevron-up.svg');
+    transform: translateY(-50%) rotate(180deg);
     background-position: center;
-    background-repeat: no-repeat;
     background-size: cover;
-    cursor: pointer;
-
-    &.password-visible {
-      background-image: url('../../assets/icons/visibility-off.svg');
-    }
+    pointer-events: none;
   }
 
-  &__error {
-    margin-top: 4px;
-    font-size: 14px;
-    color: $color-error;
-  }
+  &__option {
+    &[value=''] {
+      display: none;
 
-  &-checkbox {
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: flex-end;
-
-    input {
-      cursor: pointer;
+      .select--sort & {
+        display: block;
+      }
     }
-
-    .form-field__label {
-      margin: 0 0 0 8px;
-    }
-  }
-
-  &-country {
-    &::after {
-      content: '* currently, the shop only operates in the USA';
-      color: $color-secondary-60;
-      margin-top: 8px;
-    }
-  }
-
-  &--hidden {
-    display: none;
   }
 }

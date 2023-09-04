@@ -1,0 +1,25 @@
+.address {
+  max-width: 828px;
+  margin-top: 24px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background: $color-bg-card;
+
+  &__sups {
+    margin: 0 0 16px -3px;
+  }
+
+  &__actions {
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    @include mobile {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+}

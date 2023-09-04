@@ -1,3 +1,4 @@
+import { Address } from '@commercetools/platform-sdk';
 import InputField from '../components/input/input';
 import { AppRoutesPath } from '../router/types';
 
@@ -51,4 +52,12 @@ export interface IBannerContent {
 
 export interface InputFilds {
   [inputName: string]: InputField;
+}
+
+export interface IAddressData {
+  address: Address;
+  billingAddressIds: string[] | undefined;
+  shippingAddressIds: string[] | undefined;
+  defaultBillingAddressId: string | undefined;
+  defaultShippingAddressId: string | undefined;
 }
