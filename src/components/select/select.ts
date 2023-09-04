@@ -19,11 +19,11 @@ export default class SelectField extends BaseComponent<'div'> {
     this.setListener();
   }
 
-  private renderSelect(name: string, options: IOption[]) {
+  private renderSelect(name: string, options: IOption[]): void {
     this.selectElement.id = name;
     this.selectElement.name = name;
 
-    const optionsElements = options.map((option) => {
+    const optionsElements = options.map((option): HTMLOptionElement => {
       const optionEl = new BaseComponent('option', ['select-field__option'], option.label).getElement();
       optionEl.value = option.value;
       if (name === 'price' && shopStore.getState().filterPrice === option.value) {
