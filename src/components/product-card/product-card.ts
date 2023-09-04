@@ -1,10 +1,11 @@
-import { type ProductProjection } from '@commercetools/platform-sdk';
+import { TypedMoney, type ProductProjection } from '@commercetools/platform-sdk';
 import { ICategory } from '../../types/types';
 import BaseComponent from '../base-component';
 import Button from '../button/button';
 import Link from '../link/link';
 import categories from '../../constants/categories';
 import subcategories from '../../constants/subcategories';
+import formatPrice from '../../services/formatPrice';
 import './product-card.scss';
 
 export default class ProductCard extends BaseComponent<'div'> {
@@ -20,8 +21,8 @@ export default class ProductCard extends BaseComponent<'div'> {
     const description: string = product.metaDescription?.en || '';
     const image: string = product.masterVariant.images?.[0]?.url || '';
     const reviews: string = product.masterVariant.attributes?.[1]?.value || '0';
-    const price: number | undefined = product.masterVariant.prices?.[0]?.value?.centAmount;
-    const priceDisc: number | undefined = product.masterVariant.prices?.[0]?.discounted?.value.centAmount;
+    const standardPrice: TypedMoney | undefined = product.masterVariant.prices?.[0]?.value;
+    const discountedPrice: TypedMoney | undefined = product.masterVariant.prices?.[0]?.discounted?.value;
     const days: string = product.masterVariant.attributes?.[2]?.value || '';
     const rating: string = product.masterVariant.attributes?.[0]?.value || '';
 
@@ -45,13 +46,21 @@ export default class ProductCard extends BaseComponent<'div'> {
     const cardPrice = new BaseComponent('span', ['product-card__price']).getElement();
     const cardPriceDisc = new BaseComponent('span', ['product-card__price--new']).getElement();
 
-    if (price) {
-      cardPrice.textContent = `$${(price / 100).toString()}`;
+    if (standardPrice) {
+      cardPrice.textContent = formatPrice(
+        standardPrice.currencyCode,
+        standardPrice.centAmount,
+        standardPrice.fractionDigits
+      );
       cardMiddle.append(cardPrice);
     }
 
-    if (priceDisc) {
-      cardPriceDisc.textContent = `$${(priceDisc / 100).toString()}`;
+    if (discountedPrice) {
+      cardPriceDisc.textContent = formatPrice(
+        discountedPrice.currencyCode,
+        discountedPrice.centAmount,
+        discountedPrice.fractionDigits
+      );
       cardPrice.classList.add('product-card__price--old');
       cardMiddle.append(cardPriceDisc);
     }
