@@ -17,15 +17,13 @@ export default async function getProducts(
 ): Promise<ProductProjection[] | undefined> {
   try {
     const allCategories: Category[] = await getAllCategories();
-    console.log(searchValue);
+
     let categoryId = '';
     const filter: string[] = [];
     let filterQuery: string = '';
     let sort: string = '';
     const searchQuery = {
       'text.en': '',
-      fuzzy: true,
-      fuzzyLevel: 2,
     };
 
     if (subcategoryName) {
