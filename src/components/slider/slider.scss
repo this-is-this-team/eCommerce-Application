@@ -6,11 +6,11 @@
   user-select: none;
 
   @include laptop {
-    width: calc(80% - 20px);
+    width: 80%;
   }
 
   @include mobile {
-    width: calc(100% - 20px);
+    width: 100%;
   }
 
   .swiper {
@@ -50,6 +50,18 @@
       height: 100%;
       object-fit: cover;
       border-radius: 8px;
+    }
+
+    &-button-next,
+    &-button-prev {
+      opacity: 0.6;
+      color: #ffffff;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }
