@@ -1,8 +1,9 @@
 import Swiper from 'swiper';
-import 'swiper/css/navigation';
-import 'swiper/css';
 import BaseComponent from '../base-component';
 import { Image } from '@commercetools/platform-sdk';
+import { Navigation, Thumbs } from 'swiper/modules';
+import 'swiper/css/navigation';
+import 'swiper/css';
 import './slider.scss';
 
 export default class ProductSlider extends BaseComponent<'div'> {
@@ -10,13 +11,12 @@ export default class ProductSlider extends BaseComponent<'div'> {
 
   constructor(images: Image[]) {
     super('div', ['product__slider']);
-
     this.images = images;
 
     this.createMarkup();
   }
 
-  private createMarkup() {
+  private createMarkup(): void {
     const sliderView = new BaseComponent('div', ['swiper', 'swiper-view']).getElement();
     const swiperViewWrapper = new BaseComponent('div', ['swiper-wrapper']).getElement();
 
@@ -55,9 +55,10 @@ export default class ProductSlider extends BaseComponent<'div'> {
       watchSlidesProgress: true,
     });
 
-    const swiperView = new Swiper(sliderView, {
+    new Swiper(sliderView, {
       loop: true,
       spaceBetween: 24,
+      modules: [Navigation, Thumbs],
       navigation: {
         nextEl: sliderBtnNext,
         prevEl: sliderBtnPrev,
@@ -66,12 +67,5 @@ export default class ProductSlider extends BaseComponent<'div'> {
         swiper: swiperList,
       },
     });
-
-    // sliderBtnNext.tabIndex = 0;
-    // sliderBtnNext.setAttribute('role', 'button');
-    // sliderBtnNext.setAttribute('aria-label', 'Next slide');
-    // sliderBtnNext.setAttribute('aria-controls', sliderView.id);
-
-    console.log(swiperView);
   }
 }
