@@ -5,8 +5,12 @@
   gap: 24px;
   user-select: none;
 
-  @media (max-width: 1400px) {
-    width: calc(100% - 20px);
+  @include laptop {
+    width: calc(80% - 20px);
+  }
+
+  @include mobile {
+    width: calc(90% - 20px);
   }
 
   .swiper {
