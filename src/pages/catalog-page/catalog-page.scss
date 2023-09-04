@@ -8,3 +8,20 @@
     justify-content: center;
   }
 }
+
+.shop-controls {
+  margin-top: 48px;
+
+  &__container {
+    @include container;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    @include mobile {
+      gap: 60px;
+    }
+  }
+}
