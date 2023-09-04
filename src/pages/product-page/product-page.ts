@@ -6,26 +6,84 @@ import { AppRoutesPath } from '../../router/types';
 import Product from '../../components/product/product';
 import getProductById from '../../services/getProductById';
 import { ProductData } from '@commercetools/platform-sdk';
-
-const breadcrumbsLinks: IBreadcrumbLink[] = [
-  {
-    pageName: 'Home',
-    pageHref: AppRoutesPath.MAIN,
-  },
-  {
-    pageName: 'Shop',
-    pageHref: AppRoutesPath.SHOP,
-  },
-];
+import { changeUrlEvent } from '../../utils/change-url-event';
+import Notification from '../../components/notification/notification';
+import categories from '../../constants/categories';
+import subcategories from '../../constants/subcategories';
+import { ICategory } from '../../types/types';
 
 export default class ProductPage extends BaseComponent<'div'> {
   private productData: ProductData | null = null;
-  private productId: string = '0b2e67b2-dfa9-4107-af01-052e4c3463eb'; // TODO FUNCTION TO GET ID FROM URL
+  private productId: string = '';
+  private breadcrumbsLinks: IBreadcrumbLink[] = [];
+  private isPage: boolean;
 
   constructor() {
     super('div', ['product-page']);
 
-    this.createMarkup();
+    this.isPage = this.parseUrl();
+    if (this.isPage) {
+      this.createMarkup();
+    } else {
+      changeUrlEvent(AppRoutesPath.NOT_FOUND);
+    }
+  }
+
+  private parseUrl(): boolean {
+    const url: string = window.location.pathname;
+    const parts: string[] = url.split('/').filter((part) => part !== '');
+
+    if (parts.length === 4) {
+      const categorySlug = parts[parts.length - 3];
+      const subcategorySlug = parts[parts.length - 2];
+      this.productId = parts[parts.length - 1];
+
+      const currentCategory: ICategory | undefined = categories.find((item) => item.slug === categorySlug);
+      const currentSubcategory: ICategory | undefined = subcategories[categorySlug]?.find(
+        (item) => item.slug === subcategorySlug
+      );
+
+      if (!currentCategory || !currentSubcategory) return false;
+
+      this.breadcrumbsLinks = [
+        { pageName: 'Home', pageHref: AppRoutesPath.MAIN },
+        { pageName: 'Shop', pageHref: AppRoutesPath.SHOP },
+        { pageName: currentCategory.label, pageHref: `/shop/${categorySlug}` },
+        { pageName: currentSubcategory.label, pageHref: `/shop/${categorySlug}/${subcategorySlug}` },
+      ];
+
+      return true;
+    }
+
+    if (parts.length === 3) {
+      const categorySlug = parts[parts.length - 2];
+      this.productId = parts[parts.length - 1];
+
+      const currentCategory: ICategory | undefined = categories.find((item) => item.slug === categorySlug);
+
+      if (!currentCategory) return false;
+
+      this.breadcrumbsLinks = [
+        { pageName: 'Home', pageHref: AppRoutesPath.MAIN },
+        { pageName: 'Shop', pageHref: AppRoutesPath.SHOP },
+        { pageName: currentCategory.label, pageHref: `/shop/${categorySlug}` },
+      ];
+
+      return true;
+    }
+
+    if (parts.length === 2) {
+      this.productId = parts[parts.length - 1];
+
+      this.breadcrumbsLinks = [
+        { pageName: 'Home', pageHref: AppRoutesPath.MAIN },
+        { pageName: 'Shop', pageHref: AppRoutesPath.SHOP },
+      ];
+
+      return true;
+    }
+
+    return true;
   }
 
   private async getProductData(id: string): Promise<void> {
@@ -34,7 +92,9 @@ export default class ProductPage extends BaseComponent<'div'> {
 
       this.productData = product.masterData.current;
     } catch (err) {
-      console.log(err); // TODO Redirect to page 404
+      if (err instanceof Error) new Notification('error', err.message).showNotification();
+
+      changeUrlEvent(AppRoutesPath.NOT_FOUND);
     }
   }
 
@@ -44,7 +104,7 @@ export default class ProductPage extends BaseComponent<'div'> {
     const product = new Product(this.productData!).getElement();
     const productName = this.productData?.name.en || 'Unnamed tour';
 
-    const breadcrumbs = new Breadcrumbs(breadcrumbsLinks, productName).getElement();
+    const breadcrumbs = new Breadcrumbs(this.breadcrumbsLinks, productName).getElement();
     const container = new BaseComponent('div', ['product-page__container']).getElement();
 
     container.append(product);
