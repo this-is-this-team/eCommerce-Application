@@ -5,11 +5,11 @@ import Button from '../../components/button/button';
 import Address from '../../components/address/address';
 import Notification from '../../components/notification/notification';
 import userStore from '../../store/user-store';
+import removeAddress from '../../services/addresses/removeAddress';
+import changeVisibleAddressesBtns from '../../utils/change-visible-addresses-btns';
 import { IAddressData, IBreadcrumbLink } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import { AddressesMode } from '../../types/enums';
-import removeAddress from '../../services/addresses/removeAddress';
-import changeVisibleAddressesBtns from '../../utils/change-visible-addresses-btns';
 import './addresses-page.scss';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
@@ -29,7 +29,6 @@ export default class AddressesPage extends BaseComponent<'div'> {
   private addressesSection: HTMLElement;
   private addressesListWrapp: HTMLElement;
   private addresses: HTMLDivElement[] = [];
-
   private addNewAddressBtn: HTMLButtonElement | null = null;
 
   constructor() {
@@ -84,7 +83,7 @@ export default class AddressesPage extends BaseComponent<'div'> {
         const address = new Address(
           AddressesMode.SHOW,
           obj,
-          () => console.log('hi'),
+          (type: AddressesMode) => this.onChangeForm(type),
           (id: string) => this.onDeleteAddress(id)
         ).getElement();
         this.addressesListWrapp.append(address);
@@ -101,6 +100,12 @@ export default class AddressesPage extends BaseComponent<'div'> {
     this.addNewAddressBtn?.classList.add('hidden');
 
     changeVisibleAddressesBtns(this.addresses, true);
+  };
+
+  private onChangeForm = (type: AddressesMode): void => {
+    this.addNewAddressBtn?.classList.toggle('hidden', type === AddressesMode.EDIT);
+    changeVisibleAddressesBtns(this.addresses, type === AddressesMode.EDIT);
+    if (type === AddressesMode.SHOW) this.renderAddressesList();
   };
 
   private onSubmitNewForm = (): void => {

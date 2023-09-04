@@ -52,6 +52,10 @@ export default class InputField extends BaseComponent<'div'> {
     return this.inputElement.value.trim();
   }
 
+  public setChecked(isChecked: boolean = false): void {
+    this.inputElement.checked = isChecked;
+  }
+
   public setValue(value: string): void {
     this.inputElement.value = value;
   }

@@ -1,4 +1,4 @@
-import { Address } from '@commercetools/platform-sdk';
+import { BaseAddress } from '@commercetools/platform-sdk';
 import InputField from '../components/input/input';
 import { AppRoutesPath } from '../router/types';
 
@@ -55,9 +55,17 @@ export interface InputFilds {
 }
 
 export interface IAddressData {
-  address: Address;
+  address: BaseAddress;
   billingAddressIds: string[] | undefined;
   shippingAddressIds: string[] | undefined;
   defaultBillingAddressId: string | undefined;
   defaultShippingAddressId: string | undefined;
+}
+
+export interface IAddressFormData {
+  type: string;
+  streetName: string;
+  city: string;
+  postalCode: string;
+  country: string;
 }

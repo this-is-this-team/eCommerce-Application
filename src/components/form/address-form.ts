@@ -6,8 +6,10 @@ import Notification from '../notification/notification';
 import addAddress from '../../services/addresses/addAddress';
 import setDefaultTypeAddress from '../../services/addresses/setDefaultTypeAddress';
 import addTypeAddressID from '../../services/addresses/addTypeAddressID';
+import changeAddress from '../../services/addresses/changeAddress';
 import { AddressInputs } from '../../constants/addressInputs';
-import { InputFilds } from '../../types/interfaces';
+import { IAddressData, IAddressFormData, InputFilds } from '../../types/interfaces';
+import { AddressesMode } from '../../types/enums';
 import './form.scss';
 
 export default class AddressForm extends BaseComponent<'form'> {
@@ -17,19 +19,25 @@ export default class AddressForm extends BaseComponent<'form'> {
   private isDefaultBilling: boolean;
   private buttonSubmit: HTMLButtonElement;
   private buttonCancel: HTMLButtonElement;
-  private firstBtnAction: () => void;
+  private firstBtnAction: (type: AddressesMode) => void;
   private secondBtnAction: (id: string) => void;
+  private addressData: IAddressData | null;
 
-  constructor(firstCallback: () => void, secondCallback: (id: string) => void) {
+  constructor(
+    firstCallback: (type: AddressesMode) => void,
+    secondCallback: (id: string) => void,
+    addressData: IAddressData | null = null
+  ) {
     super('form', ['form__form']);
     this.inputs = {};
     this.selectType = new SelectTypeField();
     this.isDefaultShipping = false;
     this.isDefaultBilling = false;
+    this.addressData = addressData;
     this.firstBtnAction = firstCallback;
     this.secondBtnAction = secondCallback;
     this.node.addEventListener('submit', (event) => this.onSubmit(event));
-    this.buttonSubmit = new Button('submit', 'Add Address', []).getElement();
+    this.buttonSubmit = new Button('submit', this.addressData ? 'Save Address' : 'Add Address', []).getElement();
     this.buttonCancel = new Button('button', 'Cancel', ['button--cancel'], false, () =>
       this.secondBtnAction('new')
     ).getElement();
@@ -45,6 +53,14 @@ export default class AddressForm extends BaseComponent<'form'> {
     const addressMainInputs = AddressInputs['main'].map(({ type, name, placeholder, label }) => {
       const inputField = new InputField(type, name, placeholder, label);
 
+      if (name === 'streetName') {
+        inputField.setValue(this.addressData?.address.streetName || '');
+      } else if (name === 'city') {
+        inputField.setValue(this.addressData?.address.city || '');
+      } else if (name === 'postalCode') {
+        inputField.setValue(this.addressData?.address.postalCode || '');
+      }
+
       this.inputs[name] = inputField;
 
       return inputField.getElement();
@@ -57,12 +73,20 @@ export default class AddressForm extends BaseComponent<'form'> {
         inputField.getElement().addEventListener('change', () => {
           this.isDefaultShipping = !this.isDefaultShipping;
         });
+
+        if (this.addressData) {
+          inputField.setChecked(this.addressData?.defaultShippingAddressId === this.addressData?.address.id);
+        }
       }
 
       if (name === 'checkboxDefaultBilling') {
         inputField.getElement().addEventListener('change', () => {
           this.isDefaultBilling = !this.isDefaultBilling;
         });
+
+        if (this.addressData) {
+          inputField.setChecked(this.addressData?.defaultBillingAddressId === this.addressData?.address.id);
+        }
       }
 
       this.inputs[name] = inputField;
@@ -78,7 +102,7 @@ export default class AddressForm extends BaseComponent<'form'> {
     this.node.append(formContent, actionField);
   }
 
-  private getSignupData() {
+  private getSignupData(): IAddressFormData | undefined {
     const type: string | undefined = this.selectType.getValue();
     const streetName: string | undefined = this.inputs['streetName'].getValue('streetBilling');
     const city: string | undefined = this.inputs['city'].getValue('cityBilling');
@@ -111,10 +135,16 @@ export default class AddressForm extends BaseComponent<'form'> {
       this.buttonSubmit.classList.remove('button--loading');
       return;
     }
+    let addressId: string;
 
     try {
-      const { addresses } = await addAddress(values);
-      const addressId: string = addresses[addresses.length - 1].id || '';
+      if (this.addressData) {
+        await changeAddress(this.addressData.address.id || '', values);
+        addressId = this.addressData.address.id || '';
+      } else {
+        const { addresses } = await addAddress(values);
+        addressId = addresses[addresses.length - 1].id || '';
+      }
 
       if (this.isDefaultBilling) await setDefaultTypeAddress('Billing', addressId);
       if (this.isDefaultShipping) await setDefaultTypeAddress('Shhipping', addressId);
@@ -128,13 +158,17 @@ export default class AddressForm extends BaseComponent<'form'> {
         await addTypeAddressID('Shipping', addressId);
       }
 
-      new Notification('success', 'Your Address is successfully added!').showNotification();
+      if (this.addressData?.address.id) {
+        new Notification('success', 'The selected address has been successfully updated!').showNotification();
+      } else {
+        new Notification('success', 'Your Address is successfully added!').showNotification();
+      }
 
       this.buttonSubmit.classList.remove('button--loading');
       this.buttonSubmit.classList.add('button--success');
 
       setTimeout(() => {
-        this.firstBtnAction();
+        this.firstBtnAction(this.addressData?.address.id ? AddressesMode.SHOW : AddressesMode.NEW);
       }, 500);
     } catch (error) {
       if (error instanceof Error) {

@@ -10,13 +10,13 @@ import './address.scss';
 export default class Address extends BaseComponent<'div'> {
   private mode: AddressesMode;
   private addressData: IAddressData | null;
-  private firstBtnAction: () => void;
+  private firstBtnAction: (type: AddressesMode) => void;
   private secondBtnAction: (id: string) => void;
 
   constructor(
     mode: AddressesMode,
     addressData: IAddressData | null,
-    firstCallback: () => void,
+    firstCallback: (type: AddressesMode) => void,
     secondCallback: (id: string) => void
   ) {
     super('div', ['address']);
@@ -40,6 +40,8 @@ export default class Address extends BaseComponent<'div'> {
 
   private renderAddress = (): void => {
     const data = this.addressData;
+
+    this.node.innerHTML = '';
 
     if (this.mode === AddressesMode.SHOW) {
       const defaultsWrapp = new BaseComponent('div', ['address__sups']).getElement();
@@ -66,7 +68,7 @@ export default class Address extends BaseComponent<'div'> {
       const list = new List(listObj).getElement();
 
       const buttonWrapp = new BaseComponent('div', ['address__actions']).getElement();
-      const buttonSubmit = new Button('submit', 'Edit Address').getElement();
+      const buttonSubmit = new Button('submit', 'Edit Address', [], false, this.changeMode).getElement();
       const buttonCancel = new Button('button', 'Remove Address', ['button--cancel'], false, () =>
         this.secondBtnAction(data?.address?.id || '')
       ).getElement();
@@ -76,6 +78,14 @@ export default class Address extends BaseComponent<'div'> {
       if (defaultsWrapp.childElementCount > 0) this.node.append(defaultsWrapp);
 
       this.node.append(list, buttonWrapp);
+    } else {
+      this.node.append(new AddressForm(this.firstBtnAction, this.changeMode, this.addressData).getElement());
     }
+  };
+
+  private changeMode = (): void => {
+    this.mode = this.mode === AddressesMode.SHOW ? AddressesMode.EDIT : AddressesMode.SHOW;
+    this.firstBtnAction(this.mode);
+    this.renderAddress();
   };
 }
