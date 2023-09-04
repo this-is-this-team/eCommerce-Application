@@ -7,6 +7,10 @@
   border-radius: 8px;
   background: $color-bg-card;
 
+  @include small-mobile {
+    padding: 24px;
+  }
+
   &__sups {
     margin: 0 0 16px -3px;
   }
@@ -18,7 +22,6 @@
     gap: 24px;
 
     @include mobile {
-      align-items: flex-start;
       flex-direction: column;
     }
   }

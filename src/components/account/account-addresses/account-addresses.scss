@@ -15,6 +15,10 @@
       margin-top: 8px;
     }
 
+    @include small-mobile {
+      padding: 24px;
+    }
+
     &.centered {
       align-items: center;
     }

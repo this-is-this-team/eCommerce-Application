@@ -11,6 +11,7 @@
   &__input {
     padding: 10px 24px;
     height: 48px;
+    width: 100%;
     font: $font-main;
     color: $color-primary;
     background: $color-white;
@@ -38,6 +39,10 @@
       opacity: 0.6;
       border: 1px solid $color-white;
     }
+
+    @include small-mobile {
+      padding: 10px 14px;
+    }
   }
 
   &-password {
@@ -60,6 +65,10 @@
     background-size: cover;
     cursor: pointer;
 
+    @include small-mobile {
+      right: 14px;
+    }
+
     &.password-visible {
       background-image: url('../../assets/icons/visibility-off.svg');
     }
@@ -78,6 +87,7 @@
 
     input {
       cursor: pointer;
+      width: auto;
     }
 
     .form-field__label {
