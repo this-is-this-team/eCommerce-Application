@@ -4,6 +4,7 @@ interface IShopState {
   filterPrice: string;
   filterDays: string;
   sortValue: string;
+  searchValue: string;
 }
 
 interface IShopAction {
@@ -11,12 +12,14 @@ interface IShopAction {
   newFilterPrice?: string;
   newFilterDays?: string;
   newSortValue?: string;
+  newSearchValue?: string;
 }
 
 const initialState: IShopState = {
   filterPrice: '',
   filterDays: '',
   sortValue: '',
+  searchValue: '',
 };
 
 const reducer = (state: IShopState, action: IShopAction): IShopState => {
@@ -30,6 +33,9 @@ const reducer = (state: IShopState, action: IShopAction): IShopState => {
       return newState;
     case 'SET_SORT_VALUE':
       if (action.newSortValue !== undefined) newState.sortValue = action.newSortValue;
+      return newState;
+    case 'SET_SEARCH_VALUE':
+      if (action.newSearchValue !== undefined) newState.searchValue = action.newSearchValue;
       return newState;
     case 'RESET_FILTER_PRICE':
       newState.filterPrice = '';

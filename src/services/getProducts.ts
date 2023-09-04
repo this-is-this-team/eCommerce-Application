@@ -12,7 +12,8 @@ export default async function getProducts(
   subcategoryName?: string,
   filterPrice: string = '',
   filterDays: string = '',
-  sortValue: string = ''
+  sortValue: string = '',
+  searchValue: string = ''
 ): Promise<ProductProjection[] | undefined> {
   try {
     const allCategories: Category[] = await getAllCategories();
@@ -21,6 +22,9 @@ export default async function getProducts(
     const filter: string[] = [];
     let filterQuery: string = '';
     let sort: string = '';
+    const searchQuery = {
+      'text.en': '',
+    };
 
     if (subcategoryName) {
       categoryId = allCategories.find((item) => item.key === subcategoryName)?.id || '';
@@ -42,6 +46,10 @@ export default async function getProducts(
       sort = sortValue;
     }
 
+    if (searchValue) {
+      searchQuery['text.en'] = searchValue;
+    }
+
     const response: ClientResponse<ProductProjectionPagedQueryResponse> = await apiRootCredentials()
       .productProjections()
       .search()
@@ -50,6 +58,7 @@ export default async function getProducts(
           ...(filter.length ? { filter } : {}),
           ...(filterQuery ? { 'filter.query': filterQuery } : {}),
           ...(sort ? { sort } : {}),
+          ...(searchValue ? searchQuery : {}),
         },
       })
       .execute();

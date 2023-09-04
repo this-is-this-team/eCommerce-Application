@@ -15,6 +15,7 @@ import ShopFilters from '../../components/shop-flters/shop-filters';
 import shopStore from '../../store/shop-store';
 import './catalog-page.scss';
 import ShopSort from '../../components/shop-sort/shop-sort';
+import ShopSearch from '../../components/shop-search/shop-search';
 
 export default class CatalogPage extends BaseComponent<'div'> {
   private products: ProductProjection[];
@@ -49,6 +50,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
       this.renderBreadcrumbs();
       this.renderHeroSection();
       this.renderCategoryList();
+      this.renderSearchPanel();
       this.renderControls();
       this.renderProductList();
     }
@@ -142,15 +144,22 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.node.append(categoryListElement);
   }
 
+  private renderSearchPanel(): void {
+    const searchPanel = new ShopSearch().getElement();
+
+    this.node.append(searchPanel);
+  }
+
   private async renderProductList(): Promise<void> {
     this.catalogSection.remove();
     const loadingElement = new BaseComponent('div', ['catalog-page__loading'], 'Loading...').getElement();
     this.node.append(loadingElement);
 
-    const { filterPrice, filterDays, sortValue } = shopStore.getState();
+    const { filterPrice, filterDays, sortValue, searchValue } = shopStore.getState();
 
     this.products =
-      (await getProducts(this.categorySlug, this.subcategorySlug, filterPrice, filterDays, sortValue)) || [];
+      (await getProducts(this.categorySlug, this.subcategorySlug, filterPrice, filterDays, sortValue, searchValue)) ||
+      [];
 
     this.catalogSection = new ProductList(this.products).getElement();
     loadingElement.remove();
