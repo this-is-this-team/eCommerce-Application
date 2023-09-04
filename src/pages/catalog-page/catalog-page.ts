@@ -9,9 +9,12 @@ import CategoryList from '../../components/category-list/category-list';
 import getProducts from '../../services/getProducts';
 import subcategories from '../../constants/subcategories';
 import categories from '../../constants/categories';
-import HeroShop from '../../components/hero-shop/hero-shop';
+import ShopHero from '../../components/shop-hero/shop-hero';
 import { changeUrlEvent } from '../../utils/change-url-event';
+import ShopFilters from '../../components/shop-flters/shop-filters';
+import shopStore from '../../store/shop-store';
 import './catalog-page.scss';
+import ShopSort from '../../components/shop-sort/shop-sort';
 
 export default class CatalogPage extends BaseComponent<'div'> {
   private products: ProductProjection[];
@@ -20,6 +23,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
   private breadcrumbsLinks: IBreadcrumbLink[];
   private currentPage: string;
   private heroTitleText: string;
+  private catalogSection: HTMLElement;
 
   constructor() {
     super('div', ['catalog-page']);
@@ -30,8 +34,10 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.breadcrumbsLinks = [{ pageName: 'Home', pageHref: AppRoutesPath.MAIN }];
     this.currentPage = 'Shop';
     this.heroTitleText = 'Shop All';
+    this.catalogSection = new ProductList(this.products).getElement();
 
     this.renderPage();
+    this.addSubscribtion();
   }
 
   private renderPage(): void {
@@ -43,6 +49,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
       this.renderBreadcrumbs();
       this.renderHeroSection();
       this.renderCategoryList();
+      this.renderControls();
       this.renderProductList();
     }
   }
@@ -99,8 +106,20 @@ export default class CatalogPage extends BaseComponent<'div'> {
   }
 
   private renderHeroSection(): void {
-    const heroSection: HTMLElement = new HeroShop(this.heroTitleText).getElement();
+    const heroSection: HTMLElement = new ShopHero(this.heroTitleText).getElement();
     this.node.append(heroSection);
+  }
+
+  private renderControls(): void {
+    const shopControls: HTMLDivElement = new BaseComponent('div', ['shop-controls']).getElement();
+    const container: HTMLDivElement = new BaseComponent('div', ['shop-controls__container']).getElement();
+    const filtersElement: HTMLElement = new ShopFilters().getElement();
+    const sortElement: HTMLElement = new ShopSort().getElement();
+
+    container.append(filtersElement, sortElement);
+    shopControls.append(container);
+
+    this.node.append(shopControls);
   }
 
   private renderCategoryList(): void {
@@ -124,14 +143,24 @@ export default class CatalogPage extends BaseComponent<'div'> {
   }
 
   private async renderProductList(): Promise<void> {
+    this.catalogSection.remove();
     const loadingElement = new BaseComponent('div', ['catalog-page__loading'], 'Loading...').getElement();
     this.node.append(loadingElement);
 
-    this.products = (await getProducts(this.categorySlug, this.subcategorySlug)) || [];
+    const { filterPrice, filterDays, sortValue } = shopStore.getState();
 
-    const catalogSection: HTMLElement = new ProductList(this.products).getElement();
+    this.products =
+      (await getProducts(this.categorySlug, this.subcategorySlug, filterPrice, filterDays, sortValue)) || [];
+
+    this.catalogSection = new ProductList(this.products).getElement();
     loadingElement.remove();
 
-    this.node.append(catalogSection);
+    this.node.append(this.catalogSection);
+  }
+
+  private addSubscribtion(): void {
+    shopStore.subscribe(() => {
+      this.renderProductList();
+    });
   }
 }

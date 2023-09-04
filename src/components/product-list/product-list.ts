@@ -25,7 +25,7 @@ export default class ProductList extends BaseComponent<'section'> {
       });
       container.append(...this.cards);
     } else {
-      const emptyListText = new BaseComponent('div', ['product-list__empty'], 'No tours available').getElement();
+      const emptyListText = new BaseComponent('div', ['product-list__empty'], 'No tours found').getElement();
       container.append(emptyListText);
     }
 
