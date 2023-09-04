@@ -55,10 +55,13 @@ export default class Address extends BaseComponent<'div'> {
         defaultsWrapp.append(defaultBilling, defaultShipping);
       }
 
+      const type: string[] = [];
+
+      if (data?.billingAddressIds?.includes(data?.address.id || '')) type.push('Billing');
+      if (data?.shippingAddressIds?.includes(data?.address.id || '')) type.push('Shipping');
+
       const listObj = {
-        'Type ': `${data?.billingAddressIds?.includes(data?.address.id || '') ? 'Billing' : ''}${
-          data?.shippingAddressIds?.includes(data?.address.id || '') ? 'Shipping' : ''
-        }`,
+        'Type ': `${type.join(', ')}`,
         'Street ': data?.address?.streetName || '',
         'City ': data?.address?.city || '',
         'Postcode ': data?.address?.postalCode || '',
