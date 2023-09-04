@@ -11,6 +11,7 @@ import Notification from '../../components/notification/notification';
 import categories from '../../constants/categories';
 import subcategories from '../../constants/subcategories';
 import { ICategory } from '../../types/types';
+import ProductSlider from '../../components/slider/slider';
 
 export default class ProductPage extends BaseComponent<'div'> {
   private productData: ProductData | null = null;
@@ -101,14 +102,16 @@ export default class ProductPage extends BaseComponent<'div'> {
   private async createMarkup(): Promise<void> {
     await this.getProductData(this.productId);
 
-    const product = new Product(this.productData!).getElement();
     const productName = this.productData?.name.en || 'Unnamed tour';
+    const productImages = this.productData?.masterVariant.images || [];
+
+    const slider = new ProductSlider(productImages).getElement();
+    const product = new Product(this.productData!).getElement();
 
     const breadcrumbs = new Breadcrumbs(this.breadcrumbsLinks, productName).getElement();
     const container = new BaseComponent('div', ['product-page__container']).getElement();
 
-    container.append(product);
-
+    container.append(slider, product);
     this.node.append(breadcrumbs, container);
   }
 }
