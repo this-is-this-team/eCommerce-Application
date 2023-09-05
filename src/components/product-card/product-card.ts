@@ -44,7 +44,7 @@ export default class ProductCard extends BaseComponent<'div'> {
 
     const cardMiddle = new BaseComponent('div', ['product-card__middle']).getElement();
     const cardPrice = new BaseComponent('span', ['product-card__price']).getElement();
-    const cardPriceDisc = new BaseComponent('span', ['product-card__price--new']).getElement();
+    const cardPriceDisc = new BaseComponent('span', ['product-card__price', 'product-card__price--new']).getElement();
 
     if (standardPrice) {
       cardPrice.textContent = formatPrice(
