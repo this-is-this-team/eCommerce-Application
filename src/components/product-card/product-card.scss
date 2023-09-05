@@ -55,10 +55,11 @@
 
   &__price {
     color: $color-price;
+    font: $font-button;
 
     &--old {
       text-decoration: line-through;
-      color: $color-primary;
+      color: $color-secondary-40;
     }
 
     &--new {
@@ -67,7 +68,9 @@
     }
   }
 
-  //&__days {}
+  &__days {
+    font: $font-label;
+  }
 
   &__bottom {
     display: flex;

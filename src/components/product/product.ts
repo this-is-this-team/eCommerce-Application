@@ -63,7 +63,7 @@ export default class Product extends BaseComponent<'div'> {
       if (discountedPrice) {
         const productDiscountedPrice = new BaseComponent(
           'span',
-          ['product-card__price--new'],
+          ['product-card__price', 'product-card__price--new'],
           formatPrice(discountedPrice.currencyCode, discountedPrice.centAmount, discountedPrice.fractionDigits)
         ).getElement();
 
