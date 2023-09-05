@@ -37,6 +37,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.heroTitleText = 'Shop All';
     this.catalogSection = new ProductList(this.products).getElement();
 
+    shopStore.unsubscribe();
     this.renderPage();
     this.addSubscribtion();
   }
