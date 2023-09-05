@@ -9,6 +9,7 @@
   height: 100%;
   background: rgba($color-black, 0.6);
   padding: 0 60px;
+  z-index: 100;
 
   @include mobile {
     padding: 0 10px;
