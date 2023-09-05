@@ -110,21 +110,39 @@ export default class ProductSlider extends BaseComponent<'div'> {
   }
 
   private openModal(index: number): void {
-    const modalSliderContainer = new BaseComponent('div', ['product__slider_modal']).getElement();
-    const modalSliderView = <HTMLElement>this.sliderView.cloneNode(true);
+    const modalContainer = new BaseComponent('div', ['product__slider_modal']).getElement();
+    const modalView = <HTMLElement>this.sliderView.cloneNode(true);
 
-    modalSliderContainer.append(modalSliderView);
-    this.modalWindow.append(modalSliderContainer);
+    modalView.innerHTML = '';
+
+    const modalViewWrapper = new BaseComponent('div', ['swiper-wrapper']).getElement();
+    const modalBtnNext = <HTMLElement>this.sliderBtnNext.cloneNode(true);
+    const modalBtnPrev = <HTMLElement>this.sliderBtnPrev.cloneNode(true);
+
+    for (let i = 0; i < this.images.length; i++) {
+      const imageViewContainer = new BaseComponent('div', ['swiper-slide']).getElement();
+      const imageView = new BaseComponent('img').getElement();
+      imageView.src = this.images[i].url;
+
+      imageViewContainer.append(imageView);
+
+      modalViewWrapper.append(imageViewContainer);
+    }
+
+    modalView.append(modalViewWrapper, modalBtnNext, modalBtnPrev);
+
+    modalContainer.append(modalView);
+    this.modalWindow.append(modalContainer);
 
     document.body.append(this.modalWindow);
 
-    new Swiper(modalSliderView, {
+    new Swiper(modalView, {
       loop: true,
       spaceBetween: 24,
       modules: [Navigation],
       navigation: {
-        nextEl: '.popup .swiper-button-next',
-        prevEl: '.popup .swiper-button-prev',
+        nextEl: modalBtnNext,
+        prevEl: modalBtnPrev,
       },
       initialSlide: index,
     });
