@@ -10,7 +10,7 @@ export default class ShopSearch extends BaseComponent<'div'> {
   private searchButton: HTMLButtonElement;
   private resetButton: HTMLDivElement;
 
-  constructor() {
+  constructor(initialValue?: string) {
     super('div', ['shop-search']);
 
     this.formSearch = new BaseComponent('form', ['shop-search__form']).getElement();
@@ -21,6 +21,12 @@ export default class ShopSearch extends BaseComponent<'div'> {
     this.searchInput.id = 'search';
     this.searchInput.name = 'search';
     this.searchInput.placeholder = 'Search';
+
+    if (initialValue) {
+      this.searchInput.value = initialValue;
+      this.searchButton.disabled = false;
+      this.resetButton.classList.add('shop-search__reset--visible');
+    }
 
     this.renderSearchPanel();
     this.setListeners();
