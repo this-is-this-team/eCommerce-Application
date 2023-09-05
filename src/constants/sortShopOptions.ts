@@ -1,6 +1,6 @@
 const sortShopOptions = [
   {
-    label: 'Not selected',
+    label: 'Default',
     value: '',
   },
   {
@@ -12,8 +12,12 @@ const sortShopOptions = [
     value: 'price desc',
   },
   {
-    label: 'By title (alphabetically)',
+    label: 'By title (A - Z)',
     value: 'name.en asc',
+  },
+  {
+    label: 'By title (Z - A)',
+    value: 'name.en desc',
   },
 ];
 
