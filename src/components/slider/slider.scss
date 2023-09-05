@@ -36,6 +36,10 @@
       .swiper-slide {
         width: 100%;
         aspect-ratio: 3/2;
+
+        &-active {
+          cursor: zoom-in;
+        }
       }
     }
 
@@ -58,7 +62,6 @@
     justify-content: center;
     max-width: 100%;
     max-height: 80vh;
-    gap: 24px;
     user-select: none;
     z-index: 20;
 
