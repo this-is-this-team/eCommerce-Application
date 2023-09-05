@@ -146,7 +146,9 @@ export default class CatalogPage extends BaseComponent<'div'> {
   }
 
   private renderSearchPanel(): void {
-    const searchPanel = new ShopSearch().getElement();
+    const { searchValue } = shopStore.getState();
+
+    const searchPanel = new ShopSearch(searchValue).getElement();
 
     this.node.append(searchPanel);
   }
