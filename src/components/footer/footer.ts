@@ -74,7 +74,7 @@ export default class Footer extends BaseComponent<'footer'> {
     const signupItem: HTMLLIElement = this.createListItem('Create Account', ['menu__item'], AppRoutesPath.SIGN_UP);
     const loginItem: HTMLLIElement = this.createListItem('Log In', ['menu__item'], AppRoutesPath.LOGIN);
     const aboutUsItem: HTMLLIElement = this.createListItem('About Us', ['menu__item'], AppRoutesPath.ANCHOR);
-    const accountItem: HTMLLIElement = this.createListItem('Account', ['menu__item'], AppRoutesPath.ANCHOR);
+    const accountItem: HTMLLIElement = this.createListItem('Account', ['menu__item'], AppRoutesPath.ACCOUNT);
     const shoppingCartItem: HTMLLIElement = this.createListItem('Shopping Cart', ['menu__item'], AppRoutesPath.ANCHOR);
 
     pagesMenu.append(pagesItem, signupItem, loginItem, aboutUsItem, accountItem, shoppingCartItem);
@@ -84,7 +84,7 @@ export default class Footer extends BaseComponent<'footer'> {
     return navigation;
   }
 
-  private createListItem(name: string, classNames: string[], href: AppRoutesPath): HTMLLIElement {
+  private createListItem(name: string, classNames: string[], href: AppRoutesPath | string): HTMLLIElement {
     const listItem: HTMLLIElement = new BaseComponent<'li'>('li', [...classNames]).getElement();
     const itemLink: HTMLAnchorElement = new Link(name, ['menu__link'], href).getElement();
 

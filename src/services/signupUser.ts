@@ -1,10 +1,10 @@
 import { Customer } from '@commercetools/platform-sdk';
 import { ISignupData } from '../types/interfaces';
-import apiRootSignup from './apiRootSignup';
+import apiRootCredentials from './apiRootCredentials';
 import signinUser from './signinUser';
 
 export default async function signupUser(body: ISignupData): Promise<Customer> {
-  await apiRootSignup()
+  await apiRootCredentials()
     .me()
     .signup()
     .post({

@@ -2,17 +2,13 @@ import BaseComponent from '../base-component';
 import Button from '../button/button';
 import InputField from '../input/input';
 import Link from '../link/link';
-import { signupInputs } from '../../constants/signupInputs';
-import { IAddress, ISignupData } from '../../types/interfaces';
-import { AppRoutesPath } from '../../router/types';
 import signupUser from '../../services/signupUser';
-import './form.scss';
 import Notification from '../notification/notification';
+import { signupInputs } from '../../constants/signupInputs';
+import { IAddress, InputFilds, ISignupData } from '../../types/interfaces';
+import { AppRoutesPath } from '../../router/types';
 import { changeUrlEvent } from '../../utils/change-url-event';
-
-interface InputFilds {
-  [inputName: string]: InputField;
-}
+import './form.scss';
 
 export default class SignupForm extends BaseComponent<'div'> {
   private formElement: HTMLFormElement;
@@ -106,9 +102,9 @@ export default class SignupForm extends BaseComponent<'div'> {
     return {
       key: 'shipping',
       country: 'US',
-      street: streetShipping,
+      streetName: streetShipping,
       city: cityShipping,
-      postcode: postcodeShipping,
+      postalCode: postcodeShipping,
     };
   }
 
@@ -124,9 +120,9 @@ export default class SignupForm extends BaseComponent<'div'> {
     return {
       key: 'billing',
       country: 'US',
-      street: streetBilling,
+      streetName: streetBilling,
       city: cityBilling,
-      postcode: postcodeBilling,
+      postalCode: postcodeBilling,
     };
   }
 
@@ -135,11 +131,11 @@ export default class SignupForm extends BaseComponent<'div'> {
     const lastName: string | undefined = this.inputs['lastName'].getValue('lastName');
     const email: string | undefined = this.inputs['email'].getValue('email');
     const password: string | undefined = this.inputs['password'].getValue('password');
-    const birthDate: string | undefined = this.inputs['birthDate'].getValue('birthDate');
+    const dateOfBirth: string | undefined = this.inputs['birthDate'].getValue('birthDate');
     const shippingAddress: IAddress | undefined = this.getShippingAddress();
     const billingAddress: IAddress | undefined = this.getBillingAddress();
 
-    if (!(firstName && lastName && email && password && birthDate && shippingAddress)) {
+    if (!(firstName && lastName && email && password && dateOfBirth && shippingAddress)) {
       return;
     }
 
@@ -155,7 +151,7 @@ export default class SignupForm extends BaseComponent<'div'> {
       lastName,
       email,
       password,
-      birthDate,
+      dateOfBirth,
       addresses,
       shippingAddresses: [0],
       billingAddresses: [billingAddress ? 1 : 0],
@@ -180,14 +176,12 @@ export default class SignupForm extends BaseComponent<'div'> {
     try {
       await signupUser(values);
 
-      this.buttonSubmit.classList.remove('button--loading');
-
       new Notification('success', 'Registration completed successfully').showNotification();
 
-      changeUrlEvent(AppRoutesPath.MAIN);
+      this.buttonSubmit.classList.remove('button--loading');
+      this.buttonSubmit.classList.add('button--success');
 
-      this.buttonSubmit.disabled = false;
-      this.formReset();
+      changeUrlEvent(AppRoutesPath.MAIN);
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
@@ -197,16 +191,7 @@ export default class SignupForm extends BaseComponent<'div'> {
 
       this.buttonSubmit.disabled = false;
       this.buttonSubmit.classList.remove('button--loading');
+      this.buttonSubmit.classList.remove('button--success');
     }
-  }
-
-  private formReset(): void {
-    if (this.checkboxAddress) {
-      this.toggleBillingAddress();
-      this.inputs['streetBilling'].clearError();
-      this.inputs['cityBilling'].clearError();
-      this.inputs['postcodeBilling'].clearError();
-    }
-    this.formElement.reset();
   }
 }

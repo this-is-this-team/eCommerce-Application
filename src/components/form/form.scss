@@ -5,12 +5,12 @@
   display: flex;
   flex-direction: column;
 
-  &--login {
-    width: min(544px, 100%);
-  }
-
   @include mobile {
     padding: 32px;
+  }
+
+  @include small-mobile {
+    padding: 24px;
   }
 
   &__title {
@@ -52,8 +52,33 @@
     gap: 24px;
 
     @include mobile {
-      align-items: flex-start;
       flex-direction: column;
+    }
+  }
+
+  &--login {
+    width: min(544px, 100%);
+  }
+
+  &--details {
+    &__content {
+      @media (max-width: 1430px) {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+
+  &--password {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: $color-bg-card;
+
+    @include mobile {
+      padding: 14px 8px;
     }
   }
 }

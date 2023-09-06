@@ -1,7 +1,6 @@
 import './styles/index.scss';
 import { createRouter } from './router';
 import Header from './components/header/header';
-import MainPage from './pages/main-page/main-page';
 import Footer from './components/footer/footer';
 import getUser from './services/getUser';
 import userStore from './store/user-store';
@@ -10,7 +9,7 @@ import Notification from './components/notification/notification';
 class App {
   public async start() {
     const header = new Header().getElement();
-    const main = new MainPage().getElement();
+    const main = document.createElement('main');
     const footer = new Footer().getElement();
 
     document.body.append(header, main, footer);

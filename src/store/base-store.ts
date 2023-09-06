@@ -2,6 +2,7 @@ export interface IStore<T, A> {
   getState: () => T;
   subscribe: (fn: (state: T) => void) => void;
   dispatch: (action: A) => void;
+  unsubscribe: () => void;
 }
 
 export default class BaseStore<T, A> implements IStore<T, A> {
@@ -15,16 +16,20 @@ export default class BaseStore<T, A> implements IStore<T, A> {
     this.reducer = reducer;
   }
 
-  getState() {
+  getState(): T {
     return this.currentState;
   }
 
-  subscribe(fn: (state: T) => void) {
+  subscribe(fn: (state: T) => void): void {
     this.subscribers.push(fn);
   }
 
-  dispatch(action: A) {
+  dispatch(action: A): void {
     this.currentState = this.reducer(this.currentState, action);
     this.subscribers.forEach((fn) => fn(this.currentState));
+  }
+
+  unsubscribe(): void {
+    this.subscribers = [];
   }
 }

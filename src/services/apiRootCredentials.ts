@@ -1,27 +1,17 @@
-import {
-  ClientBuilder,
-  TokenCache,
-  type PasswordAuthMiddlewareOptions,
-  type HttpMiddlewareOptions,
-} from '@commercetools/sdk-client-v2';
+import { ClientBuilder, type AuthMiddlewareOptions, type HttpMiddlewareOptions } from '@commercetools/sdk-client-v2';
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 
-const projectKey: string = process.env.CTP_PROJECT_KEY || '';
+export default function apiRootCredentials() {
+  const projectKey: string = process.env.CTP_PROJECT_KEY || '';
 
-export default function apiRootLogin(email: string, password: string, tokenCache: TokenCache) {
-  const options: PasswordAuthMiddlewareOptions = {
+  const authMiddlewareOptions: AuthMiddlewareOptions = {
     host: process.env.CTP_AUTH_URL || '',
     projectKey,
     credentials: {
       clientId: process.env.CTP_CLIENT_ID || '',
       clientSecret: process.env.CTP_CLIENT_SECRET || '',
-      user: {
-        username: email,
-        password,
-      },
     },
     scopes: [process.env.CTP_SCOPES || ''],
-    tokenCache,
     fetch,
   };
 
@@ -32,7 +22,7 @@ export default function apiRootLogin(email: string, password: string, tokenCache
 
   const ctpClient = new ClientBuilder()
     .withProjectKey(projectKey)
-    .withPasswordFlow(options)
+    .withClientCredentialsFlow(authMiddlewareOptions)
     .withHttpMiddleware(httpMiddlewareOptions)
     .build();
 

@@ -1,6 +1,8 @@
 .breadcrumbs {
   &__container {
     @include container;
+    display: flex;
+    justify-content: space-between;
   }
 
   &__links {
@@ -8,10 +10,12 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    flex-wrap: wrap;
   }
 
   &__current {
     font: $font-xs;
     color: $color-primary;
+    white-space: nowrap;
   }
 }

@@ -1,0 +1,128 @@
+.product {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: calc(50% - 12px);
+  padding: 64px;
+  background-color: $color-bg-card;
+  border-radius: 8px;
+
+  @include tablet {
+    gap: 20px;
+    padding: 32px;
+  }
+
+  @include laptop {
+    width: 80%;
+  }
+
+  @include mobile {
+    width: 100%;
+  }
+
+  &__routes {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include tablet {
+      gap: 8px;
+    }
+  }
+
+  &__title {
+    @include font-h2;
+  }
+
+  &__opinion {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: $color-secondary-40;
+  }
+
+  &__rating {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 4px 8px 4px 28px;
+    font-weight: 700;
+    font-size: 14px;
+    color: $color-primary;
+    background-color: white;
+    border-radius: 30px;
+
+    &::before {
+      position: absolute;
+      display: block;
+      content: '';
+      left: 8px;
+      width: 16px;
+      height: 16px;
+      background: url('../../assets/icons/star.svg') center/cover no-repeat;
+    }
+  }
+
+  &__stock {
+    display: flex;
+    align-items: center;
+    padding-left: 22px;
+    position: relative;
+    font-weight: 700;
+
+    &::before {
+      position: absolute;
+      display: block;
+      content: '';
+      left: 0;
+      width: 18px;
+      height: 18px;
+      background: url('../../assets/icons/check.svg') center/cover no-repeat;
+    }
+  }
+
+  &__add-to-cart {
+    & button {
+      width: 100%;
+    }
+  }
+
+  &__about {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include tablet {
+      gap: 8px;
+    }
+
+    &-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(0, 19, 41, 0.12);
+
+      @include tablet {
+        padding-bottom: 8px;
+      }
+
+      &:nth-last-child(1) {
+        padding-bottom: 0;
+        border: none;
+      }
+
+      & p {
+        font-size: 14px;
+        margin-left: 5px;
+      }
+    }
+  }
+}

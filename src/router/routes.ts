@@ -4,26 +4,56 @@ import MainPage from '../pages/main-page/main-page';
 import LoginPage from '../pages/login-page/login-page';
 import SignupPage from '../pages/signup-page/signup-page';
 import NotFoundPage from '../pages/not-found-page/not-found-page';
+import CatalogPage from '../pages/catalog-page/catalog-page';
+import ProductPage from '../pages/product-page/product-page';
+import AccountPage from '../pages/account-page/account-page';
+import AddressesPage from '../pages/addresses-page/addresses-page';
 
 export const MAIN_ROUTE: AppRoute = {
   path: AppRoutesPath.MAIN,
-  component: new MainPage().getElement(),
+  component: () => new MainPage().getElement(),
+};
+
+export const LOGIN_ROUTE: AppRoute = {
+  path: AppRoutesPath.LOGIN,
+  component: () => new LoginPage().getElement(),
 };
 
 export const NOT_FOUND_ROUTE: AppRoute = {
   path: AppRoutesPath.NOT_FOUND,
-  component: new NotFoundPage().getElement(),
+  component: () => new NotFoundPage().getElement(),
 };
 
 export const ROUTES: AppRoute[] = [
   MAIN_ROUTE,
-  {
-    path: AppRoutesPath.LOGIN,
-    component: new LoginPage().getElement(),
-  },
+  LOGIN_ROUTE,
   {
     path: AppRoutesPath.SIGN_UP,
-    component: new SignupPage().getElement(),
+    component: () => new SignupPage().getElement(),
+  },
+  {
+    path: AppRoutesPath.ACCOUNT,
+    component: () => new AccountPage().getElement(),
+  },
+  {
+    path: AppRoutesPath.ACCOUNT_ADDRESSES,
+    component: () => new AddressesPage().getElement(), // TODO: Change page-component when implemented
+  },
+  {
+    path: AppRoutesPath.SHOP,
+    component: () => new CatalogPage().getElement(),
+  },
+  {
+    path: AppRoutesPath.CATEGORY,
+    component: () => new CatalogPage().getElement(),
+  },
+  {
+    path: AppRoutesPath.SUBCATEGORY,
+    component: () => new CatalogPage().getElement(),
+  },
+  {
+    path: AppRoutesPath.PRODUCT,
+    component: () => new ProductPage().getElement(),
   },
   NOT_FOUND_ROUTE,
 ];

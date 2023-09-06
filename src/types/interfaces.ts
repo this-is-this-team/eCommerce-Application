@@ -1,11 +1,13 @@
+import { BaseAddress } from '@commercetools/platform-sdk';
+import InputField from '../components/input/input';
 import { AppRoutesPath } from '../router/types';
 
 export interface IAddress {
   key: string;
   country: string;
-  street: string;
+  streetName: string;
   city: string;
-  postcode: string;
+  postalCode: string;
 }
 
 export interface ISignupData {
@@ -13,7 +15,7 @@ export interface ISignupData {
   lastName: string;
   email: string;
   password: string;
-  birthDate: string;
+  dateOfBirth: string;
   addresses: IAddress[];
   shippingAddresses?: number[];
   billingAddresses?: number[];
@@ -26,12 +28,44 @@ export interface ISigninData {
   password: string;
 }
 
+export interface IDetailsData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  dateOfBirth: string;
+}
+
+export interface IDetailsPasswordData {
+  currentPassword: string;
+  newPassword: string;
+}
+
 export interface IBreadcrumbLink {
   pageName: string;
-  pageHref: AppRoutesPath;
+  pageHref: AppRoutesPath | string;
 }
 
 export interface IBannerContent {
   title: string;
   text: string;
+}
+
+export interface InputFilds {
+  [inputName: string]: InputField;
+}
+
+export interface IAddressData {
+  address: BaseAddress;
+  billingAddressIds: string[] | undefined;
+  shippingAddressIds: string[] | undefined;
+  defaultBillingAddressId: string | undefined;
+  defaultShippingAddressId: string | undefined;
+}
+
+export interface IAddressFormData {
+  type: string;
+  streetName: string;
+  city: string;
+  postalCode: string;
+  country: string;
 }

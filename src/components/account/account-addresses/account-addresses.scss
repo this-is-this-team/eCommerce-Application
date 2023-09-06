@@ -1,0 +1,68 @@
+.account-addresses {
+  &__title {
+    @include font-h3;
+  }
+
+  &__wrapp {
+    margin-top: 24px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    background: $color-bg-card;
+    border-radius: 8px;
+
+    @include tablet {
+      margin-top: 8px;
+    }
+
+    @include small-mobile {
+      padding: 24px;
+    }
+
+    &.centered {
+      align-items: center;
+    }
+  }
+
+  &__view-btn {
+    margin-top: 32px;
+    max-width: fit-content;
+  }
+
+  &__add-btn {
+    margin-top: 24px;
+    max-width: fit-content;
+  }
+
+  &__item {
+    margin-top: 10px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  &-empty {
+    &__img {
+      width: 40px;
+      height: 40px;
+      background-image: url('../../../assets/icons/empty-addresses-book.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    &__title {
+      margin-top: 16px;
+      text-align: center;
+      @include font-h4;
+    }
+
+    &__descr {
+      margin-top: 8px;
+      max-width: 338px;
+      text-align: center;
+      font-size: 15px;
+    }
+  }
+}

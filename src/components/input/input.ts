@@ -30,7 +30,7 @@ export default class InputField extends BaseComponent<'div'> {
     this.node.append(this.labelElement, this.inputElement);
   }
 
-  public getValue(inputName: keyof typeof formValidationRules): string | undefined {
+  public getValue(inputName: keyof typeof formValidationRules, comparisonValues?: string): string | undefined {
     const regex: RegExp = formValidationRules[inputName]?.rule;
 
     if (regex && !regex.test(this.inputElement.value.trim())) {
@@ -40,9 +40,24 @@ export default class InputField extends BaseComponent<'div'> {
       return;
     }
 
+    if (inputName === 'newPassword' && this.inputElement.value === comparisonValues) {
+      this.showError(inputName, true);
+      this.inputElement.addEventListener('input', () => this.clearError());
+
+      return;
+    }
+
     this.inputElement.removeEventListener('input', () => this.clearError());
 
     return this.inputElement.value.trim();
+  }
+
+  public setChecked(isChecked: boolean = false): void {
+    this.inputElement.checked = isChecked;
+  }
+
+  public setValue(value: string): void {
+    this.inputElement.value = value;
   }
 
   private setAttributes(type: string = 'text', name: string = '', placeholder: string = ''): void {
@@ -68,13 +83,15 @@ export default class InputField extends BaseComponent<'div'> {
     this.inputElement.max = formattedDate;
   }
 
-  private showError(inputName: keyof typeof formValidationRules): void {
+  private showError(inputName: keyof typeof formValidationRules, isConfirm: boolean = false): void {
     this.inputElement.classList.add('valid-error');
-    this.errorElement.textContent = formValidationRules[inputName].errorText;
+    this.errorElement.textContent = isConfirm
+      ? formValidationRules[inputName].secondErrorText || ''
+      : formValidationRules[inputName].errorText;
     this.node.append(this.errorElement);
   }
 
-  public clearError(): void {
+  private clearError(): void {
     this.inputElement.classList.remove('valid-error');
     this.errorElement.textContent = '';
     this.errorElement.remove();
