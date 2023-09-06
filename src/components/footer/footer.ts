@@ -73,7 +73,7 @@ export default class Footer extends BaseComponent<'footer'> {
     const pagesItem: HTMLLIElement = this.createListItem('Pages', ['menu__item', 'menu__title'], AppRoutesPath.ANCHOR);
     const signupItem: HTMLLIElement = this.createListItem('Create Account', ['menu__item'], AppRoutesPath.SIGN_UP);
     const loginItem: HTMLLIElement = this.createListItem('Log In', ['menu__item'], AppRoutesPath.LOGIN);
-    const aboutUsItem: HTMLLIElement = this.createListItem('About Us', ['menu__item'], AppRoutesPath.ANCHOR);
+    const aboutUsItem: HTMLLIElement = this.createListItem('About Us', ['menu__item'], AppRoutesPath.ABOUT_US);
     const accountItem: HTMLLIElement = this.createListItem('Account', ['menu__item'], AppRoutesPath.ACCOUNT);
     const shoppingCartItem: HTMLLIElement = this.createListItem('Shopping Cart', ['menu__item'], AppRoutesPath.BASKET);
 
