@@ -112,7 +112,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
 
   private drawCart(): HTMLDivElement {
     const cart: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-cart']).getElement();
-    const cartIcon: HTMLAnchorElement = new Link('', ['user-cart__icon'], AppRoutesPath.ANCHOR).getElement();
+    const cartIcon: HTMLAnchorElement = new Link('', ['user-cart__icon'], AppRoutesPath.BASKET).getElement();
     const cartCounter: HTMLDivElement = new BaseComponent<'div'>('div', ['user-cart__counter'], '0').getElement();
 
     cart.append(cartIcon, cartCounter);
