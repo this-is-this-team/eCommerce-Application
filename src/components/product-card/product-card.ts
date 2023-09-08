@@ -11,8 +11,14 @@ import Notification from '../notification/notification';
 import './product-card.scss';
 
 export default class ProductCard extends BaseComponent<'div'> {
+  cartButton: HTMLButtonElement;
+
   constructor(product: ProductProjection) {
     super('div', ['product-card']);
+
+    this.cartButton = new Button('button', '', ['product-card__button', 'button--cart'], false, () =>
+      this.onAddToCart(product.id)
+    ).getElement();
 
     this.createMarkup(product);
   }
@@ -74,11 +80,7 @@ export default class ProductCard extends BaseComponent<'div'> {
     const cardBottom = new BaseComponent('div', ['product-card__bottom']).getElement();
     const cardReviews = new BaseComponent('p', ['product-card__reviews'], `${reviews}+ Reviews`).getElement();
 
-    // TODO: change this.addToCart to global func add to cart
-    const cartButton = new Button('button', '', ['product-card__button', 'button--cart'], false, () =>
-      this.onAddToCart(productId)
-    ).getElement();
-    cardBottom.append(cardReviews, cartButton);
+    cardBottom.append(cardReviews, this.cartButton);
 
     cardContent.append(cardRating, cardTitle, cardDescription, cardMiddle, cardBottom);
 
@@ -104,6 +106,9 @@ export default class ProductCard extends BaseComponent<'div'> {
 
   private async onAddToCart(id: string) {
     try {
+      this.cartButton.disabled = true;
+      this.node.classList.add('card-overlay-enabled');
+
       const response = await addToCart(id);
       console.log('updated Cart: ', response);
       new Notification('success', 'Tour has been successfully added to cart!').showNotification();
@@ -113,6 +118,9 @@ export default class ProductCard extends BaseComponent<'div'> {
       } else {
         console.error(error);
       }
+    } finally {
+      this.cartButton.disabled = false;
+      this.node.classList.remove('card-overlay-enabled');
     }
   }
 }
