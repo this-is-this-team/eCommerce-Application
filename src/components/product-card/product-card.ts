@@ -6,6 +6,8 @@ import Link from '../link/link';
 import categories from '../../constants/categories';
 import subcategories from '../../constants/subcategories';
 import formatPrice from '../../services/formatPrice';
+import addToCart from '../../services/addToCart';
+import Notification from '../notification/notification';
 import './product-card.scss';
 
 export default class ProductCard extends BaseComponent<'div'> {
@@ -74,7 +76,7 @@ export default class ProductCard extends BaseComponent<'div'> {
 
     // TODO: change this.addToCart to global func add to cart
     const cartButton = new Button('button', '', ['product-card__button', 'button--cart'], false, () =>
-      this.addToCart(productId)
+      this.onAddToCart(productId)
     ).getElement();
     cardBottom.append(cardReviews, cartButton);
 
@@ -100,7 +102,17 @@ export default class ProductCard extends BaseComponent<'div'> {
     return `/shop/${categorySlug}/${subcategorySlug}/${id}`;
   }
 
-  private addToCart(id: string) {
-    console.log(`TODO: create func add to cart. Product ID: ${id}`);
+  private async onAddToCart(id: string) {
+    try {
+      const response = await addToCart(id);
+      console.log('updated Cart: ', response);
+      new Notification('success', 'Tour has been successfully added to cart!').showNotification();
+    } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+      } else {
+        console.error(error);
+      }
+    }
   }
 }
