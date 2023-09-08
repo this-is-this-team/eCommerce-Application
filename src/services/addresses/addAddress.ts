@@ -6,7 +6,7 @@ export default async function addAddress(data: _BaseAddress): Promise<Customer> 
   const { customer } = userStore.getState();
 
   const currentToken = localStorage.getItem('token');
-  const parsenToken = currentToken ? JSON.parse(currentToken) : '';
+  const parsenToken = currentToken ? currentToken : '';
 
   const action: MyCustomerAddAddressAction = {
     action: 'addAddress',

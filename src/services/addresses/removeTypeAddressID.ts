@@ -11,7 +11,7 @@ export default async function removeTypeAddressID(type: string, id: string): Pro
   const { customer } = userStore.getState();
 
   const currentToken = localStorage.getItem('token');
-  const parsenToken = currentToken ? JSON.parse(currentToken) : '';
+  const parsenToken = currentToken ? currentToken : '';
 
   const action: MyBusinessUnitRemoveBillingAddressIdAction | MyBusinessUnitRemoveShippingAddressIdAction = {
     action: type === 'Billing' ? 'removeBillingAddressId' : 'removeShippingAddressId',

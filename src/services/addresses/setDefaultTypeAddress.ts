@@ -11,7 +11,7 @@ export default async function setDefaultTypeAddress(type: string, id: string): P
   const { customer } = userStore.getState();
 
   const currentToken = localStorage.getItem('token');
-  const parsenToken = currentToken ? JSON.parse(currentToken) : '';
+  const parsenToken = currentToken ? currentToken : '';
 
   const action: MyCustomerSetDefaultBillingAddressAction | MyCustomerSetDefaultShippingAddressAction = {
     action: type === 'Billing' ? 'setDefaultBillingAddress' : 'setDefaultShippingAddress',
