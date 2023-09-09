@@ -1,1 +1,41 @@
-// .basket-page {}
+.basket-page {
+  .basket-section {
+    &__container {
+      @include container;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-bottom: 60px !important;
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 80px 20px;
+      text-align: center;
+      background-color: $color-bg-light;
+
+      &-title {
+        @include font-h4;
+      }
+    }
+
+    &__icon {
+      width: 40px;
+      height: 40px;
+      background: url('../../assets/icons/bag-icon.svg') center/cover;
+    }
+
+    &__title {
+      @include font-h3;
+    }
+
+    &__subtitle {
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+  }
+}
