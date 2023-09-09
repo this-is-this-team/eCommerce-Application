@@ -104,7 +104,7 @@ export default class ProductCard extends BaseComponent<'div'> {
     return `/shop/${categorySlug}/${subcategorySlug}/${id}`;
   }
 
-  private async onAddToCart(id: string) {
+  private async onAddToCart(id: string): Promise<void> {
     try {
       this.cartButton.disabled = true;
       this.node.classList.add('card-overlay-enabled');
