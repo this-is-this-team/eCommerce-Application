@@ -21,13 +21,14 @@ export default class BasketPage extends BaseComponent<'div'> {
     super('div', ['basket-page']);
 
     this.breadcrumbs = new Breadcrumbs(breadcrumbsLinks, 'Basket').getElement();
-    this.basketSection = this.renderBasketSection();
+    this.basketSection = new BaseComponent('section', ['basket-section']).getElement();
+
+    this.renderBasketSection();
 
     this.node.append(this.breadcrumbs, this.basketSection);
   }
 
-  private renderBasketSection(): HTMLElement {
-    const basketSection = new BaseComponent('section', ['basket-section']).getElement();
+  private renderBasketSection(): void {
     const basketSectionContainer = new BaseComponent('div', ['basket-section__container']).getElement();
     const basketSectionTitle = new BaseComponent(
       'h3',
@@ -53,8 +54,7 @@ export default class BasketPage extends BaseComponent<'div'> {
 
     basketContent.append(basketIcon, contentTitle, basketSubtitle, basketBtn);
     basketSectionContainer.append(basketSectionTitle, basketContent);
-    basketSection.append(basketSectionContainer);
 
-    return basketSection;
+    this.basketSection.append(basketSectionContainer);
   }
 }
