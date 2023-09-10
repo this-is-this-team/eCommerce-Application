@@ -1,1 +1,28 @@
-// .basket-page {}
+.basket-page {
+  .basket-section {
+    &__container {
+      @include container;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-bottom: 60px !important;
+    }
+
+    &__content {
+      display: flex;
+
+      &-title {
+        @include font-h4;
+      }
+    }
+
+    &__title {
+      @include font-h3;
+    }
+
+    &__subtitle {
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+  }
+}
