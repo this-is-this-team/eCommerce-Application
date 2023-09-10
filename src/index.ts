@@ -17,7 +17,7 @@ class App {
     try {
       const token = localStorage.getItem('token');
       if (token) {
-        const customer = await getUser(JSON.parse(token));
+        const customer = await getUser(token);
         userStore.dispatch({ type: 'SET_IS_AUTH', isAuth: true });
         userStore.dispatch({ type: 'ADD_CUSTOMER', customer });
       }
