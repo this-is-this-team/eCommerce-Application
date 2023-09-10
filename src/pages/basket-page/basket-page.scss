@@ -10,23 +10,10 @@
 
     &__content {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 80px 20px;
-      text-align: center;
-      background-color: $color-bg-light;
 
       &-title {
         @include font-h4;
       }
-    }
-
-    &__icon {
-      width: 40px;
-      height: 40px;
-      background: url('../../assets/icons/bag-icon.svg') center/cover;
     }
 
     &__title {
