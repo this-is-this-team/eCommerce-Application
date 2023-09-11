@@ -6,6 +6,13 @@ import {
 } from '@commercetools/platform-sdk';
 import apiRootCredentials from './apiRootCredentials';
 import getAllCategories from './getAllCategories';
+import { BASE_PRODUCT_LIMIT, BASE_PRODUCT_OFFSET } from '../constants/productsOptions';
+
+interface IProductsResponse {
+  products: ProductProjection[];
+  offset: number;
+  total: number;
+}
 
 export default async function getProducts(
   categoryName?: string,
@@ -13,8 +20,10 @@ export default async function getProducts(
   filterPrice: string = '',
   filterDays: string = '',
   sortValue: string = '',
-  searchValue: string = ''
-): Promise<ProductProjection[] | undefined> {
+  searchValue: string = '',
+  offset: number = BASE_PRODUCT_OFFSET,
+  limit: number = BASE_PRODUCT_LIMIT
+): Promise<IProductsResponse | undefined> {
   try {
     const allCategories: Category[] = await getAllCategories();
 
@@ -59,11 +68,17 @@ export default async function getProducts(
           ...(filterQuery ? { 'filter.query': filterQuery } : {}),
           ...(sort ? { sort } : {}),
           ...(searchValue ? searchQuery : {}),
+          limit,
+          offset,
         },
       })
       .execute();
 
-    return response.body.results;
+    return {
+      products: response.body.results,
+      offset: response.body.offset ?? BASE_PRODUCT_OFFSET,
+      total: response.body.total ?? BASE_PRODUCT_LIMIT,
+    };
   } catch (error) {
     console.log(error);
   }
