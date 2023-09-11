@@ -4,6 +4,7 @@ import { IBreadcrumbLink } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import AboutUsList from '../../components/about-us/about-us-list';
 import './about-us-page.scss';
+import AboutUsCollaboration from '../../components/about-us/about-us-collaboration';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -38,8 +39,9 @@ export default class AboutUsPage extends BaseComponent<'div'> {
     sectionSubtitle.insertAdjacentHTML('beforeend', '<span>this is this.</span>');
 
     const aboutUsList = new AboutUsList().getElement();
+    const aboutUsCollaboration = new AboutUsCollaboration().getElement();
 
-    container.append(sectionTitle, sectionSubtitle, aboutUsList);
+    container.append(sectionTitle, sectionSubtitle, aboutUsList, aboutUsCollaboration);
 
     // TODO: implement the about-us components and add to the container in the following about-us-issues
 
