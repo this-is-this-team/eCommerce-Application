@@ -20,7 +20,7 @@ export default class Notification {
       className: `custom-toast custom-toast_${this.type}`,
       text: this.message,
       duration: this.duration,
-      gravity: 'top',
+      gravity: 'bottom',
       close: true,
     }).showToast();
   }
