@@ -4,13 +4,16 @@ import { Price, ProductData, TypedMoney } from '@commercetools/platform-sdk';
 import formatPrice from '../../services/formatPrice';
 import './product.scss';
 import isProductInCart from '../../services/isProductInCart';
+import Notification from '../notification/notification';
+import addToCart from '../../services/addToCart';
 
 interface ProductAttributes {
   [name: string]: string;
 }
 
 export default class Product extends BaseComponent<'div'> {
-  private addToCartBtn: HTMLButtonElement = new Button('button', 'Cart').getElement();
+  private productForm: HTMLDivElement = new BaseComponent('div').getElement();
+  private cartButton: HTMLButtonElement = new Button('button', 'Cart').getElement();
   private productData: ProductData | null = null;
   private productAttributes: ProductAttributes = {
     rating: '-',
@@ -24,6 +27,10 @@ export default class Product extends BaseComponent<'div'> {
   };
   private productId: string;
   private isCart: boolean = false;
+  private removeFromCartBtn = new Button('button', 'Remove From Cart', ['button--white'], false, () =>
+    this.onRemoveFromCart()
+  ).getElement();
+  private addToCartBtn = new Button('button', 'Add To Cart', [], false, () => this.onAddToCart()).getElement();
 
   constructor(productId: string, productData: ProductData) {
     super('div', ['product']);
@@ -39,10 +46,10 @@ export default class Product extends BaseComponent<'div'> {
     this.getProductAttributes();
 
     const productInfo = this.drawProductInfo();
-    const productForm = this.drawProductForm();
+    this.productForm = this.drawProductForm();
     const productAbout = this.drawProductAbout();
 
-    this.node.append(productInfo, productForm, productAbout);
+    this.node.append(productInfo, this.productForm, productAbout);
   }
 
   private drawProductPrice(): HTMLDivElement {
@@ -112,21 +119,19 @@ export default class Product extends BaseComponent<'div'> {
   private drawProductForm(): HTMLDivElement {
     const productForm = new BaseComponent('div', ['product__add-to-cart']).getElement();
 
-    this.addToCartBtn = this.drawButton();
+    this.drawButton();
 
-    productForm.append(this.addToCartBtn);
+    productForm.append(this.cartButton);
 
     return productForm;
   }
 
-  private drawButton(): HTMLButtonElement {
+  private drawButton(): void {
     if (this.isCart) {
-      return new Button('button', 'Remove From Cart', ['button--white'], false, () =>
-        this.removeFromCart()
-      ).getElement();
+      this.cartButton = this.removeFromCartBtn;
+    } else {
+      this.cartButton = this.addToCartBtn;
     }
-
-    return new Button('button', 'Add To Cart', [], false, () => this.addToCart()).getElement();
   }
 
   private drawProductAbout(): HTMLUListElement {
@@ -153,11 +158,21 @@ export default class Product extends BaseComponent<'div'> {
     return productAbout;
   }
 
-  private addToCart(): void {
-    console.log(`TODO: create func add to cart. Product ID: ${this.productId}`);
+  private async onAddToCart(): Promise<void> {
+    this.cartButton.disabled = true;
+    this.node.classList.add('card-overlay-enabled');
+
+    const response = await addToCart(this.productId);
+    console.log('updated Cart: ', response);
+    new Notification('success', 'Tour has been successfully added to cart!').showNotification();
+
+    this.productForm.innerHTML = '';
+    this.productForm.append(this.removeFromCartBtn);
+
+    this.cartButton.disabled = false;
   }
 
-  private removeFromCart() {
+  private onRemoveFromCart() {
     console.log('TODO REMOVE FROM CART');
   }
 }
