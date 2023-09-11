@@ -3,13 +3,17 @@ import Button from '../button/button';
 import { Price, ProductData, TypedMoney } from '@commercetools/platform-sdk';
 import formatPrice from '../../services/formatPrice';
 import './product.scss';
+import userStore from '../../store/user-store';
+import createAnonymusCart from '../../services/createAnonymusCart';
+import Notification from '../notification/notification';
+import getActiveCart from '../../services/getActiveCart';
 
 interface ProductAttributes {
   [name: string]: string;
 }
 
 export default class Product extends BaseComponent<'div'> {
-  private addToCartBtn: HTMLButtonElement;
+  private addToCartBtn: HTMLButtonElement = new Button('button', 'Cart').getElement();
   private productData: ProductData | null = null;
   private productAttributes: ProductAttributes = {
     rating: '-',
@@ -21,19 +25,62 @@ export default class Product extends BaseComponent<'div'> {
     adventureStyle: 'Relax',
     aboutTour: 'No information about this tour',
   };
-  private productId: string = '';
+  private productId: string;
+  private isCart: boolean = false;
 
-  constructor(productData: ProductData) {
+  constructor(productId: string, productData: ProductData) {
     super('div', ['product']);
 
     this.productData = productData;
-    this.productId = String(productData?.masterVariant.id);
-    this.addToCartBtn = new Button('button', 'Add To Card', [], false, () => this.addToCart()).getElement();
+    this.productId = productId;
 
     this.createMarkup();
   }
 
-  private createMarkup(): void {
+  private async checkProductInCart(): Promise<void> {
+    const { isAuth } = userStore.getState();
+    let token: string | null;
+
+    if (!isAuth) {
+      token = localStorage.getItem('tokenAnon');
+
+      if (!token) {
+        await createAnonymusCart();
+        token = localStorage.getItem('tokenAnon');
+
+        if (!token) {
+          new Notification(
+            'error',
+            'Something went wrong! Please try to log in or try again later.'
+          ).showNotification();
+          return;
+        }
+      }
+    } else {
+      token = localStorage.getItem('token');
+      if (!token) {
+        new Notification('error', 'Something went wrong! Please try to log in or try again later.').showNotification();
+        return;
+      }
+    }
+
+    try {
+      const response = await getActiveCart(token);
+
+      const productsInCart = response.lineItems;
+
+      productsInCart.forEach((item) => {
+        if (item.productId === this.productId) this.isCart = true;
+      });
+
+      console.log(this.isCart);
+    } catch (err) {
+      return;
+    }
+  }
+
+  private async createMarkup(): Promise<void> {
+    await this.checkProductInCart();
     this.getProductAttributes();
 
     const productInfo = this.drawProductInfo();
@@ -110,9 +157,21 @@ export default class Product extends BaseComponent<'div'> {
   private drawProductForm(): HTMLDivElement {
     const productForm = new BaseComponent('div', ['product__add-to-cart']).getElement();
 
+    this.addToCartBtn = this.drawButton();
+
     productForm.append(this.addToCartBtn);
 
     return productForm;
+  }
+
+  private drawButton(): HTMLButtonElement {
+    if (this.isCart) {
+      return new Button('button', 'Remove From Cart', ['button--white'], false, () =>
+        this.removeFromCart()
+      ).getElement();
+    }
+
+    return new Button('button', 'Add To Cart', [], false, () => this.addToCart()).getElement();
   }
 
   private drawProductAbout(): HTMLUListElement {
@@ -141,5 +200,9 @@ export default class Product extends BaseComponent<'div'> {
 
   private addToCart(): void {
     console.log(`TODO: create func add to cart. Product ID: ${this.productId}`);
+  }
+
+  private removeFromCart() {
+    console.log('TODO REMOVE FROM CART');
   }
 }
