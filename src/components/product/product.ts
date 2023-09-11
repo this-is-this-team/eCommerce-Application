@@ -3,10 +3,7 @@ import Button from '../button/button';
 import { Price, ProductData, TypedMoney } from '@commercetools/platform-sdk';
 import formatPrice from '../../services/formatPrice';
 import './product.scss';
-import userStore from '../../store/user-store';
-import createAnonymusCart from '../../services/createAnonymusCart';
-import Notification from '../notification/notification';
-import getActiveCart from '../../services/getActiveCart';
+import isProductInCart from '../../services/isProductInCart';
 
 interface ProductAttributes {
   [name: string]: string;
@@ -37,50 +34,8 @@ export default class Product extends BaseComponent<'div'> {
     this.createMarkup();
   }
 
-  private async checkProductInCart(): Promise<void> {
-    const { isAuth } = userStore.getState();
-    let token: string | null;
-
-    if (!isAuth) {
-      token = localStorage.getItem('tokenAnon');
-
-      if (!token) {
-        await createAnonymusCart();
-        token = localStorage.getItem('tokenAnon');
-
-        if (!token) {
-          new Notification(
-            'error',
-            'Something went wrong! Please try to log in or try again later.'
-          ).showNotification();
-          return;
-        }
-      }
-    } else {
-      token = localStorage.getItem('token');
-      if (!token) {
-        new Notification('error', 'Something went wrong! Please try to log in or try again later.').showNotification();
-        return;
-      }
-    }
-
-    try {
-      const response = await getActiveCart(token);
-
-      const productsInCart = response.lineItems;
-
-      productsInCart.forEach((item) => {
-        if (item.productId === this.productId) this.isCart = true;
-      });
-
-      console.log(this.isCart);
-    } catch (err) {
-      return;
-    }
-  }
-
   private async createMarkup(): Promise<void> {
-    await this.checkProductInCart();
+    this.isCart = await isProductInCart(this.productId);
     this.getProductAttributes();
 
     const productInfo = this.drawProductInfo();
