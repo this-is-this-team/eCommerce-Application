@@ -3,8 +3,9 @@ import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { IBreadcrumbLink } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import AboutUsList from '../../components/about-us/about-us-list';
-import './about-us-page.scss';
 import AboutUsCollaboration from '../../components/about-us/about-us-collaboration';
+import AboutUsRSSchool from '../../components/about-us/about-us-rsschool-link';
+import './about-us-page.scss';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -40,10 +41,9 @@ export default class AboutUsPage extends BaseComponent<'div'> {
 
     const aboutUsList = new AboutUsList().getElement();
     const aboutUsCollaboration = new AboutUsCollaboration().getElement();
+    const aboutUsRSSchool = new AboutUsRSSchool().getElement();
 
-    container.append(sectionTitle, sectionSubtitle, aboutUsList, aboutUsCollaboration);
-
-    // TODO: implement the about-us components and add to the container in the following about-us-issues
+    container.append(sectionTitle, sectionSubtitle, aboutUsList, aboutUsCollaboration, aboutUsRSSchool);
 
     this.aboutUsSection.append(container);
   }
