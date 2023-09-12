@@ -5,12 +5,10 @@ import { IBreadcrumbLink } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
 import BasketEmpty from '../../components/basket-empty/basket-empty';
 import Notification from '../../components/notification/notification';
-import userStore from '../../store/user-store';
-import './basket-page.scss';
-import getActiveCart from '../../services/getActiveCart';
-import createUserCart from '../../services/createUserCart';
-import createAnonymusCart from '../../services/createAnonymusCart';
 import BasketItems from '../../components/basket-items/basket-items';
+import BasketTotal from '../../components/basket-total/basket-total';
+import getCart from '../../services/getCart';
+import './basket-page.scss';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -20,53 +18,16 @@ const breadcrumbsLinks: IBreadcrumbLink[] = [
 ];
 
 export default class BasketPage extends BaseComponent<'div'> {
-  sectionContainer: HTMLElement;
-  private token: string | null;
-  private cart: Cart | null;
+  private cart: Cart | undefined;
 
   constructor() {
     super('div', ['basket-page']);
-    this.sectionContainer = new BaseComponent('div', ['basket-section__container']).getElement();
 
-    this.cart = null;
-    this.token = null;
+    this.cart = undefined;
 
     this.renderBreadcrumbs();
-    this.renderBasketSection();
-    this.renderBasketItems();
-  }
-
-  private async getCart(): Promise<void> {
-    const { isAuth } = userStore.getState();
-    if (isAuth) {
-      this.token = localStorage.getItem('token');
-      if (!this.token) {
-        new Notification('error', 'Something went wrong! Please try to log in or try again later.').showNotification();
-        return;
-      }
-
-      try {
-        this.cart = await getActiveCart(this.token);
-      } catch {
-        this.cart = await createUserCart(this.token);
-      }
-    } else {
-      this.token = localStorage.getItem('tokenAnon');
-
-      if (!this.token) {
-        await createAnonymusCart();
-        this.token = localStorage.getItem('tokenAnon');
-        if (!this.token) {
-          new Notification(
-            'error',
-            'Something went wrong! Please try to log in or try again later.'
-          ).showNotification();
-          return;
-        }
-      }
-
-      this.cart = await getActiveCart(this.token);
-    }
+    this.renderTitle();
+    this.renderMainContent();
   }
 
   private renderBreadcrumbs(): void {
@@ -75,41 +36,46 @@ export default class BasketPage extends BaseComponent<'div'> {
     this.node.append(breadcrumbs);
   }
 
-  private async renderBasketSection(): Promise<void> {
-    const basketSection = new BaseComponent('div', ['basket-section']).getElement();
-    const basketSectionTitle = new BaseComponent('h3', ['basket-section__title'], 'Shopping Cart').getElement();
+  private renderTitle(): void {
+    const basketTitleSection = new BaseComponent('section', ['basket-page__section']).getElement();
+    const basketPageTitle = new BaseComponent('h3', ['basket-page__title'], 'Shopping Cart').getElement();
 
-    this.sectionContainer.append(basketSectionTitle);
-    basketSection.append(this.sectionContainer);
+    basketTitleSection.append(basketPageTitle);
 
-    this.node.append(basketSection);
+    this.node.append(basketTitleSection);
   }
 
-  private async renderBasketItems(): Promise<void> {
+  private async renderMainContent(): Promise<void> {
     const loadingElement = new BaseComponent('div', ['basket-page__loading'], 'Loading...').getElement();
-    let basketContent: HTMLElement;
+    let basketMainSection: HTMLElement;
+    let basketTotalSection: HTMLElement;
 
     try {
-      this.sectionContainer.append(loadingElement);
+      this.node.append(loadingElement);
 
-      await this.getCart();
+      this.cart = await getCart();
 
       if (this.cart && this.cart.lineItems.length > 0) {
-        basketContent = new BasketItems(this.cart.lineItems).getElement();
+        basketMainSection = new BasketItems(this.cart.lineItems).getElement();
+        basketTotalSection = new BasketTotal(this.cart).getElement();
+        this.node.append(basketMainSection, basketTotalSection);
       } else {
-        basketContent = new BasketEmpty().getElement();
+        basketMainSection = new BasketEmpty().getElement();
+        this.node.append(basketMainSection);
       }
-
-      this.sectionContainer.append(basketContent);
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();
+        if (error.message === 'invalid_token') {
+          localStorage.removeItem('tokenAnon');
+          localStorage.removeItem('token');
+        }
       } else {
         console.error(error);
       }
 
-      basketContent = new BasketEmpty().getElement();
-      this.sectionContainer.append(basketContent);
+      basketMainSection = new BasketEmpty().getElement();
+      this.node.append(basketMainSection);
     } finally {
       loadingElement.remove();
     }
