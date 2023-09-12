@@ -1,21 +1,23 @@
 import { LineItem } from '@commercetools/platform-sdk';
 import BaseComponent from '../../components/base-component';
+import Button from '../button/button';
 import formatPrice from '../../services/formatPrice';
 import './basket-items.scss';
 
-export default class BasketItems extends BaseComponent<'div'> {
+export default class BasketItems extends BaseComponent<'section'> {
   constructor(items: LineItem[]) {
-    super('div', ['basket-items']);
+    super('section', ['basket-items']);
 
     this.renderBasketItems(items);
   }
 
   private renderBasketItems(items: LineItem[]): void {
-    console.log(items);
-
+    const basketItemsContainer = new BaseComponent('div', ['basket-items__container']).getElement();
     const table: HTMLTableElement = this.renderTable(items);
 
-    this.node.append(table);
+    basketItemsContainer.append(table);
+
+    this.node.append(basketItemsContainer);
   }
 
   private renderTable(items: LineItem[]): HTMLTableElement {
@@ -52,8 +54,11 @@ export default class BasketItems extends BaseComponent<'div'> {
 
       const infoCell = this.renderInfo(item);
       const priceCell = this.renderPrice(item);
+      const quantityCell = this.renderQuantityField(item);
+      const totalPriceCell = this.renderTotalPrice(item);
+      const removeCell = this.renderRemoveBtn(item);
 
-      row.append(infoCell, priceCell);
+      row.append(infoCell, priceCell, quantityCell, totalPriceCell, removeCell);
       tableBody.append(row);
     });
 
@@ -83,19 +88,84 @@ export default class BasketItems extends BaseComponent<'div'> {
   }
 
   private renderPrice(item: LineItem): HTMLTableCellElement {
-    const priceElement: HTMLTableCellElement = new BaseComponent('td', [
+    const priceField: HTMLTableCellElement = new BaseComponent('td', ['basket-items__table-td']).getElement();
+    const pricesElement: HTMLDivElement = new BaseComponent('div', ['basket-items__prices']).getElement();
+    const priceStandard: HTMLSpanElement = new BaseComponent('span', ['basket-items__price']).getElement();
+    const priceDisc: HTMLSpanElement = new BaseComponent('span', [
       'basket-items__price',
-      'basket-items__table-td',
+      'basket-items__price--new',
     ]).getElement();
 
-    if (item.variant.prices?.[0]?.value) {
-      priceElement.textContent = formatPrice(
-        item.variant.prices?.[0]?.value.currencyCode,
-        item.variant.prices?.[0]?.value.centAmount,
-        item.variant.prices?.[0]?.value.fractionDigits
+    if (item.price.value) {
+      priceStandard.textContent = formatPrice(
+        item.price.value.currencyCode,
+        item.price.value.centAmount,
+        item.price.value.fractionDigits
       );
+      pricesElement.append(priceStandard);
+    }
+
+    if (item.price.discounted) {
+      priceDisc.textContent = formatPrice(
+        item.price.discounted.value.currencyCode,
+        item.price.discounted.value.centAmount,
+        item.price.discounted.value.fractionDigits
+      );
+      priceStandard.classList.add('basket-items__price--old');
+      pricesElement.append(priceDisc);
+    }
+
+    priceField.append(pricesElement);
+
+    return priceField;
+  }
+
+  private renderQuantityField(item: LineItem): HTMLTableCellElement {
+    const quantityElement: HTMLTableCellElement = new BaseComponent('td', ['basket-items__table-td']).getElement();
+
+    // TODO: Replace with a separate component which will be implemented in ISSUE #127.
+    const quantityField: HTMLDivElement = new BaseComponent(
+      'div',
+      ['basket-items__quantity'],
+      `${item.quantity}`
+    ).getElement();
+
+    quantityElement.append(quantityField);
+    return quantityElement;
+  }
+
+  private renderTotalPrice(item: LineItem): HTMLTableCellElement {
+    const priceElement: HTMLTableCellElement = new BaseComponent('td', ['basket-items__table-td']).getElement();
+    const price: HTMLSpanElement = new BaseComponent('span', ['basket-items__price']).getElement();
+
+    if (item.totalPrice.centAmount) {
+      price.textContent = formatPrice(
+        item.totalPrice.currencyCode,
+        item.totalPrice.centAmount,
+        item.totalPrice.fractionDigits
+      );
+      priceElement.append(price);
     }
 
     return priceElement;
+  }
+
+  private renderRemoveBtn(item: LineItem): HTMLTableCellElement {
+    const removeField: HTMLTableCellElement = new BaseComponent('td', [
+      'basket-items__table-td',
+      'basket-items__table-td--remove',
+    ]).getElement();
+    const removeBtn: HTMLButtonElement = new Button('button', '', ['basket-items__remove']).getElement();
+    const iconRemoveBtn: HTMLDivElement = new BaseComponent('div', ['basket-items__remove-icon']).getElement();
+    const textRemoveBtn: HTMLSpanElement = new BaseComponent('span', [], 'Remove').getElement();
+
+    const onClick = (id: string) => console.log(`TODO: implement in ISSUE #128, product id: ${id}`);
+
+    removeBtn.addEventListener('click', () => onClick(item.id));
+
+    removeBtn.append(iconRemoveBtn, textRemoveBtn);
+    removeField.append(removeBtn);
+
+    return removeField;
   }
 }
