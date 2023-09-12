@@ -6,6 +6,7 @@ import './product.scss';
 import isProductInCart from '../../services/isProductInCart';
 import Notification from '../notification/notification';
 import addToCart from '../../services/addToCart';
+import removeProductFromCart from '../../services/removeProductFromCart';
 
 interface ProductAttributes {
   [name: string]: string;
@@ -162,17 +163,29 @@ export default class Product extends BaseComponent<'div'> {
     this.cartButton.disabled = true;
     this.node.classList.add('card-overlay-enabled');
 
-    const response = await addToCart(this.productId);
-    console.log('updated Cart: ', response);
+    await addToCart(this.productId);
     new Notification('success', 'Tour has been successfully added to cart!').showNotification();
 
+    this.cartButton = this.removeFromCartBtn;
+
     this.productForm.innerHTML = '';
-    this.productForm.append(this.removeFromCartBtn);
+    this.productForm.append(this.cartButton);
 
     this.cartButton.disabled = false;
   }
 
-  private onRemoveFromCart() {
-    console.log('TODO REMOVE FROM CART');
+  private async onRemoveFromCart(): Promise<void> {
+    this.cartButton.disabled = true;
+    this.node.classList.add('card-overlay-enabled');
+
+    await removeProductFromCart(this.productId);
+    new Notification('success', 'Tour has been successfully removed from cart!').showNotification();
+
+    this.cartButton = this.addToCartBtn;
+
+    this.productForm.innerHTML = '';
+    this.productForm.append(this.cartButton);
+
+    this.cartButton.disabled = false;
   }
 }
