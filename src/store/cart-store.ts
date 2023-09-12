@@ -1,9 +1,9 @@
-import { Cart, CentPrecisionMoney, LineItem } from '@commercetools/platform-sdk';
+import { Cart, LineItem } from '@commercetools/platform-sdk';
 import BaseStore, { IStore } from './base-store';
 
 interface ICartState {
+  cart: Cart | undefined;
   cartItems: LineItem[] | undefined;
-  cartTotalPrice: CentPrecisionMoney | undefined;
 }
 
 interface ICartAction {
@@ -14,8 +14,8 @@ interface ICartAction {
 }
 
 const initialState: ICartState = {
+  cart: undefined,
   cartItems: undefined,
-  cartTotalPrice: undefined,
 };
 
 const reducer = (state: ICartState, action: ICartAction): ICartState => {
@@ -23,6 +23,7 @@ const reducer = (state: ICartState, action: ICartAction): ICartState => {
   switch (action.type) {
     case 'FETCH_CART':
       if (action.cart) {
+        newState.cart = action.cart;
         newState.cartItems = action.cart.lineItems;
       }
       return newState;
@@ -30,17 +31,17 @@ const reducer = (state: ICartState, action: ICartAction): ICartState => {
       if (action.cartItem) {
         newState.cartItems?.push(action.cartItem);
       }
-      // TODO: remember about total price
+      // TODO: remember about full cart
       return newState;
     case 'REMOVE_ITEM':
       if (action.cartItem) {
         newState.cartItems = state.cartItems?.filter((item) => item.id !== action.cartItem?.id);
       }
-      // TODO: remember about total price
+      // TODO: remember about full cart
       return newState;
     case 'REMOVE_ITEMS':
+      newState.cart = undefined;
       newState.cartItems = undefined;
-      newState.cartTotalPrice = undefined;
       return newState;
     default:
       return newState;
