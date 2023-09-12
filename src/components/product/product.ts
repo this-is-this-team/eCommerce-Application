@@ -43,11 +43,10 @@ export default class Product extends BaseComponent<'div'> {
   }
 
   private async createMarkup(): Promise<void> {
-    this.isCart = await isProductInCart(this.productId);
     this.getProductAttributes();
 
     const productInfo = this.drawProductInfo();
-    this.productForm = this.drawProductForm();
+    this.productForm = await this.drawProductForm();
     const productAbout = this.drawProductAbout();
 
     this.node.append(productInfo, this.productForm, productAbout);
@@ -117,17 +116,19 @@ export default class Product extends BaseComponent<'div'> {
     }
   }
 
-  private drawProductForm(): HTMLDivElement {
+  private async drawProductForm(): Promise<HTMLDivElement> {
     const productForm = new BaseComponent('div', ['product__add-to-cart']).getElement();
 
-    this.drawButton();
+    await this.drawButton();
 
     productForm.append(this.cartButton);
 
     return productForm;
   }
 
-  private drawButton(): void {
+  private async drawButton(): Promise<void> {
+    this.isCart = await isProductInCart(this.productId);
+
     if (this.isCart) {
       this.cartButton = this.removeFromCartBtn;
     } else {
