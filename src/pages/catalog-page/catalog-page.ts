@@ -26,7 +26,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
   private breadcrumbsLinks: IBreadcrumbLink[];
   private currentPage: string;
   private heroTitleText: string;
-  private catalogSection: HTMLElement;
+  private catalogSection: ProductList;
 
   private productsOffset: number = BASE_PRODUCT_OFFSET;
   private productsTotal: number = BASE_PRODUCT_LIMIT;
@@ -42,7 +42,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.breadcrumbsLinks = [{ pageName: 'Home', pageHref: AppRoutesPath.MAIN }];
     this.currentPage = 'Shop';
     this.heroTitleText = 'Shop All';
-    this.catalogSection = new ProductList(this.products).getElement();
+    this.catalogSection = new ProductList(this.products);
 
     shopStore.unsubscribe();
     this.renderPage();
@@ -203,8 +203,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
 
         loadingElement.remove();
 
-        const productsMainContainer = document.querySelector('.product-list__container') as HTMLElement;
-        productsMainContainer.append(...newProducts);
+        this.catalogSection.addNewProducts(newProducts);
 
         this.isLoading = false;
       }
@@ -212,17 +211,17 @@ export default class CatalogPage extends BaseComponent<'div'> {
   };
 
   private renderProductList = async (): Promise<void> => {
-    this.catalogSection.remove();
+    this.catalogSection.getElement().remove();
 
     const loadingElement = new BaseComponent('div', ['catalog-page__loading'], 'Loading...').getElement();
     this.node.append(loadingElement);
 
     await this.handleGettingProducts(true);
 
-    this.catalogSection = new ProductList(this.products).getElement();
+    this.catalogSection = new ProductList(this.products);
     loadingElement.remove();
 
-    this.node.append(this.catalogSection);
+    this.node.append(this.catalogSection.getElement());
 
     window.addEventListener('scroll', this.infiniteLoading);
     window.addEventListener('resize', this.infiniteLoading);
