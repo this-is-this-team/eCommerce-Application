@@ -161,32 +161,54 @@ export default class Product extends BaseComponent<'div'> {
   }
 
   private async onAddToCart(): Promise<void> {
-    this.cartButton.disabled = true;
-    this.node.classList.add('card-overlay-enabled');
+    try {
+      this.cartButton.disabled = true;
+      this.node.classList.add('card-overlay-enabled');
 
-    await addToCart(this.productId);
-    new Notification('success', 'Tour has been successfully added to cart!').showNotification();
+      await addToCart(this.productId);
+      new Notification('success', 'Tour has been successfully added to cart!').showNotification();
 
-    this.cartButton = this.removeFromCartBtn;
+      this.cartButton = this.removeFromCartBtn;
 
-    this.productForm.innerHTML = '';
-    this.productForm.append(this.cartButton);
+      this.productForm.innerHTML = '';
+      this.productForm.append(this.cartButton);
 
-    this.cartButton.disabled = false;
+      this.cartButton.disabled = false;
+    } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+      } else {
+        console.error(error);
+      }
+    } finally {
+      this.cartButton.disabled = false;
+      this.node.classList.remove('card-overlay-enabled');
+    }
   }
 
   private async onRemoveFromCart(): Promise<void> {
-    this.cartButton.disabled = true;
-    this.node.classList.add('card-overlay-enabled');
+    try {
+      this.cartButton.disabled = true;
+      this.node.classList.add('card-overlay-enabled');
 
-    await removeProductFromCart(this.productId);
-    new Notification('success', 'Tour has been successfully removed from cart!').showNotification();
+      await removeProductFromCart(this.productId);
+      new Notification('success', 'Tour has been successfully removed from cart!').showNotification();
 
-    this.cartButton = this.addToCartBtn;
+      this.cartButton = this.addToCartBtn;
 
-    this.productForm.innerHTML = '';
-    this.productForm.append(this.cartButton);
+      this.productForm.innerHTML = '';
+      this.productForm.append(this.cartButton);
 
-    this.cartButton.disabled = false;
+      this.cartButton.disabled = false;
+    } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+      } else {
+        console.error(error);
+      }
+    } finally {
+      this.cartButton.disabled = false;
+      this.node.classList.remove('card-overlay-enabled');
+    }
   }
 }
