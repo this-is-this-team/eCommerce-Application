@@ -69,3 +69,12 @@ export interface IAddressFormData {
   postalCode: string;
   country: string;
 }
+
+export interface IAboutUsMember {
+  name: string;
+  role: string;
+  imgClass: string;
+  about: string;
+  contributions: string[];
+  link: string;
+}
