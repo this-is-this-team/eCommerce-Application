@@ -1,0 +1,57 @@
+.basket-total {
+  margin-bottom: 80px;
+
+  &__container {
+    @include container;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-end;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    width: 480px;
+    padding: 32px;
+    background-color: $color-bg-light;
+    border-radius: 8px;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  &__button {
+    width: 480px;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  &__promo {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 24px;
+
+    &-input {
+      flex-grow: 1;
+    }
+
+    &-button {
+      height: 48px;
+      padding: 12px 32px;
+    }
+  }
+
+  &__total {
+    padding: 20px 0;
+    border-top: 1px solid $color-border;
+    font: $font-label;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
