@@ -4,31 +4,31 @@ import BaseComponent from '../base-component';
 import Button from '../button/button';
 import './basket-empty.scss';
 
-export default class BasketEmpty extends BaseComponent<'div'> {
+export default class BasketEmpty extends BaseComponent<'section'> {
   constructor() {
-    super('div', ['basket-section__content', 'basket-section__content_empty']);
+    super('section', ['basket-empty']);
 
     this.renderBasketContent();
   }
 
   private renderBasketContent(): void {
-    const basketIcon = new BaseComponent('div', ['basket-section__icon']).getElement();
-    const contentTitle = new BaseComponent(
-      'h4',
-      ['basket-section__content-title'],
-      'Your Shopping Cart is Empty'
-    ).getElement();
+    const basketEmptyContainer = new BaseComponent('div', ['basket-empty__container']).getElement();
+    const basketEmptyContent = new BaseComponent('div', ['basket-empty__content']).getElement();
+    const basketIcon = new BaseComponent('div', ['basket-empty__icon']).getElement();
+    const contentTitle = new BaseComponent('h4', ['basket-empty__title'], 'Your Shopping Cart is Empty').getElement();
 
     const basketSubtitle = new BaseComponent(
       'p',
-      ['basket-section__subtitle'],
+      ['basket-empty__subtitle'],
       'Looks like you haven’t added anything yet, let’s get you started!'
     ).getElement();
 
-    const basketBtn = new Button('button', 'Start Shopping', ['basket-section__button'], false, () =>
+    const basketBtn = new Button('button', 'Start Shopping', ['basket-empty__button'], false, () =>
       changeUrlEvent(AppRoutesPath.SHOP)
     ).getElement();
 
-    this.node.append(basketIcon, contentTitle, basketSubtitle, basketBtn);
+    basketEmptyContent.append(basketIcon, contentTitle, basketSubtitle, basketBtn);
+    basketEmptyContainer.append(basketEmptyContent);
+    this.node.append(basketEmptyContainer);
   }
 }
