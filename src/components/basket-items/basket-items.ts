@@ -67,8 +67,8 @@ export default class BasketItems extends BaseComponent<'section'> {
 
   private renderInfo(item: LineItem): HTMLTableCellElement {
     const infoElement: HTMLTableCellElement = new BaseComponent('td', [
-      'basket-items__product',
       'basket-items__table-td',
+      'basket-items__product',
     ]).getElement();
     const titleElement: HTMLSpanElement = new BaseComponent('span', ['basket-items__title'], item.name.en).getElement();
     const imageWrapper: HTMLDivElement = new BaseComponent('div', ['basket-items__image-wrapper']).getElement();
@@ -88,7 +88,10 @@ export default class BasketItems extends BaseComponent<'section'> {
   }
 
   private renderPrice(item: LineItem): HTMLTableCellElement {
-    const priceField: HTMLTableCellElement = new BaseComponent('td', ['basket-items__table-td']).getElement();
+    const priceField: HTMLTableCellElement = new BaseComponent('td', [
+      'basket-items__table-td',
+      'basket-items__table-td--price',
+    ]).getElement();
     const pricesElement: HTMLDivElement = new BaseComponent('div', ['basket-items__prices']).getElement();
     const priceStandard: HTMLSpanElement = new BaseComponent('span', ['basket-items__price']).getElement();
     const priceDisc: HTMLSpanElement = new BaseComponent('span', [
@@ -121,7 +124,10 @@ export default class BasketItems extends BaseComponent<'section'> {
   }
 
   private renderQuantityField(item: LineItem): HTMLTableCellElement {
-    const quantityElement: HTMLTableCellElement = new BaseComponent('td', ['basket-items__table-td']).getElement();
+    const quantityElement: HTMLTableCellElement = new BaseComponent('td', [
+      'basket-items__table-td',
+      'basket-items__table-td--quantity',
+    ]).getElement();
 
     // TODO: Replace with a separate component which will be implemented in ISSUE #127.
     const quantityField: HTMLDivElement = new BaseComponent(
@@ -135,7 +141,10 @@ export default class BasketItems extends BaseComponent<'section'> {
   }
 
   private renderTotalPrice(item: LineItem): HTMLTableCellElement {
-    const priceElement: HTMLTableCellElement = new BaseComponent('td', ['basket-items__table-td']).getElement();
+    const priceElement: HTMLTableCellElement = new BaseComponent('td', [
+      'basket-items__table-td',
+      'basket-items__table-td--total-price',
+    ]).getElement();
     const price: HTMLSpanElement = new BaseComponent('span', ['basket-items__price']).getElement();
 
     if (item.totalPrice.centAmount) {
