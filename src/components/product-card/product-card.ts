@@ -144,7 +144,6 @@ export default class ProductCard extends BaseComponent<'div'> {
 
   private addSubscribtion(): void {
     cartStore.subscribe((state) => {
-      console.log(state);
       if (state.cartItems?.find((item) => item.productId === this.productId)) {
         this.cartButton.classList.add('product-card__button--added');
         this.cartButton.disabled = true;
