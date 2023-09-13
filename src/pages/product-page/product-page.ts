@@ -106,7 +106,7 @@ export default class ProductPage extends BaseComponent<'div'> {
     const productImages = this.productData?.masterVariant.images || [];
 
     const slider = new ProductSlider(productImages).getElement();
-    const product = new Product(this.productData!).getElement();
+    const product = new Product(this.productId, this.productData!).getElement();
 
     const breadcrumbs = new Breadcrumbs(this.breadcrumbsLinks, productName).getElement();
     const container = new BaseComponent('div', ['product-page__container']).getElement();

@@ -13,9 +13,11 @@ import ShopHero from '../../components/shop-hero/shop-hero';
 import { changeUrlEvent } from '../../utils/change-url-event';
 import ShopFilters from '../../components/shop-flters/shop-filters';
 import shopStore from '../../store/shop-store';
-import './catalog-page.scss';
 import ShopSort from '../../components/shop-sort/shop-sort';
 import ShopSearch from '../../components/shop-search/shop-search';
+import { BASE_PRODUCT_LIMIT, BASE_PRODUCT_OFFSET } from '../../constants/productsOptions';
+import ProductCard from '../../components/product-card/product-card';
+import './catalog-page.scss';
 
 export default class CatalogPage extends BaseComponent<'div'> {
   private products: ProductProjection[];
@@ -24,7 +26,12 @@ export default class CatalogPage extends BaseComponent<'div'> {
   private breadcrumbsLinks: IBreadcrumbLink[];
   private currentPage: string;
   private heroTitleText: string;
-  private catalogSection: HTMLElement;
+  private catalogSection: ProductList;
+
+  private productsOffset: number = BASE_PRODUCT_OFFSET;
+  private productsTotal: number = BASE_PRODUCT_LIMIT;
+  private isLoading: boolean = false;
+  private shouldLoad: boolean = false;
 
   constructor() {
     super('div', ['catalog-page']);
@@ -35,7 +42,7 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.breadcrumbsLinks = [{ pageName: 'Home', pageHref: AppRoutesPath.MAIN }];
     this.currentPage = 'Shop';
     this.heroTitleText = 'Shop All';
-    this.catalogSection = new ProductList(this.products).getElement();
+    this.catalogSection = new ProductList(this.products);
 
     shopStore.unsubscribe();
     this.renderPage();
@@ -153,22 +160,72 @@ export default class CatalogPage extends BaseComponent<'div'> {
     this.node.append(searchPanel);
   }
 
-  private async renderProductList(): Promise<void> {
-    this.catalogSection.remove();
+  private handleGettingProducts = async (isFirstRender: boolean): Promise<void> => {
+    const { filterPrice, filterDays, sortValue, searchValue } = shopStore.getState();
+
+    const response = await getProducts(
+      this.categorySlug,
+      this.subcategorySlug,
+      filterPrice,
+      filterDays,
+      sortValue,
+      searchValue,
+      (this.productsOffset = isFirstRender ? BASE_PRODUCT_OFFSET : this.productsOffset + BASE_PRODUCT_LIMIT)
+    );
+
+    this.products = response?.products || [];
+    this.productsOffset = response?.offset || BASE_PRODUCT_OFFSET;
+    this.productsTotal = response?.total || BASE_PRODUCT_LIMIT;
+
+    if (response?.total && response?.total > BASE_PRODUCT_LIMIT) {
+      this.shouldLoad = true;
+    } else {
+      this.shouldLoad = false;
+    }
+  };
+
+  private infiniteLoading = async (): Promise<void> => {
+    const footer = <HTMLElement>document.querySelector('footer');
+
+    if (this.isLoading || !this.shouldLoad) return;
+
+    if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - footer.clientHeight) {
+      if (this.productsOffset < this.productsTotal - 10) {
+        this.isLoading = true;
+
+        const loadingElement = new BaseComponent('div', ['catalog-page__loading'], 'Loading...').getElement();
+        this.node.append(loadingElement);
+
+        await this.handleGettingProducts(false);
+
+        const newProducts: HTMLElement[] = [];
+        this.products.forEach((item) => newProducts.push(new ProductCard(item).getElement()));
+
+        loadingElement.remove();
+
+        this.catalogSection.addNewProducts(newProducts);
+
+        this.isLoading = false;
+      }
+    }
+  };
+
+  private renderProductList = async (): Promise<void> => {
+    this.catalogSection.getElement().remove();
+
     const loadingElement = new BaseComponent('div', ['catalog-page__loading'], 'Loading...').getElement();
     this.node.append(loadingElement);
 
-    const { filterPrice, filterDays, sortValue, searchValue } = shopStore.getState();
+    await this.handleGettingProducts(true);
 
-    this.products =
-      (await getProducts(this.categorySlug, this.subcategorySlug, filterPrice, filterDays, sortValue, searchValue)) ||
-      [];
-
-    this.catalogSection = new ProductList(this.products).getElement();
+    this.catalogSection = new ProductList(this.products);
     loadingElement.remove();
 
-    this.node.append(this.catalogSection);
-  }
+    this.node.append(this.catalogSection.getElement());
+
+    window.addEventListener('scroll', this.infiniteLoading);
+    window.addEventListener('resize', this.infiniteLoading);
+  };
 
   private addSubscribtion(): void {
     shopStore.subscribe(() => {
