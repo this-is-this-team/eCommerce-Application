@@ -5,7 +5,7 @@ const aboutUsMembers: IAboutUsMember[] = [
     name: 'Andrew Suponev',
     role: 'Team Lead, Front-End Developer',
     imgClass: 'andrew',
-    about: `Since childhood I loved to stay up late and create websites using basic HTML and CSS. But, unfortunately, after graduation, my life path and IT missed each other. Now I'm 28 years old, I dream be a web developer and contribute to society by doing what I love.`,
+    about: `Since childhood I loved to stay up late and create websites using basic HTML and CSS. But, unfortunately, after graduation, my life path and IT missed each other. Now I'm 29 years old, I dream be a web developer and contribute to society by doing what I love.`,
     contributions: [
       'Configured project setup',
       'Implemented interaction with commercetools',
