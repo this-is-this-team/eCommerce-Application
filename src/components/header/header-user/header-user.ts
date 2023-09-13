@@ -126,7 +126,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
     userStore.subscribe((state) => this.drawAccount(state.isAuth));
 
     cartStore.subscribe((state) => {
-      this.cartCounter.textContent = state.cart ? String(state.cart.totalLineItemQuantity) : '0';
+      this.cartCounter.textContent = state.cart?.totalLineItemQuantity ? String(state.cart.totalLineItemQuantity) : '0';
     });
   }
 }
