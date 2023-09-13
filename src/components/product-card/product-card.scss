@@ -96,6 +96,12 @@
       opacity: 1;
       pointer-events: all;
     }
+
+    &--added {
+      opacity: 1;
+      pointer-events: all;
+      background: $color-price !important;
+    }
   }
 
   &__title {
@@ -132,7 +138,7 @@
   }
 
   &:hover {
-    .product-card__button {
+    .product-card__button:not(.product-card__button--added) {
       opacity: 1;
       pointer-events: all;
     }

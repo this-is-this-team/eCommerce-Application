@@ -8,23 +8,35 @@ import subcategories from '../../constants/subcategories';
 import formatPrice from '../../services/formatPrice';
 import addToCart from '../../services/addToCart';
 import Notification from '../notification/notification';
+import cartStore from '../../store/cart-store';
 import './product-card.scss';
 
 export default class ProductCard extends BaseComponent<'div'> {
-  cartButton: HTMLButtonElement;
+  private cartButton: HTMLButtonElement;
+  private productId: string;
 
   constructor(product: ProductProjection) {
     super('div', ['product-card']);
 
-    this.cartButton = new Button('button', '', ['product-card__button', 'button--cart'], false, () =>
-      this.onAddToCart(product.id)
-    ).getElement();
+    this.productId = product.id;
+
+    this.cartButton = this.createButtonCart();
 
     this.createMarkup(product);
+    this.addSubscribtion();
+  }
+
+  private createButtonCart(): HTMLButtonElement {
+    const classes = this.isProductInCart()
+      ? ['product-card__button', 'product-card__button--added', 'button--cart']
+      : ['product-card__button', 'button--cart'];
+    const isDisabled = this.isProductInCart();
+    const button = new Button('button', '', classes, isDisabled, () => this.onAddToCart(this.productId)).getElement();
+
+    return button;
   }
 
   private createMarkup(product: ProductProjection): void {
-    const productId: string = product.id;
     const title: string = product.name.en;
     const description: string = product.metaDescription?.en || '';
     const image: string = product.masterVariant.images?.[0]?.url || '';
@@ -34,7 +46,7 @@ export default class ProductCard extends BaseComponent<'div'> {
     const days: string = product.masterVariant.attributes?.[2]?.value || '';
     const rating: string = product.masterVariant.attributes?.[0]?.value || '';
 
-    const linkToProduct = this.createLinkToProduct(product.slug.en, productId);
+    const linkToProduct = this.createLinkToProduct(product.slug.en, this.productId);
 
     const cardMedia = new Link('', ['product-card__media'], linkToProduct).getElement();
     const cardImage: HTMLImageElement = new BaseComponent('img', ['product-card__image']).getElement();
@@ -109,8 +121,8 @@ export default class ProductCard extends BaseComponent<'div'> {
       this.cartButton.disabled = true;
       this.node.classList.add('card-overlay-enabled');
 
-      const response = await addToCart(id);
-      console.log('updated Cart: ', response);
+      const cart = await addToCart(id);
+      cartStore.dispatch({ type: 'UPDATE_CART', cart });
       new Notification('success', 'Tour has been successfully added to cart!').showNotification();
     } catch (error) {
       if (error instanceof Error) {
@@ -118,9 +130,28 @@ export default class ProductCard extends BaseComponent<'div'> {
       } else {
         console.error(error);
       }
-    } finally {
+
       this.cartButton.disabled = false;
+    } finally {
       this.node.classList.remove('card-overlay-enabled');
     }
+  }
+
+  private isProductInCart(): boolean {
+    const { cartItems } = cartStore.getState();
+    return !!cartItems?.find((item) => item.productId === this.productId);
+  }
+
+  private addSubscribtion(): void {
+    cartStore.subscribe((state) => {
+      console.log(state);
+      if (state.cartItems?.find((item) => item.productId === this.productId)) {
+        this.cartButton.classList.add('product-card__button--added');
+        this.cartButton.disabled = true;
+      } else {
+        this.cartButton.classList.remove('product-card__button--added');
+        this.cartButton.disabled = false;
+      }
+    });
   }
 }

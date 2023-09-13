@@ -55,7 +55,7 @@ export default class BasketPage extends BaseComponent<'div'> {
       this.node.append(loadingElement);
 
       this.cart = await getCart();
-      cartStore.dispatch({ type: 'FETCH_CART', cart: this.cart });
+      cartStore.dispatch({ type: 'UPDATE_CART', cart: this.cart });
 
       if (this.cart && this.cart.lineItems.length > 0) {
         basketMainSection = new BasketItems(this.cart.lineItems).getElement();
