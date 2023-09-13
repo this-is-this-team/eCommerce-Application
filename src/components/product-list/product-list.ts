@@ -6,29 +6,33 @@ import './product-list.scss';
 export default class ProductList extends BaseComponent<'section'> {
   private items: ProductProjection[];
   private cards: HTMLDivElement[];
+  private container: HTMLDivElement;
 
   constructor(items: ProductProjection[]) {
     super('section', ['product-list']);
 
     this.items = items;
     this.cards = [];
+    this.container = new BaseComponent('div', ['product-list__container']).getElement();
 
     this.createMarkup();
   }
 
   private async createMarkup(): Promise<void> {
-    const container: HTMLDivElement = new BaseComponent('div', ['product-list__container']).getElement();
-
     if (this.items.length) {
       this.cards = this.items.map((item) => {
         return new ProductCard(item).getElement();
       });
-      container.append(...this.cards);
+      this.container.append(...this.cards);
     } else {
       const emptyListText = new BaseComponent('div', ['product-list__empty'], 'No tours found').getElement();
-      container.append(emptyListText);
+      this.container.append(emptyListText);
     }
 
-    this.node.append(container);
+    this.node.append(this.container);
+  }
+
+  public addNewProducts(cards: HTMLElement[]): void {
+    this.container.append(...cards);
   }
 }
