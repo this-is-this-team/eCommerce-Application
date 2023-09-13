@@ -8,6 +8,7 @@ import Notification from '../../components/notification/notification';
 import BasketItems from '../../components/basket-items/basket-items';
 import BasketTotal from '../../components/basket-total/basket-total';
 import getCart from '../../services/getCart';
+import cartStore from '../../store/cart-store';
 import './basket-page.scss';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
@@ -54,6 +55,7 @@ export default class BasketPage extends BaseComponent<'div'> {
       this.node.append(loadingElement);
 
       this.cart = await getCart();
+      cartStore.dispatch({ type: 'FETCH_CART', cart: this.cart });
 
       if (this.cart && this.cart.lineItems.length > 0) {
         basketMainSection = new BasketItems(this.cart.lineItems).getElement();
