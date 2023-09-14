@@ -1,14 +1,45 @@
-import { ClientResponse, DiscountCode } from '@commercetools/platform-sdk';
+import { Cart, ClientResponse, DiscountCode } from '@commercetools/platform-sdk';
+import userStore from '../store/user-store';
+import createAnonymusCart from './createAnonymusCart';
+import getActiveCart from './getActiveCart';
 import apiExistingToken from './apiExistingToken';
-import cartStore from '../store/cart-store';
+import Notification from '../components/notification/notification';
+import createUserCart from './createUserCart';
 
 export default async function getDiscountCode(): Promise<DiscountCode | undefined> {
-  const { cart } = cartStore.getState();
+  const { isAuth } = userStore.getState();
+  let cart: Cart;
+  let token: string | null;
 
-  const currentToken = localStorage.getItem('token');
-  const parsenToken = currentToken ? currentToken : '';
+  if (!isAuth) {
+    token = localStorage.getItem('tokenAnon');
 
-  const response: ClientResponse<DiscountCode> = await apiExistingToken(parsenToken)
+    if (!token) {
+      await createAnonymusCart();
+      token = localStorage.getItem('tokenAnon');
+
+      if (!token) {
+        new Notification('error', 'Something went wrong! Please try to log in or try again later.').showNotification();
+        return;
+      }
+    }
+
+    cart = await getActiveCart(token);
+  } else {
+    token = localStorage.getItem('token');
+    if (!token) {
+      new Notification('error', 'Something went wrong! Please try to log in or try again later.').showNotification();
+      return;
+    }
+
+    try {
+      cart = await getActiveCart(token);
+    } catch {
+      cart = await createUserCart(token);
+    }
+  }
+
+  const response: ClientResponse<DiscountCode> = await apiExistingToken(token)
     .discountCodes()
     .withId({
       ID: cart?.discountCodes[0].discountCode.id || '',
