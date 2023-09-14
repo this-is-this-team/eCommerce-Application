@@ -1,8 +1,8 @@
 import BaseComponent from '../../components/base-component';
 import Banner from '../../components/banner/banner';
 import { IBannerContent } from '../../types/interfaces';
-import './main-page.scss';
 import PromoCodes from '../../components/promo-codes/promo-codes';
+import './main-page.scss';
 
 const bannerContent: IBannerContent = {
   title: 'Wanderlust Dreams: Unveil the World with Exclusive Tours',

@@ -8,7 +8,7 @@ export default class PromoCodes extends BaseComponent<'section'> {
     this.renderPromoCodes();
   }
 
-  private renderPromoCodes() {
+  private renderPromoCodes(): void {
     const container = new BaseComponent('div', ['promo-codes__container']).getElement();
     const title = new BaseComponent(
       'h2',
