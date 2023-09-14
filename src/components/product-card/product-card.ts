@@ -5,7 +5,7 @@ import Button from '../button/button';
 import Link from '../link/link';
 import categories from '../../constants/categories';
 import subcategories from '../../constants/subcategories';
-import formatPrice from '../../services/formatPrice';
+import formatPrice from '../../utils/formatPrice';
 import addToCart from '../../services/addToCart';
 import Notification from '../notification/notification';
 import cartStore from '../../store/cart-store';

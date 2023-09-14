@@ -1,7 +1,7 @@
 import BaseComponent from '../base-component';
 import Button from '../button/button';
 import { Price, ProductData, TypedMoney } from '@commercetools/platform-sdk';
-import formatPrice from '../../services/formatPrice';
+import formatPrice from '../../utils/formatPrice';
 import Notification from '../notification/notification';
 import addToCart from '../../services/addToCart';
 import removeProductFromCart from '../../services/removeProductFromCart';
