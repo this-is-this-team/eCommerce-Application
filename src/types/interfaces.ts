@@ -78,3 +78,10 @@ export interface IAboutUsMember {
   contributions: string[];
   link: string;
 }
+
+export interface IPromoCodes {
+  title: string;
+  descr: string;
+  code: string;
+  expirationDate: string;
+}
