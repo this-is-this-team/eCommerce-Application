@@ -84,6 +84,14 @@
       justify-content: space-between;
       margin-bottom: 16px;
 
+      @media (max-width: 1600px) {
+        flex-direction: column;
+      }
+
+      @include laptop {
+        flex-direction: row;
+      }
+
       @include small-mobile {
         flex-direction: column;
       }
@@ -105,11 +113,20 @@
     }
 
     &__button {
-      margin-left: 8px;
+      margin: 0 0 0 8px;
+
+      @media (max-width: 1600px) {
+        margin: 12px 0 0 0;
+        width: 100%;
+      }
+
+      @include laptop {
+        margin: 0 0 0 8px;
+        width: auto;
+      }
 
       @include small-mobile {
-        margin-left: 0px;
-        margin-top: 12px;
+        margin: 12px 0 0 0;
         width: 100%;
       }
     }
