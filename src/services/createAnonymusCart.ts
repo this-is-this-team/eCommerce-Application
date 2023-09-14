@@ -16,8 +16,9 @@ export default async function createAnonymusCart(): Promise<Cart> {
     })
     .execute();
 
-  const { token } = tokenCache.get();
+  const { token, refreshToken } = tokenCache.get();
   if (token) localStorage.setItem('tokenAnon', token);
+  if (refreshToken) localStorage.setItem('refreshTokenAnon', refreshToken);
 
   return response.body;
 }

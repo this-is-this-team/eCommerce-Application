@@ -2,11 +2,11 @@ import BaseComponent from '../base-component';
 import Button from '../button/button';
 import { Price, ProductData, TypedMoney } from '@commercetools/platform-sdk';
 import formatPrice from '../../services/formatPrice';
-import './product.scss';
-import isProductInCart from '../../services/isProductInCart';
 import Notification from '../notification/notification';
 import addToCart from '../../services/addToCart';
 import removeProductFromCart from '../../services/removeProductFromCart';
+import cartStore from '../../store/cart-store';
+import './product.scss';
 
 interface ProductAttributes {
   [name: string]: string;
@@ -27,7 +27,6 @@ export default class Product extends BaseComponent<'div'> {
     aboutTour: 'No information about this tour',
   };
   private productId: string;
-  private isCart: boolean = false;
   private removeFromCartBtn = new Button('button', 'Remove From Cart', ['button--white'], false, () =>
     this.onRemoveFromCart()
   ).getElement();
@@ -42,11 +41,11 @@ export default class Product extends BaseComponent<'div'> {
     this.createMarkup();
   }
 
-  private async createMarkup(): Promise<void> {
+  private createMarkup(): void {
     this.getProductAttributes();
 
     const productInfo = this.drawProductInfo();
-    this.productForm = await this.drawProductForm();
+    this.productForm = this.drawProductForm();
     const productAbout = this.drawProductAbout();
 
     this.node.append(productInfo, this.productForm, productAbout);
@@ -116,20 +115,18 @@ export default class Product extends BaseComponent<'div'> {
     }
   }
 
-  private async drawProductForm(): Promise<HTMLDivElement> {
+  private drawProductForm(): HTMLDivElement {
     const productForm = new BaseComponent('div', ['product__add-to-cart']).getElement();
 
-    await this.drawButton();
+    this.drawButton();
 
     productForm.append(this.cartButton);
 
     return productForm;
   }
 
-  private async drawButton(): Promise<void> {
-    this.isCart = await isProductInCart(this.productId);
-
-    if (this.isCart) {
+  private drawButton(): void {
+    if (this.isProductInCart()) {
       this.cartButton = this.removeFromCartBtn;
     } else {
       this.cartButton = this.addToCartBtn;
@@ -165,7 +162,8 @@ export default class Product extends BaseComponent<'div'> {
       this.cartButton.disabled = true;
       this.node.classList.add('card-overlay-enabled');
 
-      await addToCart(this.productId);
+      const updatedCart = await addToCart(this.productId);
+      cartStore.dispatch({ type: 'UPDATE_CART', cart: updatedCart });
       new Notification('success', 'Tour has been successfully added to cart!').showNotification();
 
       this.cartButton = this.removeFromCartBtn;
@@ -191,7 +189,8 @@ export default class Product extends BaseComponent<'div'> {
       this.cartButton.disabled = true;
       this.node.classList.add('card-overlay-enabled');
 
-      await removeProductFromCart(this.productId);
+      const updatedCart = await removeProductFromCart(this.productId);
+      cartStore.dispatch({ type: 'UPDATE_CART', cart: updatedCart });
       new Notification('success', 'Tour has been successfully removed from cart!').showNotification();
 
       this.cartButton = this.addToCartBtn;
@@ -210,5 +209,10 @@ export default class Product extends BaseComponent<'div'> {
       this.cartButton.disabled = false;
       this.node.classList.remove('card-overlay-enabled');
     }
+  }
+
+  private isProductInCart(): boolean {
+    const { cartItems } = cartStore.getState();
+    return !!cartItems?.find((item) => item.productId === this.productId);
   }
 }

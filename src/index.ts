@@ -1,10 +1,12 @@
-import './styles/index.scss';
 import { createRouter } from './router';
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import getUser from './services/getUser';
 import userStore from './store/user-store';
 import Notification from './components/notification/notification';
+import getCart from './services/getCart';
+import cartStore from './store/cart-store';
+import './styles/index.scss';
 
 class App {
   public async start() {
@@ -21,6 +23,8 @@ class App {
         userStore.dispatch({ type: 'SET_IS_AUTH', isAuth: true });
         userStore.dispatch({ type: 'ADD_CUSTOMER', customer });
       }
+      const cart = await getCart();
+      cartStore.dispatch({ type: 'UPDATE_CART', cart });
     } catch (error) {
       if (error instanceof Error) {
         new Notification('error', error.message).showNotification();

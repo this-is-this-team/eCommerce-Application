@@ -1,0 +1,250 @@
+.basket-items {
+  margin-bottom: 60px;
+
+  &__container {
+    @include container;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+
+    &-head {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 120%;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+
+      @include tablet {
+        display: none;
+      }
+    }
+
+    &-body {
+      font: $font-label;
+      text-transform: capitalize;
+    }
+
+    &-row {
+      @include tablet {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        border-bottom: 1px solid $color-border;
+      }
+    }
+
+    &-th {
+      padding: 27.5px 0;
+      border-bottom: 1px solid $color-border;
+    }
+
+    &-td {
+      padding: 24px 16px 24px 0;
+      border-bottom: 1px solid $color-border;
+
+      &--price,
+      &--total-price {
+        min-width: 100px;
+
+        @include mobile {
+          width: 100%;
+        }
+      }
+
+      &--price {
+        @include mobile {
+          &::before {
+            content: 'Price   ';
+          }
+        }
+      }
+
+      &--total-price {
+        @include mobile {
+          &::before {
+            content: 'Total   ';
+          }
+        }
+      }
+
+      &--quantity {
+        @include mobile {
+          width: 100%;
+        }
+      }
+
+      &--remove {
+        padding-right: 0;
+        width: 80px;
+
+        @include tablet {
+          order: -1;
+          margin-left: auto;
+        }
+
+        @include mobile {
+          width: 24px;
+        }
+      }
+
+      @include tablet {
+        border: none;
+      }
+
+      @include mobile {
+        padding: 12px 0;
+      }
+    }
+
+    &-row:last-child .basket-items__table-td {
+      border: none;
+    }
+  }
+
+  &__product {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    @include tablet {
+      width: 85%;
+      order: -2;
+    }
+
+    @include mobile {
+      width: 70%;
+    }
+  }
+
+  &__image {
+    &-wrapper {
+      width: 132px;
+      height: 83px;
+      background: $color-bg-secondary;
+      border-radius: 8px;
+      overflow: hidden;
+
+      @include mobile {
+        height: auto;
+      }
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    &--placeholder {
+      background-image: url('../../assets/img/placeholder-image.svg');
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+
+  &__prices {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+
+    @include mobile {
+      display: inline-flex;
+    }
+  }
+
+  &__price {
+    color: $color-primary;
+
+    &--old {
+      text-decoration: line-through;
+      color: $color-secondary-40;
+    }
+
+    &--new {
+      color: $color-error;
+    }
+  }
+
+  // TODO: Replace with a separate component which will be implemented in ISSUE #127.
+  &__quantity {
+    width: 107px;
+    height: 43px;
+    border-radius: 6px;
+    background: $color-bg-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: $font-button;
+
+    @include mobile {
+      width: 100%;
+    }
+  }
+
+  &__remove {
+    background: transparent;
+    color: $color-primary;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    opacity: 0.6;
+    padding: 0;
+    width: 80px;
+
+    @include mobile {
+      width: 24px;
+    }
+
+    &-icon {
+      width: 15px;
+      height: 15px;
+      background-image: url('../../assets/icons/popup-close-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+      @include mobile {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    span {
+      @include mobile {
+        display: none;
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: $color-secondary-60;
+      left: 0;
+      bottom: -4px;
+      transition: width 0.2s ease-in-out;
+
+      @include mobile {
+        display: none;
+      }
+    }
+
+    &:hover,
+    &:active {
+      background: transparent !important;
+
+      &::after {
+        width: 0;
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import { changeUrlEvent } from '../../../utils/change-url-event';
 import userStore from '../../../store/user-store';
 import userLogout from '../../../services/userLogout';
 import './header-user.scss';
+import cartStore from '../../../store/cart-store';
 
 export default class HeaderUser extends BaseComponent<'div'> {
   private account: HTMLDivElement;
@@ -18,6 +19,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
   private logoutBtn: HTMLButtonElement;
   private profileBtn: HTMLAnchorElement;
   private bridge: HTMLDivElement;
+  private cartCounter: HTMLDivElement;
 
   constructor() {
     super('div', ['header__user']);
@@ -49,6 +51,7 @@ export default class HeaderUser extends BaseComponent<'div'> {
 
     this.drawAccount(userStore.getState().isAuth);
 
+    this.cartCounter = new BaseComponent<'div'>('div', ['user-cart__counter'], '0').getElement();
     this.cart = this.drawCart();
 
     this.node.append(this.account, this.cart);
@@ -113,14 +116,17 @@ export default class HeaderUser extends BaseComponent<'div'> {
   private drawCart(): HTMLDivElement {
     const cart: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-cart']).getElement();
     const cartIcon: HTMLAnchorElement = new Link('', ['user-cart__icon'], AppRoutesPath.BASKET).getElement();
-    const cartCounter: HTMLDivElement = new BaseComponent<'div'>('div', ['user-cart__counter'], '0').getElement();
 
-    cart.append(cartIcon, cartCounter);
+    cart.append(cartIcon, this.cartCounter);
 
     return cart;
   }
 
   private addSubscribtion(): void {
     userStore.subscribe((state) => this.drawAccount(state.isAuth));
+
+    cartStore.subscribe((state) => {
+      this.cartCounter.textContent = state.cart?.totalLineItemQuantity ? String(state.cart.totalLineItemQuantity) : '0';
+    });
   }
 }

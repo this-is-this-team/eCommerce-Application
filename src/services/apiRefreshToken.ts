@@ -1,5 +1,6 @@
 import {
   ClientBuilder,
+  type TokenCache,
   type HttpMiddlewareOptions,
   type RefreshAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2';
@@ -7,7 +8,7 @@ import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk';
 
 const projectKey: string = process.env.CTP_PROJECT_KEY || '';
 
-export default function apiRefreshToken(refreshToken: string) {
+export default function apiRefreshToken(refreshToken: string, tokenCache: TokenCache) {
   const options: RefreshAuthMiddlewareOptions = {
     host: process.env.CTP_AUTH_URL || '',
     projectKey,
@@ -16,6 +17,7 @@ export default function apiRefreshToken(refreshToken: string) {
       clientSecret: process.env.CTP_CLIENT_SECRET || '',
     },
     refreshToken,
+    tokenCache,
     fetch,
   };
 

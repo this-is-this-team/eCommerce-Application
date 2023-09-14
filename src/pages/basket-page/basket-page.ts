@@ -1,9 +1,15 @@
+import { Cart } from '@commercetools/platform-sdk';
 import BaseComponent from '../../components/base-component';
 import Breadcrumbs from '../../components/breadcrumbs/breadcrumbs';
 import { IBreadcrumbLink } from '../../types/interfaces';
 import { AppRoutesPath } from '../../router/types';
-import './basket-page.scss';
 import BasketEmpty from '../../components/basket-empty/basket-empty';
+import Notification from '../../components/notification/notification';
+import BasketItems from '../../components/basket-items/basket-items';
+import BasketTotal from '../../components/basket-total/basket-total';
+import getCart from '../../services/getCart';
+import cartStore from '../../store/cart-store';
+import './basket-page.scss';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -13,36 +19,67 @@ const breadcrumbsLinks: IBreadcrumbLink[] = [
 ];
 
 export default class BasketPage extends BaseComponent<'div'> {
-  private breadcrumbs: HTMLElement;
-  private basketSection: HTMLElement;
-  private basketContent: HTMLElement;
-  private isCart: boolean;
+  private cart: Cart | undefined;
 
   constructor() {
     super('div', ['basket-page']);
 
-    this.breadcrumbs = new Breadcrumbs(breadcrumbsLinks, 'Basket').getElement();
-    this.basketSection = new BaseComponent('section', ['basket-section']).getElement();
+    this.cart = undefined;
 
-    this.isCart = false; // TODO: CHECK IS ITEMS IN A CART
-
-    if (this.isCart) {
-      this.basketContent = new BaseComponent('div').getElement(); // TODO: BASKET COMPONENT WITH ITEMS
-    } else {
-      this.basketContent = new BasketEmpty().getElement();
-    }
-
-    this.renderBasketSection();
-
-    this.node.append(this.breadcrumbs, this.basketSection);
+    this.renderBreadcrumbs();
+    this.renderTitle();
+    this.renderMainContent();
   }
 
-  private renderBasketSection(): void {
-    const basketSectionContainer = new BaseComponent('div', ['basket-section__container']).getElement();
-    const basketSectionTitle = new BaseComponent('h3', ['basket-section__title'], 'Shopping Cart').getElement();
+  private renderBreadcrumbs(): void {
+    const breadcrumbs = new Breadcrumbs(breadcrumbsLinks, 'Basket').getElement();
 
-    basketSectionContainer.append(basketSectionTitle, this.basketContent);
+    this.node.append(breadcrumbs);
+  }
 
-    this.basketSection.append(basketSectionContainer);
+  private renderTitle(): void {
+    const basketTitleSection = new BaseComponent('section', ['basket-page__section']).getElement();
+    const basketPageTitle = new BaseComponent('h3', ['basket-page__title'], 'Shopping Cart').getElement();
+
+    basketTitleSection.append(basketPageTitle);
+
+    this.node.append(basketTitleSection);
+  }
+
+  private async renderMainContent(): Promise<void> {
+    const loadingElement = new BaseComponent('div', ['basket-page__loading'], 'Loading...').getElement();
+    let basketMainSection: HTMLElement;
+    let basketTotalSection: HTMLElement;
+
+    try {
+      this.node.append(loadingElement);
+
+      this.cart = await getCart();
+      cartStore.dispatch({ type: 'UPDATE_CART', cart: this.cart });
+
+      if (this.cart && this.cart.lineItems.length > 0) {
+        basketMainSection = new BasketItems(this.cart.lineItems).getElement();
+        basketTotalSection = new BasketTotal(this.cart).getElement();
+        this.node.append(basketMainSection, basketTotalSection);
+      } else {
+        basketMainSection = new BasketEmpty().getElement();
+        this.node.append(basketMainSection);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+        if (error.message === 'invalid_token') {
+          localStorage.removeItem('tokenAnon');
+          localStorage.removeItem('token');
+        }
+      } else {
+        console.error(error);
+      }
+
+      basketMainSection = new BasketEmpty().getElement();
+      this.node.append(basketMainSection);
+    } finally {
+      loadingElement.remove();
+    }
   }
 }
