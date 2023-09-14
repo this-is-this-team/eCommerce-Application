@@ -14,8 +14,8 @@ export default class AboutUsCollaboration extends BaseComponent<'section'> {
     blockquote.insertAdjacentHTML(
       'afterbegin',
       `
-        <p>"Great things in business are never done alone, they’re done by a team"</p>
-        <footer>— <cite>Steve Jobs</cite></footer>
+        <p>Great things in business are never done alone, they’re done by a team.</p>
+        <footer>Steve Jobs</footer>
       `
     );
 

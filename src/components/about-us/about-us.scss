@@ -1,6 +1,6 @@
 .about-us {
   &-list {
-    margin: 48px 0 116px 0;
+    margin: 48px 0 104px 0;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 24px;
@@ -20,7 +20,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
+    //justify-content: space-between;
     gap: 32px;
     border-radius: 8px;
     background: $color-bg-light;
@@ -114,24 +114,38 @@
     }
 
     &__link {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
       position: relative;
       font: $font-button;
       color: $color-button;
       transition: all 0.3s ease-in-out;
 
-      &:not(:disabled):hover,
-      &:not(:disabled):active {
-        transform: scale(1.06);
-      }
-
       &::after {
         content: '';
-        position: absolute;
-        top: 0;
-        right: -24px;
         width: 20px;
         height: 20px;
         background-image: url('../../assets/icons/github-profile-icon.svg');
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        background: $color-button;
+        left: 0;
+        bottom: -4px;
+        transition: width 0.2s ease-in-out;
+      }
+
+      &:not(:disabled):hover,
+      &:not(:disabled):active {
+        &::before {
+          width: 100%;
+        }
       }
     }
 
@@ -151,9 +165,9 @@
   }
 
   &-collaboration {
-    padding-top: 92px;
-    margin-bottom: 104px;
-    border-top: 1px solid rgba($color-primary, 0.12);
+    padding: 104px 0;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
 
     @include mobile {
       padding-top: 60px;
@@ -165,23 +179,44 @@
     }
 
     &__blockquote {
-      margin-top: 24px;
+      margin-top: 48px;
       width: fit-content;
-      padding: 16px;
-      background: rgba($color-button, 0.2);
-      border-radius: 5px;
+      padding: 64px;
+      background: $color-bg-light;
+      border-radius: 8px;
+      position: relative;
+
+      @include tablet {
+        padding: 40px;
+      }
 
       & p {
-        font-size: 20px;
-        font-weight: 600;
-
-        @include small-mobile {
-          font-size: 16px;
-        }
+        @include font-h2;
       }
 
       & footer {
-        text-align: right;
+        margin-top: 40px;
+        font: $font-button;
+
+        @include tablet {
+          margin-top: 20px;
+        }
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        width: 36px;
+        height: 32px;
+        background-image: url('../../assets/icons/quote-icon.svg');
+        background-position: center;
+        background-size: cover;
+        margin-bottom: 20px;
+
+        @include tablet {
+          width: 27px;
+          height: 24px;
+        }
       }
     }
   }
@@ -190,16 +225,16 @@
     margin-top: 48px;
 
     &__title {
-      @include font-h4;
+      @include font-h2;
     }
 
     &__list {
-      margin-top: 16px;
+      margin-top: 48px;
     }
 
     &-item {
       display: flex;
-      margin-bottom: 24px;
+      margin-bottom: 40px;
 
       &__index {
         margin-right: 20px;
@@ -209,18 +244,13 @@
         min-width: 40px;
         height: 40px;
         border-radius: 100%;
-        background: rgba($color-rating, 0.5);
+        background: $color-button;
+        color: $color-white;
       }
 
       &__title {
-        font: $font-button;
-        font-size: 18px;
-        margin-bottom: 2px;
-
-        @include small-mobile {
-          font-size: 16px;
-          margin-bottom: 6px;
-        }
+        @include font-h4;
+        margin-bottom: 10px;
       }
 
       &__descr {
@@ -228,6 +258,60 @@
         @include small-mobile {
           font-size: 14px;
         }
+      }
+    }
+  }
+
+  &-rsschool {
+    padding: 104px 0;
+    display: flex;
+    align-items: center;
+
+    @include pre-tablet {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    @include mobile {
+      padding: 40px 32px;
+      margin-bottom: 60px;
+    }
+
+    &__link {
+      display: block;
+      min-width: 220px;
+      height: 80px;
+      background-image: url('../../assets/icons/rsschool-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-image: url('../../assets/icons/rsschool-icon-active.svg');
+      }
+
+      @include pre-tablet {
+        margin-bottom: 40px;
+      }
+
+      @include small-mobile {
+        min-width: 135px;
+        height: 50px;
+      }
+    }
+
+    &__text {
+      max-width: 1300px;
+      margin: 0 0 0 40px;
+      padding: 0 0 0 40px;
+      @include font-h2;
+      border-left: 1.5px solid rgba($color-primary, 0.12);
+
+      @include pre-tablet {
+        margin: 0;
+        padding: 0;
+        border: none;
       }
     }
   }

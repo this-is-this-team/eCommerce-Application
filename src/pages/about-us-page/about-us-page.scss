@@ -5,18 +5,7 @@
 
   &__title {
     @include font-h1;
-
-    @include small-mobile {
-      font-size: 24px;
-    }
-  }
-
-  &__subtitle {
-    @include font-h1;
-
-    @include small-mobile {
-      font-size: 24px;
-    }
+    max-width: 1025px;
 
     & span {
       color: $color-logo;
