@@ -1,12 +1,19 @@
-import { Cart, TypedMoney } from '@commercetools/platform-sdk';
+import { Cart } from '@commercetools/platform-sdk';
 import BaseComponent from '../components/base-component';
 import formatPrice from './formatPrice';
 
 export default function createBasketDiscountTotal(cart: Cart): HTMLDivElement[] {
   const pricesWrapper: HTMLDivElement[] = [];
 
-  const discount: TypedMoney =
-    cart.lineItems[0].discountedPricePerQuantity[0].discountedPrice.includedDiscounts[0].discountedAmount;
+  let subTotal: number = 0;
+
+  cart.lineItems.forEach((item) => {
+    if (item.price?.discounted) {
+      subTotal += item.price?.discounted.value.centAmount || 0;
+    } else {
+      subTotal += item.price.value.centAmount || 0;
+    }
+  });
 
   function createSubTotal(): HTMLDivElement {
     const subTotalBox: HTMLDivElement = new BaseComponent('div', ['basket-total__total']).getElement();
@@ -18,11 +25,7 @@ export default function createBasketDiscountTotal(cart: Cart): HTMLDivElement[] 
     const subTotalPrice: HTMLSpanElement = new BaseComponent('span', ['basket-total__total-price']).getElement();
 
     if (cart.totalPrice.centAmount) {
-      subTotalPrice.textContent = formatPrice(
-        cart.totalPrice.currencyCode,
-        cart.totalPrice.centAmount + discount.centAmount,
-        cart.totalPrice.fractionDigits
-      );
+      subTotalPrice.textContent = formatPrice(cart.totalPrice.currencyCode, subTotal, cart.totalPrice.fractionDigits);
     }
 
     subTotalBox.append(subTotalLabel, subTotalPrice);
@@ -43,7 +46,12 @@ export default function createBasketDiscountTotal(cart: Cart): HTMLDivElement[] 
 
     if (cart.totalPrice.centAmount) {
       discountPrice.textContent =
-        '- ' + formatPrice(discount.currencyCode, discount.centAmount, discount.fractionDigits);
+        '- ' +
+        formatPrice(
+          cart.totalPrice.currencyCode,
+          subTotal - cart.totalPrice.centAmount,
+          cart.totalPrice.fractionDigits
+        );
     }
 
     discountBox.append(discountLabel, discountPrice);
