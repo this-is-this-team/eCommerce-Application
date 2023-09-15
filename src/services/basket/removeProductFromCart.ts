@@ -1,14 +1,12 @@
-import { ClientResponse, Cart } from '@commercetools/platform-sdk';
-import userStore from '../store/user-store';
+import userStore from '../../store/user-store';
 import createAnonymusCart from './createAnonymusCart';
+import Notification from '../../components/notification/notification';
 import getActiveCart from './getActiveCart';
-import apiExistingToken from './apiExistingToken';
-import Notification from '../components/notification/notification';
-import createUserCart from './createUserCart';
+import apiExistingToken from '../apiExistingToken';
+import { Cart } from '@commercetools/platform-sdk';
 
-export default async function addToCart(productId: string): Promise<Cart | undefined> {
+export default async function removeProductFromCart(productId: string): Promise<Cart | undefined> {
   const { isAuth } = userStore.getState();
-  let cart: Cart;
   let token: string | null;
 
   if (!isAuth) {
@@ -23,23 +21,19 @@ export default async function addToCart(productId: string): Promise<Cart | undef
         return;
       }
     }
-
-    cart = await getActiveCart(token);
   } else {
     token = localStorage.getItem('token');
     if (!token) {
       new Notification('error', 'Something went wrong! Please try to log in or try again later.').showNotification();
       return;
     }
-
-    try {
-      cart = await getActiveCart(token);
-    } catch {
-      cart = await createUserCart(token);
-    }
   }
 
-  const response: ClientResponse<Cart> = await apiExistingToken(token)
+  const cart: Cart = await getActiveCart(token);
+
+  cart.lineItems.filter((item) => item.productId === productId);
+
+  const response = await apiExistingToken(token)
     .me()
     .carts()
     .withId({
@@ -50,8 +44,8 @@ export default async function addToCart(productId: string): Promise<Cart | undef
         version: cart.version,
         actions: [
           {
-            action: 'addLineItem',
-            productId,
+            action: 'removeLineItem',
+            lineItemId: cart.lineItems[0].id,
           },
         ],
       },

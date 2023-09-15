@@ -7,7 +7,7 @@ import BasketEmpty from '../../components/basket-empty/basket-empty';
 import Notification from '../../components/notification/notification';
 import BasketItems from '../../components/basket-items/basket-items';
 import BasketTotal from '../../components/basket-total/basket-total';
-import getCart from '../../services/getCart';
+import getCart from '../../services/basket/getCart';
 import cartStore from '../../store/cart-store';
 import './basket-page.scss';
 

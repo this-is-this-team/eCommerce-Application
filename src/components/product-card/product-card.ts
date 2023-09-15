@@ -6,7 +6,7 @@ import Link from '../link/link';
 import categories from '../../constants/categories';
 import subcategories from '../../constants/subcategories';
 import formatPrice from '../../utils/formatPrice';
-import addToCart from '../../services/addToCart';
+import addToCart from '../../services/basket/addToCart';
 import Notification from '../notification/notification';
 import cartStore from '../../store/cart-store';
 import './product-card.scss';

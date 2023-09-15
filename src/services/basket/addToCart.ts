@@ -1,12 +1,12 @@
-import { ClientResponse, Cart, MyCartRemoveDiscountCodeAction } from '@commercetools/platform-sdk';
-import userStore from '../store/user-store';
+import { ClientResponse, Cart } from '@commercetools/platform-sdk';
+import userStore from '../../store/user-store';
 import createAnonymusCart from './createAnonymusCart';
 import getActiveCart from './getActiveCart';
-import apiExistingToken from './apiExistingToken';
-import Notification from '../components/notification/notification';
+import apiExistingToken from '../apiExistingToken';
+import Notification from '../../components/notification/notification';
 import createUserCart from './createUserCart';
 
-export default async function addDiscountToCart(code: string): Promise<Cart | undefined> {
+export default async function addToCart(productId: string): Promise<Cart | undefined> {
   const { isAuth } = userStore.getState();
   let cart: Cart;
   let token: string | null;
@@ -39,22 +39,6 @@ export default async function addDiscountToCart(code: string): Promise<Cart | un
     }
   }
 
-  function removeAllDiscountes(): MyCartRemoveDiscountCodeAction[] | [] {
-    const result: MyCartRemoveDiscountCodeAction[] = [];
-
-    cart.discountCodes.forEach((item) => {
-      result.push({
-        action: 'removeDiscountCode',
-        discountCode: {
-          typeId: item.discountCode.typeId,
-          id: item.discountCode.id,
-        },
-      });
-    });
-
-    return result;
-  }
-
   const response: ClientResponse<Cart> = await apiExistingToken(token)
     .me()
     .carts()
@@ -65,10 +49,9 @@ export default async function addDiscountToCart(code: string): Promise<Cart | un
       body: {
         version: cart.version,
         actions: [
-          ...removeAllDiscountes(),
           {
-            action: 'addDiscountCode',
-            code,
+            action: 'addLineItem',
+            productId,
           },
         ],
       },

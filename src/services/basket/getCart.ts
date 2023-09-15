@@ -1,9 +1,9 @@
 import { Cart } from '@commercetools/platform-sdk';
-import userStore from '../store/user-store';
+import userStore from '../../store/user-store';
 import createUserCart from './createUserCart';
-import Notification from '../components/notification/notification';
+import Notification from '../../components/notification/notification';
 import createAnonymusCart from './createAnonymusCart';
-import getAnonActiveCart from './getAnonActiveCart';
+import getAnonActiveCart from '../getAnonActiveCart';
 import getActiveCart from './getActiveCart';
 
 export default async function getCart(): Promise<Cart | undefined> {
