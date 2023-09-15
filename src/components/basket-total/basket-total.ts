@@ -15,6 +15,7 @@ export default class BasketTotal extends BaseComponent<'section'> {
   private totalBox: HTMLDivElement | null = null;
   private inputPromo: InputField | null = null;
   private buttonClearDiscount: HTMLButtonElement | null = null;
+  private currentPromoCode: string | null = null;
 
   constructor(cart: Cart) {
     super('section', ['basket-total']);
@@ -84,27 +85,33 @@ export default class BasketTotal extends BaseComponent<'section'> {
     this.totalBox?.append(...createBasketDiscountTotal(cart));
     const discount = await getDiscountCode();
     this.inputPromo?.setValue(discount?.code || '');
+    this.currentPromoCode = discount?.code || '';
     this.buttonClearDiscount?.classList.remove('hidden');
   }
 
-  private async addPromoCodeToBasket(promoCode: string): Promise<void> {
-    try {
-      const cart = await addDiscountToCart(promoCode);
-      cartStore.dispatch({ type: 'UPDATE_CART', cart });
-      this.renderTotalWithDiscount(cart as Cart);
-      new Notification('success', 'Promo Code is successfully applied!').showNotification();
-    } catch (error) {
-      if (error instanceof Error) {
-        new Notification('error', error.message).showNotification();
-        if (error.message === 'invalid_token') {
-          localStorage.removeItem('tokenAnon');
-          localStorage.removeItem('token');
+  private addPromoCodeToBasket = async (promoCode: string): Promise<void> => {
+    if (this.currentPromoCode !== promoCode) {
+      try {
+        const cart = await addDiscountToCart(promoCode);
+        cartStore.dispatch({ type: 'UPDATE_CART', cart });
+        this.renderTotalWithDiscount(cart as Cart);
+        new Notification('success', 'Promo Code is successfully applied!').showNotification();
+        this.currentPromoCode = promoCode;
+      } catch (error) {
+        if (error instanceof Error) {
+          new Notification('error', error.message).showNotification();
+          if (error.message === 'invalid_token') {
+            localStorage.removeItem('tokenAnon');
+            localStorage.removeItem('token');
+          }
+        } else {
+          console.error(error);
         }
-      } else {
-        console.error(error);
       }
+    } else {
+      new Notification('warning', 'This promo code has already been entered!').showNotification();
     }
-  }
+  };
 
   private onRemoveDiscount = async (): Promise<void> => {
     try {
