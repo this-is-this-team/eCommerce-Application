@@ -10,6 +10,7 @@ import BasketTotal from '../../components/basket-total/basket-total';
 import getCart from '../../services/basket/getCart';
 import cartStore from '../../store/cart-store';
 import './basket-page.scss';
+import changeCartItemQuantity from '../../services/basket/changeCartItemQuantity';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -20,6 +21,8 @@ const breadcrumbsLinks: IBreadcrumbLink[] = [
 
 export default class BasketPage extends BaseComponent<'div'> {
   private cart: Cart | undefined;
+  private basketMainSection: HTMLElement | undefined;
+  private basketTotalSection: HTMLElement | undefined;
 
   constructor() {
     super('div', ['basket-page']);
@@ -46,24 +49,24 @@ export default class BasketPage extends BaseComponent<'div'> {
     this.node.append(basketTitleSection);
   }
 
-  private async renderMainContent(): Promise<void> {
+  private onChangeQuantity = async (id: string, quantity: number): Promise<void> => {
     const loadingElement = new BaseComponent('div', ['basket-page__loading'], 'Loading...').getElement();
-    let basketMainSection: HTMLElement;
-    let basketTotalSection: HTMLElement;
+    (this.basketMainSection as HTMLElement).innerHTML = '';
+    (this.basketTotalSection as HTMLElement).innerHTML = '';
 
     try {
       this.node.append(loadingElement);
 
-      this.cart = await getCart();
+      this.cart = await changeCartItemQuantity(id, quantity);
       cartStore.dispatch({ type: 'UPDATE_CART', cart: this.cart });
 
       if (this.cart && this.cart.lineItems.length > 0) {
-        basketMainSection = new BasketItems(this.cart.lineItems).getElement();
-        basketTotalSection = new BasketTotal(this.cart).getElement();
-        this.node.append(basketMainSection, basketTotalSection);
+        this.basketMainSection?.append(
+          new BasketItems(this.cart.lineItems, (id, quantity) => this.onChangeQuantity(id, quantity)).getElement()
+        );
+        this.basketTotalSection?.append(new BasketTotal(this.cart).getElement());
       } else {
-        basketMainSection = new BasketEmpty().getElement();
-        this.node.append(basketMainSection);
+        this.basketMainSection?.append(new BasketEmpty().getElement());
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -76,8 +79,44 @@ export default class BasketPage extends BaseComponent<'div'> {
         console.error(error);
       }
 
-      basketMainSection = new BasketEmpty().getElement();
-      this.node.append(basketMainSection);
+      this.basketMainSection?.append(new BasketEmpty().getElement());
+    } finally {
+      loadingElement.remove();
+    }
+  };
+
+  private async renderMainContent(): Promise<void> {
+    const loadingElement = new BaseComponent('div', ['basket-page__loading'], 'Loading...').getElement();
+
+    try {
+      this.node.append(loadingElement);
+
+      this.cart = await getCart();
+      cartStore.dispatch({ type: 'UPDATE_CART', cart: this.cart });
+
+      if (this.cart && this.cart.lineItems.length > 0) {
+        this.basketMainSection = new BasketItems(this.cart.lineItems, (id, quantity) =>
+          this.onChangeQuantity(id, quantity)
+        ).getElement();
+        this.basketTotalSection = new BasketTotal(this.cart).getElement();
+        this.node.append(this.basketMainSection, this.basketTotalSection);
+      } else {
+        this.basketMainSection = new BasketEmpty().getElement();
+        this.node.append(this.basketMainSection);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+        if (error.message === 'invalid_token') {
+          localStorage.removeItem('tokenAnon');
+          localStorage.removeItem('token');
+        }
+      } else {
+        console.error(error);
+      }
+
+      this.basketMainSection = new BasketEmpty().getElement();
+      this.node.append(this.basketMainSection);
     } finally {
       loadingElement.remove();
     }

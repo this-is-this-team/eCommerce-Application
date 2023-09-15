@@ -4,9 +4,18 @@ import Button from '../button/button';
 import formatPrice from '../../utils/formatPrice';
 import './basket-items.scss';
 
+enum BasketItemQuantityAction {
+  DEC = 'decrement',
+  INC = 'increment',
+}
+
 export default class BasketItems extends BaseComponent<'section'> {
-  constructor(items: LineItem[]) {
+  private onChangeQuantity: (id: string, quantity: number) => void;
+
+  constructor(items: LineItem[], onChangeQuantityCallback: (id: string, quantity: number) => void) {
     super('section', ['basket-items']);
+
+    this.onChangeQuantity = onChangeQuantityCallback;
 
     this.renderBasketItems(items);
   }
@@ -129,12 +138,16 @@ export default class BasketItems extends BaseComponent<'section'> {
       'basket-items__table-td--quantity',
     ]).getElement();
 
-    // TODO: Replace with a separate component which will be implemented in ISSUE #127.
-    const quantityField: HTMLDivElement = new BaseComponent(
-      'div',
-      ['basket-items__quantity'],
-      `${item.quantity}`
+    const quantityField: HTMLDivElement = new BaseComponent('div', ['basket-items__quantity']).getElement();
+    const quantityFieldDec: HTMLButtonElement = new Button('button', '-', ['button--quantity'], false, () =>
+      this.handleChangeItemQuantity(item, BasketItemQuantityAction.DEC)
     ).getElement();
+    const quantityFieldNumber: HTMLSpanElement = new BaseComponent('span', [], `${item.quantity}`).getElement();
+    const quantityFieldInc: HTMLButtonElement = new Button('button', '+', ['button--quantity'], false, () =>
+      this.handleChangeItemQuantity(item, BasketItemQuantityAction.INC)
+    ).getElement();
+
+    quantityField.append(quantityFieldDec, quantityFieldNumber, quantityFieldInc);
 
     quantityElement.append(quantityField);
     return quantityElement;
@@ -176,5 +189,13 @@ export default class BasketItems extends BaseComponent<'section'> {
     removeField.append(removeBtn);
 
     return removeField;
+  }
+
+  private handleChangeItemQuantity(item: LineItem, action: BasketItemQuantityAction): void {
+    if (action === BasketItemQuantityAction.DEC) {
+      this.onChangeQuantity(item.id, item.quantity - 1);
+    } else {
+      this.onChangeQuantity(item.id, item.quantity + 1);
+    }
   }
 }

@@ -280,4 +280,23 @@
       background-size: cover;
     }
   }
+
+  &--quantity {
+    background: none;
+    border-radius: 6px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-black;
+    font: $font-button;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      color: $color-white;
+    }
+  }
 }
