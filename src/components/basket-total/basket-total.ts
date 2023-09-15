@@ -89,14 +89,14 @@ export default class BasketTotal extends BaseComponent<'section'> {
     this.buttonClearDiscount?.classList.remove('hidden');
   }
 
-  private addPromoCodeToBasket = async (promoCode: string): Promise<void> => {
+  private async addPromoCodeToBasket(promoCode: string): Promise<void> {
     if (this.currentPromoCode !== promoCode) {
       try {
         const cart = await addDiscountToCart(promoCode);
         cartStore.dispatch({ type: 'UPDATE_CART', cart });
         this.renderTotalWithDiscount(cart as Cart);
-        new Notification('success', 'Promo Code is successfully applied!').showNotification();
         this.currentPromoCode = promoCode;
+        new Notification('success', 'Promo Code is successfully applied!').showNotification();
       } catch (error) {
         if (error instanceof Error) {
           new Notification('error', error.message).showNotification();
@@ -111,13 +111,14 @@ export default class BasketTotal extends BaseComponent<'section'> {
     } else {
       new Notification('warning', 'This promo code has already been entered!').showNotification();
     }
-  };
+  }
 
   private onRemoveDiscount = async (): Promise<void> => {
     try {
       const cart = await removeDiscountCart();
       cartStore.dispatch({ type: 'UPDATE_CART', cart });
       this.renderTotal(cart as Cart);
+      this.inputPromo?.setValue('');
       new Notification('success', 'Promo Code is successfully deleted!').showNotification();
     } catch (error) {
       if (error instanceof Error) {
