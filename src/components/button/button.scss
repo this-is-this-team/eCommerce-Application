@@ -249,4 +249,35 @@
       transition: all 0.3s ease-in-out;
     }
   }
+
+  &--trash-cart {
+    position: relative;
+    display: block;
+    background-color: $color-error;
+    overflow: hidden;
+    height: 48px;
+
+    &.hidden {
+      display: none;
+    }
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background-color: rgba($color-error, 0.8);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('../../assets/icons/cart-trash-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
 }
