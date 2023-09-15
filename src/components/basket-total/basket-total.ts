@@ -15,7 +15,7 @@ export default class BasketTotal extends BaseComponent<'section'> {
   private totalBox: HTMLDivElement | null = null;
   private inputPromo: InputField | null = null;
   private buttonClearDiscount: HTMLButtonElement | null = null;
-  private currentPromoCode: string | null = null;
+  private currentPromoCode: string = '';
 
   constructor(cart: Cart) {
     super('section', ['basket-total']);
@@ -119,6 +119,7 @@ export default class BasketTotal extends BaseComponent<'section'> {
       cartStore.dispatch({ type: 'UPDATE_CART', cart });
       this.renderTotal(cart as Cart);
       this.inputPromo?.setValue('');
+      this.currentPromoCode = '';
       new Notification('success', 'Promo Code is successfully deleted!').showNotification();
     } catch (error) {
       if (error instanceof Error) {
