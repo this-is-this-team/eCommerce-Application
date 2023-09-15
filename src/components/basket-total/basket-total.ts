@@ -2,10 +2,21 @@ import { Cart } from '@commercetools/platform-sdk';
 import BaseComponent from '../base-component';
 import Button from '../button/button';
 import InputField from '../input/input';
-import formatPrice from '../../services/formatPrice';
+import cartStore from '../../store/cart-store';
+import addDiscountToCart from '../../services/basket/addDiscountToCart';
+import Notification from '../notification/notification';
+import createBasketTotal from '../../utils/createBasketTotal';
+import createBasketDiscountTotal from '../../utils/createBasketDiscountTotal';
+import getDiscountCode from '../../services/getDiscountCode';
+import removeDiscountCart from '../../services/basket/removeDiscountCart';
 import './basket-total.scss';
 
 export default class BasketTotal extends BaseComponent<'section'> {
+  private totalBox: HTMLDivElement | null = null;
+  private inputPromo: InputField | null = null;
+  private buttonClearDiscount: HTMLButtonElement | null = null;
+  private currentPromoCode: string = '';
+
   constructor(cart: Cart) {
     super('section', ['basket-total']);
 
@@ -23,9 +34,15 @@ export default class BasketTotal extends BaseComponent<'section'> {
     ).getElement();
 
     const promoBox = this.renderPromoForm();
-    const totalBox = this.renderTotal(cart);
+    this.totalBox = new BaseComponent('div', ['basket-total__prices']).getElement();
 
-    content.append(promoBox, totalBox);
+    if (cart.discountCodes.length > 0) {
+      this.renderTotalWithDiscount(cart);
+    } else {
+      this.renderTotal(cart);
+    }
+
+    content.append(promoBox, this.totalBox);
     container.append(content, button);
 
     this.node.append(container);
@@ -33,40 +50,87 @@ export default class BasketTotal extends BaseComponent<'section'> {
 
   private renderPromoForm(): HTMLFormElement {
     const promoForm: HTMLFormElement = new BaseComponent('form', ['basket-total__promo']).getElement();
-    const inputPromo: HTMLDivElement = new InputField('text', 'promo', 'TRAVEL2023', 'Enter Promo Code', [
-      'basket-total__promo-input',
-    ]).getElement();
+    this.inputPromo = new InputField('text', 'promo', 'TRAVEL2023', 'Enter Promo Code', ['basket-total__promo-input']);
     const buttonApply: HTMLButtonElement = new Button('button', 'Apply', ['basket-total__promo-button']).getElement();
+    this.buttonClearDiscount = new Button(
+      'button',
+      '',
+      ['button--trash-cart', 'basket-total__delete-promo'],
+      false,
+      this.onRemoveDiscount
+    ).getElement();
 
     const onClick = () => {
       const promoFormData: FormData = new FormData(promoForm);
       const promoCode: string | undefined = promoFormData.get('promo')?.toString();
-      console.log(`TODO: implement in ISSUE #131, promocode: ${promoCode}`);
+
+      if (promoCode) this.addPromoCodeToBasket(promoCode);
     };
 
     buttonApply.addEventListener('click', onClick);
 
-    promoForm.append(inputPromo, buttonApply);
+    promoForm.append(this.inputPromo.getElement(), buttonApply, this.buttonClearDiscount);
 
     return promoForm;
   }
 
-  private renderTotal(cart: Cart): HTMLDivElement {
-    const totalBox: HTMLDivElement = new BaseComponent('div', ['basket-total__total']).getElement();
-
-    const totalLabel: HTMLSpanElement = new BaseComponent('span', ['basket-total__total-label'], 'Total').getElement();
-    const totalPrice: HTMLSpanElement = new BaseComponent('span', ['basket-total__total-price']).getElement();
-
-    if (cart.totalPrice.centAmount) {
-      totalPrice.textContent = formatPrice(
-        cart.totalPrice.currencyCode,
-        cart.totalPrice.centAmount,
-        cart.totalPrice.fractionDigits
-      );
-    }
-
-    totalBox.append(totalLabel, totalPrice);
-
-    return totalBox;
+  private renderTotal(cart: Cart): void {
+    (this.totalBox as HTMLDivElement).innerHTML = '';
+    this.totalBox?.append(createBasketTotal(cart));
+    this.buttonClearDiscount?.classList.add('hidden');
   }
+
+  private async renderTotalWithDiscount(cart: Cart): Promise<void> {
+    (this.totalBox as HTMLDivElement).innerHTML = '';
+    this.totalBox?.append(...createBasketDiscountTotal(cart));
+    const discount = await getDiscountCode();
+    this.inputPromo?.setValue(discount?.code || '');
+    this.currentPromoCode = discount?.code || '';
+    this.buttonClearDiscount?.classList.remove('hidden');
+  }
+
+  private async addPromoCodeToBasket(promoCode: string): Promise<void> {
+    if (this.currentPromoCode !== promoCode) {
+      try {
+        const cart = await addDiscountToCart(promoCode);
+        cartStore.dispatch({ type: 'UPDATE_CART', cart });
+        this.renderTotalWithDiscount(cart as Cart);
+        this.currentPromoCode = promoCode;
+        new Notification('success', 'Promo Code is successfully applied!').showNotification();
+      } catch (error) {
+        if (error instanceof Error) {
+          new Notification('error', error.message).showNotification();
+          if (error.message === 'invalid_token') {
+            localStorage.removeItem('tokenAnon');
+            localStorage.removeItem('token');
+          }
+        } else {
+          console.error(error);
+        }
+      }
+    } else {
+      new Notification('warning', 'This promo code has already been entered!').showNotification();
+    }
+  }
+
+  private onRemoveDiscount = async (): Promise<void> => {
+    try {
+      const cart = await removeDiscountCart();
+      cartStore.dispatch({ type: 'UPDATE_CART', cart });
+      this.renderTotal(cart as Cart);
+      this.inputPromo?.setValue('');
+      this.currentPromoCode = '';
+      new Notification('success', 'Promo Code is successfully deleted!').showNotification();
+    } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+        if (error.message === 'invalid_token') {
+          localStorage.removeItem('tokenAnon');
+          localStorage.removeItem('token');
+        }
+      } else {
+        console.error(error);
+      }
+    }
+  };
 }

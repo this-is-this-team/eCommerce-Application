@@ -4,7 +4,7 @@ import Footer from './components/footer/footer';
 import getUser from './services/getUser';
 import userStore from './store/user-store';
 import Notification from './components/notification/notification';
-import getCart from './services/getCart';
+import getCart from './services/basket/getCart';
 import cartStore from './store/cart-store';
 import './styles/index.scss';
 

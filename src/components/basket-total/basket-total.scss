@@ -53,5 +53,14 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &-price {
+      font: $font-button;
+
+      &.discount {
+        font-size: 16px;
+        color: $color-success;
+      }
+    }
   }
 }

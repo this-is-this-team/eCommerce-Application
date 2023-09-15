@@ -1,12 +1,12 @@
-import { ClientResponse, Cart } from '@commercetools/platform-sdk';
+import { Cart, ClientResponse, DiscountCode } from '@commercetools/platform-sdk';
 import userStore from '../store/user-store';
-import createAnonymusCart from './createAnonymusCart';
-import getActiveCart from './getActiveCart';
+import createAnonymusCart from './basket/createAnonymusCart';
+import getActiveCart from './basket/getActiveCart';
 import apiExistingToken from './apiExistingToken';
 import Notification from '../components/notification/notification';
-import createUserCart from './createUserCart';
+import createUserCart from './basket/createUserCart';
 
-export default async function addToCart(productId: string): Promise<Cart | undefined> {
+export default async function getDiscountCode(): Promise<DiscountCode | undefined> {
   const { isAuth } = userStore.getState();
   let cart: Cart;
   let token: string | null;
@@ -39,23 +39,12 @@ export default async function addToCart(productId: string): Promise<Cart | undef
     }
   }
 
-  const response: ClientResponse<Cart> = await apiExistingToken(token)
-    .me()
-    .carts()
+  const response: ClientResponse<DiscountCode> = await apiExistingToken(token)
+    .discountCodes()
     .withId({
-      ID: cart.id,
+      ID: cart?.discountCodes[0].discountCode.id || '',
     })
-    .post({
-      body: {
-        version: cart.version,
-        actions: [
-          {
-            action: 'addLineItem',
-            productId,
-          },
-        ],
-      },
-    })
+    .get()
     .execute();
 
   return response?.body;

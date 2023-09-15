@@ -1,6 +1,6 @@
 import { Cart, ClientResponse } from '@commercetools/platform-sdk';
-import apiRootAnonymus from './apiRootAnonymus';
-import MyTokenCache from './TokenCache';
+import apiRootAnonymus from '../apiRootAnonymus';
+import MyTokenCache from '../TokenCache';
 
 export default async function createAnonymusCart(): Promise<Cart> {
   const tokenCache = new MyTokenCache();

@@ -1,7 +1,7 @@
 import { LineItem } from '@commercetools/platform-sdk';
 import BaseComponent from '../../components/base-component';
 import Button from '../button/button';
-import formatPrice from '../../services/formatPrice';
+import formatPrice from '../../utils/formatPrice';
 import './basket-items.scss';
 
 export default class BasketItems extends BaseComponent<'section'> {

@@ -1,8 +1,8 @@
-import userStore from '../store/user-store';
+import userStore from '../../store/user-store';
 import createAnonymusCart from './createAnonymusCart';
-import Notification from '../components/notification/notification';
+import Notification from '../../components/notification/notification';
 import getActiveCart from './getActiveCart';
-import apiExistingToken from './apiExistingToken';
+import apiExistingToken from '../apiExistingToken';
 import { Cart } from '@commercetools/platform-sdk';
 
 export default async function removeProductFromCart(productId: string): Promise<Cart | undefined> {
