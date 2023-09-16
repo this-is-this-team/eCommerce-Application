@@ -76,7 +76,7 @@ export default class BasketTotal extends BaseComponent<'section'> {
 
   private renderTotal(cart: Cart): void {
     (this.totalBox as HTMLDivElement).innerHTML = '';
-    this.totalBox?.append(createBasketTotal(cart));
+    this.totalBox?.append(...createBasketTotal(cart));
     this.buttonClearDiscount?.classList.add('hidden');
   }
 
