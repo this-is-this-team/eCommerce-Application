@@ -172,7 +172,6 @@
     }
   }
 
-  // TODO: Replace with a separate component which will be implemented in ISSUE #127.
   &__quantity {
     width: 107px;
     height: 43px;
@@ -180,7 +179,7 @@
     background: $color-bg-light;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     font: $font-button;
 
     @include mobile {
