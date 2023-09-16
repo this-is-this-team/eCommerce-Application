@@ -133,6 +133,8 @@ export default class BasketItems extends BaseComponent<'section'> {
   }
 
   private renderQuantityField(item: LineItem): HTMLTableCellElement {
+    const maxQuantity: number = Number(item.variant.attributes?.[3].value);
+
     const quantityElement: HTMLTableCellElement = new BaseComponent('td', [
       'basket-items__table-td',
       'basket-items__table-td--quantity',
@@ -143,8 +145,12 @@ export default class BasketItems extends BaseComponent<'section'> {
       this.handleChangeItemQuantity(item, BasketItemQuantityAction.DEC)
     ).getElement();
     const quantityFieldNumber: HTMLSpanElement = new BaseComponent('span', [], `${item.quantity}`).getElement();
-    const quantityFieldInc: HTMLButtonElement = new Button('button', '+', ['button--quantity'], false, () =>
-      this.handleChangeItemQuantity(item, BasketItemQuantityAction.INC)
+    const quantityFieldInc: HTMLButtonElement = new Button(
+      'button',
+      '+',
+      ['button--quantity'],
+      maxQuantity === item.quantity,
+      () => this.handleChangeItemQuantity(item, BasketItemQuantityAction.INC)
     ).getElement();
 
     quantityField.append(quantityFieldDec, quantityFieldNumber, quantityFieldInc);
