@@ -9,8 +9,8 @@ import BasketItems from '../../components/basket-items/basket-items';
 import BasketTotal from '../../components/basket-total/basket-total';
 import getCart from '../../services/basket/getCart';
 import cartStore from '../../store/cart-store';
-import './basket-page.scss';
 import changeCartItemQuantity from '../../services/basket/changeCartItemQuantity';
+import './basket-page.scss';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
   {
@@ -32,6 +32,7 @@ export default class BasketPage extends BaseComponent<'div'> {
     this.renderBreadcrumbs();
     this.renderTitle();
     this.renderMainContent();
+    this.addSubscribtion();
   }
 
   private renderBreadcrumbs(): void {
@@ -120,5 +121,15 @@ export default class BasketPage extends BaseComponent<'div'> {
     } finally {
       loadingElement.remove();
     }
+  }
+
+  private addSubscribtion(): void {
+    cartStore.subscribe((state) => {
+      if (state.cart?.lineItems.length === 0 && this.basketMainSection) {
+        this.basketMainSection.innerHTML = '';
+        this.basketTotalSection?.remove();
+        this.basketMainSection.append(new BasketEmpty().getElement());
+      }
+    });
   }
 }

@@ -2,6 +2,9 @@ import { LineItem } from '@commercetools/platform-sdk';
 import BaseComponent from '../../components/base-component';
 import Button from '../button/button';
 import formatPrice from '../../utils/formatPrice';
+import Notification from '../notification/notification';
+import cartStore from '../../store/cart-store';
+import removeProductFromCart from '../../services/basket/removeProductFromCart';
 import './basket-items.scss';
 
 enum BasketItemQuantityAction {
@@ -11,13 +14,16 @@ enum BasketItemQuantityAction {
 
 export default class BasketItems extends BaseComponent<'section'> {
   private onChangeQuantity: (id: string, quantity: number) => void;
+  private tableElements: HTMLTableRowElement[];
 
   constructor(items: LineItem[], onChangeQuantityCallback: (id: string, quantity: number) => void) {
     super('section', ['basket-items']);
 
     this.onChangeQuantity = onChangeQuantityCallback;
+    this.tableElements = [];
 
     this.renderBasketItems(items);
+    this.addSubscribtion();
   }
 
   private renderBasketItems(items: LineItem[]): void {
@@ -69,6 +75,9 @@ export default class BasketItems extends BaseComponent<'section'> {
 
       row.append(infoCell, priceCell, quantityCell, totalPriceCell, removeCell);
       tableBody.append(row);
+
+      row.id = item.id;
+      this.tableElements.push(row);
     });
 
     return tableBody;
@@ -187,9 +196,7 @@ export default class BasketItems extends BaseComponent<'section'> {
     const iconRemoveBtn: HTMLDivElement = new BaseComponent('div', ['basket-items__remove-icon']).getElement();
     const textRemoveBtn: HTMLSpanElement = new BaseComponent('span', [], 'Remove').getElement();
 
-    const onClick = (id: string) => console.log(`TODO: implement in ISSUE #128, product id: ${id}`);
-
-    removeBtn.addEventListener('click', () => onClick(item.id));
+    removeBtn.addEventListener('click', (event) => this.onRemoveFromCart(event, item.productId));
 
     removeBtn.append(iconRemoveBtn, textRemoveBtn);
     removeField.append(removeBtn);
@@ -203,5 +210,35 @@ export default class BasketItems extends BaseComponent<'section'> {
     } else {
       this.onChangeQuantity(item.id, item.quantity + 1);
     }
+  }
+
+  private async onRemoveFromCart(event: MouseEvent, productId: string): Promise<void> {
+    try {
+      if (event.currentTarget instanceof HTMLButtonElement) event.currentTarget.disabled = true;
+
+      const updatedCart = await removeProductFromCart(productId);
+      cartStore.dispatch({ type: 'UPDATE_CART', cart: updatedCart });
+      new Notification('success', 'Tour has been successfully removed from cart!').showNotification();
+    } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+      } else {
+        console.error(error);
+      }
+
+      if (event.currentTarget instanceof HTMLButtonElement) event.currentTarget.disabled = false;
+    }
+  }
+
+  private addSubscribtion(): void {
+    cartStore.subscribe((state) => {
+      const cartItemIds = state.cart?.lineItems.map((item) => item.id).flat();
+
+      this.tableElements.forEach((itemHtml) => {
+        if (!cartItemIds?.includes(itemHtml.id)) {
+          itemHtml.remove();
+        }
+      });
+    });
   }
 }
