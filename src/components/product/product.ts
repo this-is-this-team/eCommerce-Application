@@ -190,6 +190,7 @@ export default class Product extends BaseComponent<'div'> {
       this.node.classList.add('card-overlay-enabled');
 
       const updatedCart = await removeProductFromCart(this.productId);
+      console.log('remove product ID', this.productId);
       cartStore.dispatch({ type: 'UPDATE_CART', cart: updatedCart });
       new Notification('success', 'Tour has been successfully removed from cart!').showNotification();
 
@@ -212,7 +213,7 @@ export default class Product extends BaseComponent<'div'> {
   }
 
   private isProductInCart(): boolean {
-    const { cartItems } = cartStore.getState();
-    return !!cartItems?.find((item) => item.productId === this.productId);
+    const { cart } = cartStore.getState();
+    return !!cart?.lineItems.find((item) => item.productId === this.productId);
   }
 }
