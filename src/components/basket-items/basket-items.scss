@@ -185,6 +185,11 @@
     @include mobile {
       width: 100%;
     }
+
+    &--disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
   }
 
   &__remove {

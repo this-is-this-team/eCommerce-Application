@@ -9,7 +9,6 @@ import BasketItems from '../../components/basket-items/basket-items';
 import BasketTotal from '../../components/basket-total/basket-total';
 import getCart from '../../services/basket/getCart';
 import cartStore from '../../store/cart-store';
-import changeCartItemQuantity from '../../services/basket/changeCartItemQuantity';
 import './basket-page.scss';
 
 const breadcrumbsLinks: IBreadcrumbLink[] = [
@@ -50,42 +49,6 @@ export default class BasketPage extends BaseComponent<'div'> {
     this.node.append(basketTitleSection);
   }
 
-  private onChangeQuantity = async (id: string, quantity: number): Promise<void> => {
-    const loadingElement = new BaseComponent('div', ['basket-page__loading'], 'Loading...').getElement();
-    (this.basketMainSection as HTMLElement).innerHTML = '';
-    (this.basketTotalSection as HTMLElement).innerHTML = '';
-
-    try {
-      this.node.append(loadingElement);
-
-      this.cart = await changeCartItemQuantity(id, quantity);
-      cartStore.dispatch({ type: 'UPDATE_CART', cart: this.cart });
-
-      if (this.cart && this.cart.lineItems.length > 0) {
-        this.basketMainSection?.append(
-          new BasketItems(this.cart.lineItems, (id, quantity) => this.onChangeQuantity(id, quantity)).getElement()
-        );
-        this.basketTotalSection?.append(new BasketTotal(this.cart).getElement());
-      } else {
-        this.basketMainSection?.append(new BasketEmpty().getElement());
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        new Notification('error', error.message).showNotification();
-        if (error.message === 'invalid_token') {
-          localStorage.removeItem('tokenAnon');
-          localStorage.removeItem('token');
-        }
-      } else {
-        console.error(error);
-      }
-
-      this.basketMainSection?.append(new BasketEmpty().getElement());
-    } finally {
-      loadingElement.remove();
-    }
-  };
-
   private async renderMainContent(): Promise<void> {
     const loadingElement = new BaseComponent('div', ['basket-page__loading'], 'Loading...').getElement();
 
@@ -96,9 +59,7 @@ export default class BasketPage extends BaseComponent<'div'> {
       cartStore.dispatch({ type: 'UPDATE_CART', cart: this.cart });
 
       if (this.cart && this.cart.lineItems.length > 0) {
-        this.basketMainSection = new BasketItems(this.cart.lineItems, (id, quantity) =>
-          this.onChangeQuantity(id, quantity)
-        ).getElement();
+        this.basketMainSection = new BasketItems(this.cart.lineItems).getElement();
         this.basketTotalSection = new BasketTotal(this.cart).getElement();
         this.node.append(this.basketMainSection, this.basketTotalSection);
       } else {
