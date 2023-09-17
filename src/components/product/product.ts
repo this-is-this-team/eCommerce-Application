@@ -190,7 +190,7 @@ export default class Product extends BaseComponent<'div'> {
       this.node.classList.add('card-overlay-enabled');
 
       const updatedCart = await removeProductFromCart(this.productId);
-      console.log('remove product ID', this.productId);
+
       cartStore.dispatch({ type: 'UPDATE_CART', cart: updatedCart });
       new Notification('success', 'Tour has been successfully removed from cart!').showNotification();
 
