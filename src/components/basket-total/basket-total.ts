@@ -21,6 +21,7 @@ export default class BasketTotal extends BaseComponent<'section'> {
     super('section', ['basket-total']);
 
     this.renderSection(cart);
+    this.addSubscribtion();
   }
 
   private renderSection(cart: Cart): void {
@@ -93,9 +94,11 @@ export default class BasketTotal extends BaseComponent<'section'> {
     if (this.currentPromoCode !== promoCode) {
       try {
         const cart = await addDiscountToCart(promoCode);
-        cartStore.dispatch({ type: 'UPDATE_CART', cart });
-        this.renderTotalWithDiscount(cart as Cart);
         this.currentPromoCode = promoCode;
+
+        cartStore.dispatch({ type: 'UPDATE_CART', cart });
+
+        this.renderTotalWithDiscount(cart as Cart);
         new Notification('success', 'Promo Code is successfully applied!').showNotification();
       } catch (error) {
         if (error instanceof Error) {
@@ -116,10 +119,12 @@ export default class BasketTotal extends BaseComponent<'section'> {
   private onRemoveDiscount = async (): Promise<void> => {
     try {
       const cart = await removeDiscountCart();
-      cartStore.dispatch({ type: 'UPDATE_CART', cart });
       this.renderTotal(cart as Cart);
       this.inputPromo?.setValue('');
       this.currentPromoCode = '';
+
+      cartStore.dispatch({ type: 'UPDATE_CART', cart });
+
       new Notification('success', 'Promo Code is successfully deleted!').showNotification();
     } catch (error) {
       if (error instanceof Error) {
@@ -133,4 +138,16 @@ export default class BasketTotal extends BaseComponent<'section'> {
       }
     }
   };
+
+  private addSubscribtion(): void {
+    cartStore.subscribe((state) => {
+      (this.totalBox as HTMLDivElement).innerHTML = '';
+
+      if (this.currentPromoCode) {
+        this.renderTotalWithDiscount(state.cart as Cart);
+      } else {
+        this.renderTotal(state.cart as Cart);
+      }
+    });
+  }
 }

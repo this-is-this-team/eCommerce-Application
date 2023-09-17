@@ -8,7 +8,7 @@ export default function createBasketTotal(cart: Cart): HTMLDivElement[] {
   let subTotal: number = 0;
 
   cart.lineItems.forEach((item) => {
-    subTotal += item.price.value.centAmount || 0;
+    subTotal += item.price.value.centAmount * item.quantity || 0;
   });
 
   function createSubTotal(): HTMLDivElement {

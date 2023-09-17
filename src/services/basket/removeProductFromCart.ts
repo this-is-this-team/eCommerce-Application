@@ -31,7 +31,7 @@ export default async function removeProductFromCart(productId: string): Promise<
 
   const cart: Cart = await getActiveCart(token);
 
-  cart.lineItems.filter((item) => item.productId === productId);
+  const cartItem = cart.lineItems.filter((item) => item.productId === productId);
 
   const response = await apiExistingToken(token)
     .me()
@@ -45,7 +45,7 @@ export default async function removeProductFromCart(productId: string): Promise<
         actions: [
           {
             action: 'removeLineItem',
-            lineItemId: cart.lineItems[0].id,
+            lineItemId: cartItem[0].id,
           },
         ],
       },

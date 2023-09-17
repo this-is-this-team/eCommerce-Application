@@ -9,9 +9,9 @@ export default function createBasketDiscountTotal(cart: Cart): HTMLDivElement[] 
 
   cart.lineItems.forEach((item) => {
     if (item.price?.discounted) {
-      subTotal += item.price?.discounted.value.centAmount || 0;
+      subTotal += item.price?.discounted.value.centAmount * item.quantity || 0;
     } else {
-      subTotal += item.price.value.centAmount || 0;
+      subTotal += item.price.value.centAmount * item.quantity || 0;
     }
   });
 

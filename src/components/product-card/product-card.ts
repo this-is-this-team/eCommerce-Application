@@ -138,13 +138,13 @@ export default class ProductCard extends BaseComponent<'div'> {
   }
 
   private isProductInCart(): boolean {
-    const { cartItems } = cartStore.getState();
-    return !!cartItems?.find((item) => item.productId === this.productId);
+    const { cart } = cartStore.getState();
+    return !!cart?.lineItems.find((item) => item.productId === this.productId);
   }
 
   private addSubscribtion(): void {
     cartStore.subscribe((state) => {
-      if (state.cartItems?.find((item) => item.productId === this.productId)) {
+      if (state.cart?.lineItems.find((item) => item.productId === this.productId)) {
         this.cartButton.classList.add('product-card__button--added');
         this.cartButton.disabled = true;
       } else {

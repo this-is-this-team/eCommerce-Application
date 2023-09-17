@@ -2,7 +2,11 @@ import { LineItem } from '@commercetools/platform-sdk';
 import BaseComponent from '../../components/base-component';
 import Button from '../button/button';
 import formatPrice from '../../utils/formatPrice';
+import Notification from '../notification/notification';
+import cartStore from '../../store/cart-store';
+import removeProductFromCart from '../../services/basket/removeProductFromCart';
 import './basket-items.scss';
+import changeCartItemQuantity from '../../services/basket/changeCartItemQuantity';
 
 enum BasketItemQuantityAction {
   DEC = 'decrement',
@@ -10,14 +14,19 @@ enum BasketItemQuantityAction {
 }
 
 export default class BasketItems extends BaseComponent<'section'> {
-  private onChangeQuantity: (id: string, quantity: number) => void;
+  private tableElements: HTMLTableRowElement[];
+  private lineTotalElements: Record<string, HTMLSpanElement>;
+  private quantityElements: Record<string, [HTMLDivElement, HTMLSpanElement, HTMLButtonElement]>;
 
-  constructor(items: LineItem[], onChangeQuantityCallback: (id: string, quantity: number) => void) {
+  constructor(items: LineItem[]) {
     super('section', ['basket-items']);
 
-    this.onChangeQuantity = onChangeQuantityCallback;
+    this.tableElements = [];
+    this.quantityElements = {};
+    this.lineTotalElements = {};
 
     this.renderBasketItems(items);
+    this.addSubscribtion();
   }
 
   private renderBasketItems(items: LineItem[]): void {
@@ -69,6 +78,9 @@ export default class BasketItems extends BaseComponent<'section'> {
 
       row.append(infoCell, priceCell, quantityCell, totalPriceCell, removeCell);
       tableBody.append(row);
+
+      row.id = item.id;
+      this.tableElements.push(row);
     });
 
     return tableBody;
@@ -153,6 +165,8 @@ export default class BasketItems extends BaseComponent<'section'> {
       () => this.handleChangeItemQuantity(item, BasketItemQuantityAction.INC)
     ).getElement();
 
+    this.quantityElements[item.id] = [quantityField, quantityFieldNumber, quantityFieldInc];
+
     quantityField.append(quantityFieldDec, quantityFieldNumber, quantityFieldInc);
 
     quantityElement.append(quantityField);
@@ -172,6 +186,7 @@ export default class BasketItems extends BaseComponent<'section'> {
         item.totalPrice.centAmount,
         item.totalPrice.fractionDigits
       );
+      this.lineTotalElements[item.id] = price;
       priceElement.append(price);
     }
 
@@ -187,9 +202,7 @@ export default class BasketItems extends BaseComponent<'section'> {
     const iconRemoveBtn: HTMLDivElement = new BaseComponent('div', ['basket-items__remove-icon']).getElement();
     const textRemoveBtn: HTMLSpanElement = new BaseComponent('span', [], 'Remove').getElement();
 
-    const onClick = (id: string) => console.log(`TODO: implement in ISSUE #128, product id: ${id}`);
-
-    removeBtn.addEventListener('click', () => onClick(item.id));
+    removeBtn.addEventListener('click', (event) => this.onRemoveFromCart(event, item.productId));
 
     removeBtn.append(iconRemoveBtn, textRemoveBtn);
     removeField.append(removeBtn);
@@ -199,9 +212,87 @@ export default class BasketItems extends BaseComponent<'section'> {
 
   private handleChangeItemQuantity(item: LineItem, action: BasketItemQuantityAction): void {
     if (action === BasketItemQuantityAction.DEC) {
-      this.onChangeQuantity(item.id, item.quantity - 1);
+      const newQuantity = Number(this.quantityElements[item.id][1].textContent) - 1;
+      this.onChangeQuantity(item.id, newQuantity);
     } else {
-      this.onChangeQuantity(item.id, item.quantity + 1);
+      const newQuantity = Number(this.quantityElements[item.id][1].textContent) + 1;
+      this.onChangeQuantity(item.id, newQuantity);
     }
+  }
+
+  private onChangeQuantity = async (lineItemId: string, quantity: number): Promise<void> => {
+    try {
+      this.quantityElements[lineItemId][0].classList.add('basket-items__quantity--disabled');
+      const cart = await changeCartItemQuantity(lineItemId, quantity);
+      cartStore.dispatch({ type: 'UPDATE_CART', cart });
+    } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+        if (error.message === 'invalid_token') {
+          localStorage.removeItem('tokenAnon');
+          localStorage.removeItem('token');
+        }
+      } else {
+        console.error(error);
+      }
+    } finally {
+      this.quantityElements[lineItemId][0].classList.remove('basket-items__quantity--disabled');
+    }
+  };
+
+  private async onRemoveFromCart(event: MouseEvent, productId: string): Promise<void> {
+    try {
+      if (event.currentTarget instanceof HTMLButtonElement) event.currentTarget.disabled = true;
+
+      const updatedCart = await removeProductFromCart(productId);
+      cartStore.dispatch({ type: 'UPDATE_CART', cart: updatedCart });
+      new Notification('success', 'Tour has been successfully removed from cart!').showNotification();
+    } catch (error) {
+      if (error instanceof Error) {
+        new Notification('error', error.message).showNotification();
+      } else {
+        console.error(error);
+      }
+
+      if (event.currentTarget instanceof HTMLButtonElement) event.currentTarget.disabled = false;
+    }
+  }
+
+  private addSubscribtion(): void {
+    cartStore.subscribe((state) => {
+      const cartItemIds = state.cart?.lineItems.map((item) => item.id).flat();
+
+      this.tableElements.forEach((itemHtml) => {
+        if (!cartItemIds?.includes(itemHtml.id)) {
+          itemHtml.remove();
+        }
+
+        if (cartItemIds?.includes(itemHtml.id)) {
+          const lineItem: LineItem | undefined = state.cart?.lineItems.find((item) => item.id === itemHtml.id);
+
+          if (lineItem) {
+            this.lineTotalElements[itemHtml.id].textContent = formatPrice(
+              lineItem.totalPrice.currencyCode,
+              lineItem.totalPrice.centAmount,
+              lineItem.totalPrice.fractionDigits
+            );
+
+            const currentDisplayQuantity: string | null = this.quantityElements[itemHtml.id][1].textContent;
+            const currentActualQuantity: number | undefined = lineItem.quantity;
+            const maxQuantity: number = Number(lineItem.variant.attributes?.[3].value);
+
+            if (Number(currentDisplayQuantity) !== currentActualQuantity) {
+              this.quantityElements[itemHtml.id][1].textContent = String(currentActualQuantity);
+            }
+
+            if (maxQuantity === currentActualQuantity) {
+              this.quantityElements[itemHtml.id][2].disabled = true;
+            } else {
+              this.quantityElements[itemHtml.id][2].disabled = false;
+            }
+          }
+        }
+      });
+    });
   }
 }
