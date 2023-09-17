@@ -42,7 +42,7 @@ export default async function getDiscountCode(): Promise<DiscountCode | undefine
   const response: ClientResponse<DiscountCode> = await apiExistingToken(token)
     .discountCodes()
     .withId({
-      ID: cart?.discountCodes[0].discountCode.id || '',
+      ID: cart?.discountCodes[0]?.discountCode?.id || '',
     })
     .get()
     .execute();
