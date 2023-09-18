@@ -8,6 +8,7 @@
   &__table {
     width: 100%;
     border-collapse: collapse;
+    margin-bottom: 24px;
 
     &-head {
       text-align: left;
@@ -203,8 +204,16 @@
     padding: 0;
     width: 80px;
 
+    &_all {
+      width: unset;
+    }
+
     @include mobile {
       width: 24px;
+
+      &_all {
+        width: unset;
+      }
     }
 
     &-icon {
