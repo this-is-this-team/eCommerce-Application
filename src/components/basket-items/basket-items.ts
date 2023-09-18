@@ -8,7 +8,6 @@ import removeProductFromCart from '../../services/basket/removeProductFromCart';
 import './basket-items.scss';
 import changeCartItemQuantity from '../../services/basket/changeCartItemQuantity';
 import removeCart from '../../services/basket/removeCart';
-import getCart from '../../services/basket/getCart';
 
 enum BasketItemQuantityAction {
   DEC = 'decrement',
@@ -49,12 +48,9 @@ export default class BasketItems extends BaseComponent<'section'> {
 
   private async onRemoveCart(): Promise<void> {
     try {
-      this.clearAllBtn.disabled = true;
+      const response = await removeCart();
 
-      await removeCart();
-
-      const newCart = await getCart();
-      cartStore.dispatch({ type: 'UPDATE_CART', cart: newCart });
+      cartStore.dispatch({ type: 'UPDATE_CART', cart: response });
 
       this.clearAllBtn.disabled = false;
     } catch (err) {
