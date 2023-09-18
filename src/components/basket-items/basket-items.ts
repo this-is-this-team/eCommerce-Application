@@ -47,7 +47,7 @@ export default class BasketItems extends BaseComponent<'section'> {
     this.node.append(basketItemsContainer);
   }
 
-  private async onRemoveCart() {
+  private async onRemoveCart(): Promise<void> {
     try {
       this.clearAllBtn.disabled = true;
 
