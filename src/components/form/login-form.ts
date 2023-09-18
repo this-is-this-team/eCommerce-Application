@@ -67,7 +67,7 @@ export default class LoginForm extends BaseComponent<'div'> {
     };
   }
 
-  private async onSubmit(event: SubmitEvent) {
+  private async onSubmit(event: SubmitEvent): Promise<void> {
     event.preventDefault();
 
     this.buttonSubmit.disabled = true;

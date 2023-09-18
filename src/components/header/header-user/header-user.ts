@@ -11,7 +11,7 @@ import cartStore from '../../../store/cart-store';
 export default class HeaderUser extends BaseComponent<'div'> {
   private account: HTMLDivElement;
   private dropdownMenu: HTMLDivElement;
-  private cart: HTMLDivElement;
+  private cart: HTMLAnchorElement;
   private accountIcon: HTMLSpanElement;
   private accountTitle: HTMLParagraphElement;
   private loginBtn: HTMLButtonElement;
@@ -83,13 +83,13 @@ export default class HeaderUser extends BaseComponent<'div'> {
     this.account.append(this.accountIcon, this.accountTitle, this.bridge, this.dropdownMenu);
   }
 
-  private setListeners() {
+  private setListeners(): void {
     this.account.addEventListener('click', () => this.onOpenDropdownMenu());
     this.account.addEventListener('mouseenter', () => this.onOpenDropdownMenu());
     this.account.addEventListener('mouseleave', () => this.onCloseDropdownMenu());
   }
 
-  private closeDropdownOnMobile(event: TouchEvent) {
+  private closeDropdownOnMobile(event: TouchEvent): void {
     if (this.dropdownMenu.classList.contains('dropdown-menu_opened')) {
       if (event.target instanceof HTMLElement) {
         if (this.account && event.target !== this.account && !event.target.closest('.header__user-account')) {
@@ -99,23 +99,23 @@ export default class HeaderUser extends BaseComponent<'div'> {
     }
   }
 
-  private onOpenDropdownMenu() {
+  private onOpenDropdownMenu(): void {
     this.dropdownMenu.classList.remove('dropdown-menu_closed');
     this.dropdownMenu.classList.add('dropdown-menu_opened');
 
     document.body?.addEventListener('touchstart', (event) => this.closeDropdownOnMobile(event));
   }
 
-  private onCloseDropdownMenu() {
+  private onCloseDropdownMenu(): void {
     this.dropdownMenu.classList.remove('dropdown-menu_opened');
     this.dropdownMenu.classList.add('dropdown-menu_closed');
 
     document.body?.removeEventListener('touchstart', (event) => this.closeDropdownOnMobile(event));
   }
 
-  private drawCart(): HTMLDivElement {
-    const cart: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-cart']).getElement();
-    const cartIcon: HTMLAnchorElement = new Link('', ['user-cart__icon'], AppRoutesPath.BASKET).getElement();
+  private drawCart(): HTMLAnchorElement {
+    const cart: HTMLAnchorElement = new Link('', ['header__user-cart'], AppRoutesPath.BASKET).getElement();
+    const cartIcon: HTMLDivElement = new BaseComponent<'div'>('div', ['user-cart__icon']).getElement();
 
     cart.append(cartIcon, this.cartCounter);
 

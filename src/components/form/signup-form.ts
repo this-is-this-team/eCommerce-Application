@@ -82,7 +82,7 @@ export default class SignupForm extends BaseComponent<'div'> {
     this.node.append(formTitle, formSubtitle, this.formElement);
   }
 
-  private toggleBillingAddress() {
+  private toggleBillingAddress(): void {
     this.inputs['streetBilling'].getElement().classList.toggle('form-field--hidden');
     this.inputs['cityBilling'].getElement().classList.toggle('form-field--hidden');
     this.inputs['postcodeBilling'].getElement().classList.toggle('form-field--hidden');

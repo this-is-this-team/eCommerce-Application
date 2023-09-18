@@ -6,6 +6,13 @@ import 'swiper/css/navigation';
 import 'swiper/css';
 import './slider.scss';
 
+interface IMainComponents {
+  sliderView: HTMLDivElement;
+  sliderBtnNext: HTMLDivElement;
+  sliderBtnPrev: HTMLDivElement;
+  sliderList: HTMLDivElement;
+}
+
 export default class ProductSlider extends BaseComponent<'div'> {
   private images: Image[];
   private sliderView: HTMLElement;
@@ -29,7 +36,7 @@ export default class ProductSlider extends BaseComponent<'div'> {
     this.createMarkup();
   }
 
-  private initMainComponents() {
+  private initMainComponents(): IMainComponents {
     const sliderView = new BaseComponent('div', ['swiper', 'swiper-view']).getElement();
     const sliderBtnNext = new BaseComponent('div', ['swiper-button-next']).getElement();
     const sliderBtnPrev = new BaseComponent('div', ['swiper-button-prev']).getElement();
@@ -73,7 +80,7 @@ export default class ProductSlider extends BaseComponent<'div'> {
     this.initSwiper();
   }
 
-  private initSwiper() {
+  private initSwiper(): void {
     const swiperList = new Swiper(this.sliderList, {
       loop: true,
       spaceBetween: 10,
@@ -96,7 +103,7 @@ export default class ProductSlider extends BaseComponent<'div'> {
     });
   }
 
-  private setOpenListener(element: HTMLElement) {
+  private setOpenListener(element: HTMLElement): void {
     element.addEventListener('click', (event) => {
       event.preventDefault();
 

@@ -47,11 +47,8 @@
 
     & > a,
     &:after {
-      opacity: 0.5;
-
       @include tablet {
         display: block;
-        opacity: 1;
         padding: 5px 50px;
         font-size: 20px;
       }
@@ -60,7 +57,7 @@
     &:hover {
       &:after,
       & > a {
-        opacity: 1;
+        opacity: 0.6;
       }
     }
 
