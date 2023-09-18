@@ -7,6 +7,8 @@ import cartStore from '../../store/cart-store';
 import removeProductFromCart from '../../services/basket/removeProductFromCart';
 import './basket-items.scss';
 import changeCartItemQuantity from '../../services/basket/changeCartItemQuantity';
+import removeCart from '../../services/basket/removeCart';
+import getCart from '../../services/basket/getCart';
 
 enum BasketItemQuantityAction {
   DEC = 'decrement',
@@ -17,6 +19,13 @@ export default class BasketItems extends BaseComponent<'section'> {
   private tableElements: HTMLTableRowElement[];
   private lineTotalElements: Record<string, HTMLSpanElement>;
   private quantityElements: Record<string, [HTMLDivElement, HTMLSpanElement, HTMLButtonElement]>;
+  private clearAllBtn: HTMLButtonElement = new Button(
+    'button',
+    'Clear All',
+    ['basket-items__remove', 'basket-items__remove_all'],
+    false,
+    () => this.onRemoveCart()
+  ).getElement();
 
   constructor(items: LineItem[]) {
     super('section', ['basket-items']);
@@ -33,9 +42,26 @@ export default class BasketItems extends BaseComponent<'section'> {
     const basketItemsContainer = new BaseComponent('div', ['basket-items__container']).getElement();
     const table: HTMLTableElement = this.renderTable(items);
 
-    basketItemsContainer.append(table);
+    basketItemsContainer.append(table, this.clearAllBtn);
 
     this.node.append(basketItemsContainer);
+  }
+
+  private async onRemoveCart() {
+    try {
+      this.clearAllBtn.disabled = true;
+
+      await removeCart();
+
+      const newCart = await getCart();
+      cartStore.dispatch({ type: 'UPDATE_CART', cart: newCart });
+
+      this.clearAllBtn.disabled = false;
+    } catch (err) {
+      if (err instanceof Error) new Notification('error', err.message);
+
+      this.clearAllBtn.disabled = false;
+    }
   }
 
   private renderTable(items: LineItem[]): HTMLTableElement {
