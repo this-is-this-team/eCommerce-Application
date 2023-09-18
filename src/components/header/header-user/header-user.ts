@@ -11,7 +11,7 @@ import cartStore from '../../../store/cart-store';
 export default class HeaderUser extends BaseComponent<'div'> {
   private account: HTMLDivElement;
   private dropdownMenu: HTMLDivElement;
-  private cart: HTMLDivElement;
+  private cart: HTMLAnchorElement;
   private accountIcon: HTMLSpanElement;
   private accountTitle: HTMLParagraphElement;
   private loginBtn: HTMLButtonElement;
@@ -113,9 +113,9 @@ export default class HeaderUser extends BaseComponent<'div'> {
     document.body?.removeEventListener('touchstart', (event) => this.closeDropdownOnMobile(event));
   }
 
-  private drawCart(): HTMLDivElement {
-    const cart: HTMLDivElement = new BaseComponent<'div'>('div', ['header__user-cart']).getElement();
-    const cartIcon: HTMLAnchorElement = new Link('', ['user-cart__icon'], AppRoutesPath.BASKET).getElement();
+  private drawCart(): HTMLAnchorElement {
+    const cart: HTMLAnchorElement = new Link('', ['header__user-cart'], AppRoutesPath.BASKET).getElement();
+    const cartIcon: HTMLDivElement = new BaseComponent<'div'>('div', ['user-cart__icon']).getElement();
 
     cart.append(cartIcon, this.cartCounter);
 
