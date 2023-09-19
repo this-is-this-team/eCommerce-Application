@@ -13,6 +13,8 @@ export enum AppRoutesPath {
   CATEGORY = '/shop/:category',
   SUBCATEGORY = '/shop/:category/:subcategory',
   PRODUCT = '/shop/:category/:subcategory/:id',
+  BASKET = '/basket',
+  ABOUT_US = '/about-us',
   NOT_FOUND = '/404',
   ANCHOR = '#',
 }

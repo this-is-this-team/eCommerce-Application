@@ -44,7 +44,7 @@ const menuItems: IMenuItems[] = [
   },
   {
     title: 'About Us',
-    href: AppRoutesPath.ANCHOR,
+    href: AppRoutesPath.ABOUT_US,
   },
 ];
 

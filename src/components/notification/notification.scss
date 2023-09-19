@@ -1,8 +1,10 @@
 .custom-toast {
   display: flex;
   align-items: flex-start;
+  gap: 8px;
   color: $color-white;
-  padding: 10px;
+  padding: 20px 24px;
+  border-radius: 8px;
   transition: all 0.2s ease;
 
   &:hover {
@@ -23,5 +25,9 @@
 
   &_error {
     background: $color-error;
+  }
+
+  &_warning {
+    background: $color-logo;
   }
 }

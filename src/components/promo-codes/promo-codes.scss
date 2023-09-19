@@ -1,0 +1,139 @@
+.promo-codes {
+  padding: 104px 0;
+  background-color: $color-bg-light;
+
+  @include mobile {
+    padding: 60px 0;
+  }
+
+  &__container {
+    @include container;
+  }
+
+  &__title {
+    @include font-h2;
+    margin-bottom: 48px;
+  }
+
+  &-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 24px;
+    gap: 24px;
+
+    @include laptop {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include mobile {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  &-item {
+    padding: 32px;
+    background: $color-white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &__img {
+      margin-bottom: 24px;
+      display: block;
+      width: 116px;
+      height: 116px;
+      border-radius: 8px;
+      background-color: #fff;
+      background-image: url('../../assets/img/placeholder-image.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      overflow: hidden;
+
+      &.FAMILYFUN {
+        background-image: url('../../assets/img/promo-codes/FAMILYFUN.jpg');
+      }
+      &.LASTCHANCE {
+        background-image: url('../../assets/img/promo-codes/LASTCHANCE.jpg');
+      }
+      &.CRUISE100 {
+        background-image: url('../../assets/img/promo-codes/CRUISE100.jpg');
+      }
+      &.GROUP24 {
+        background-image: url('../../assets/img/promo-codes/GROUP24.jpg');
+      }
+    }
+
+    &__title {
+      @include font-h4;
+      margin-bottom: 12px;
+    }
+
+    &__descr {
+      margin-bottom: 67px;
+
+      @include small-mobile {
+        margin-bottom: 30px;
+      }
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+
+      @media (max-width: 1600px) {
+        flex-direction: column;
+      }
+
+      @include laptop {
+        flex-direction: row;
+      }
+
+      @include small-mobile {
+        flex-direction: column;
+      }
+    }
+
+    &__input {
+      width: 100%;
+
+      & label {
+        margin-bottom: 0;
+      }
+
+      & input {
+        height: 55px;
+        font: $font-label;
+        background: $color-bg-light;
+        border: 1px solid $color-bg-light;
+      }
+    }
+
+    &__button {
+      margin: 0 0 0 8px;
+
+      @media (max-width: 1600px) {
+        margin: 12px 0 0 0;
+        width: 100%;
+      }
+
+      @include laptop {
+        margin: 0 0 0 8px;
+        width: auto;
+      }
+
+      @include small-mobile {
+        margin: 12px 0 0 0;
+        width: 100%;
+      }
+    }
+
+    &__date {
+      font: $font-xs;
+      opacity: 0.5;
+    }
+  }
+}

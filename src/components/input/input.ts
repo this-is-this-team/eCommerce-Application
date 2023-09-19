@@ -60,6 +60,10 @@ export default class InputField extends BaseComponent<'div'> {
     this.inputElement.value = value;
   }
 
+  public setAttribute(name: string, value: string): void {
+    this.inputElement.setAttribute(name, value);
+  }
+
   private setAttributes(type: string = 'text', name: string = '', placeholder: string = ''): void {
     this.inputElement.type = type;
     this.inputElement.name = name;

@@ -11,7 +11,7 @@ export default class Banner extends BaseComponent<'section'> {
     this.createMarkup(title, text);
   }
 
-  private createMarkup(title: string, text: string) {
+  private createMarkup(title: string, text: string): void {
     const container: HTMLDivElement = new BaseComponent('div', ['banner__container']).getElement();
     const bannerContent: HTMLDivElement = new BaseComponent('div', ['banner__content']).getElement();
     const bannerTitle: HTMLHeadingElement = new BaseComponent('h1', ['banner__title'], title).getElement();

@@ -249,4 +249,54 @@
       transition: all 0.3s ease-in-out;
     }
   }
+
+  &--trash-cart {
+    position: relative;
+    display: block;
+    background-color: $color-error;
+    overflow: hidden;
+    height: 48px;
+
+    &.hidden {
+      display: none;
+    }
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background-color: rgba($color-error, 0.8);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('../../assets/icons/cart-trash-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+
+  &--quantity {
+    background: none;
+    border-radius: 6px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-black;
+    font: $font-button;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      color: $color-white;
+    }
+  }
 }

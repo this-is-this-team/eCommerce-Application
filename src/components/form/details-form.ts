@@ -84,7 +84,7 @@ export default class DetailsForm extends BaseComponent<'form'> {
     };
   }
 
-  private async onSubmit(event: SubmitEvent) {
+  private async onSubmit(event: SubmitEvent): Promise<void> {
     event.preventDefault();
 
     this.buttonSubmit.disabled = true;

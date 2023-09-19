@@ -6,7 +6,7 @@ export default async function updateUser(data: MyCustomerUpdateAction[]): Promis
   const { customer } = userStore.getState();
 
   const currentToken = localStorage.getItem('token');
-  const parsenToken = currentToken ? JSON.parse(currentToken) : '';
+  const parsenToken = currentToken ? currentToken : '';
 
   const body = {
     body: {

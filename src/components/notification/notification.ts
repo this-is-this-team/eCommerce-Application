@@ -6,10 +6,10 @@ const BASE_DURATION: number = 5000;
 
 export default class Notification {
   private message: string;
-  private type: 'error' | 'success';
+  private type: 'error' | 'success' | 'warning';
   private duration: number;
 
-  constructor(type: 'error' | 'success', message: string, duration: number = BASE_DURATION) {
+  constructor(type: 'error' | 'success' | 'warning', message: string, duration: number = BASE_DURATION) {
     this.message = message;
     this.type = type;
     this.duration = duration;
@@ -20,7 +20,7 @@ export default class Notification {
       className: `custom-toast custom-toast_${this.type}`,
       text: this.message,
       duration: this.duration,
-      gravity: 'top',
+      gravity: 'bottom',
       close: true,
     }).showToast();
   }

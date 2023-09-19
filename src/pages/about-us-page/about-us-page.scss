@@ -1,0 +1,14 @@
+.about-us-page {
+  &__container {
+    @include container;
+  }
+
+  &__title {
+    @include font-h1;
+    max-width: 1025px;
+
+    & span {
+      color: $color-logo;
+    }
+  }
+}

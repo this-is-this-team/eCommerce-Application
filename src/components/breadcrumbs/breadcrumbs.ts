@@ -15,7 +15,7 @@ export default class Breadcrumbs extends BaseComponent<'div'> {
     this.renderBreadcrumbs(links, currentPage, showLogoutBtn);
   }
 
-  renderBreadcrumbs(links: IBreadcrumbLink[], currentPage: string, showLogoutBtn: boolean = false) {
+  renderBreadcrumbs(links: IBreadcrumbLink[], currentPage: string, showLogoutBtn: boolean = false): void {
     const container: HTMLDivElement = new BaseComponent('div', ['breadcrumbs__container']).getElement();
     const linksElement: HTMLDivElement = new BaseComponent('div', ['breadcrumbs__links']).getElement();
     const activeLinksElements: HTMLAnchorElement[] = links.map((link) =>

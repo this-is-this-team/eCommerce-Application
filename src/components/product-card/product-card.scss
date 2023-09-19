@@ -91,6 +91,17 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease-in-out;
+
+    @include pre-tablet {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    &--added {
+      opacity: 1;
+      pointer-events: all;
+      background: $color-price !important;
+    }
   }
 
   &__title {
@@ -127,9 +138,36 @@
   }
 
   &:hover {
-    .product-card__button {
+    .product-card__button:not(.product-card__button--added) {
       opacity: 1;
       pointer-events: all;
+    }
+  }
+
+  &.card-overlay-enabled {
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: $color-white;
+      opacity: 0.5;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      z-index: 3;
+      width: 100px;
+      height: 100px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('../../assets/icons/spinner-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
   }
 }

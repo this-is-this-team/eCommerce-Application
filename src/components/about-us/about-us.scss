@@ -1,0 +1,318 @@
+.about-us {
+  &-list {
+    margin: 48px 0 104px 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 24px;
+    gap: 24px;
+
+    @include pre-tablet {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    @include mobile {
+      margin: 30px 0 60px 0;
+    }
+  }
+
+  &-member {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    //justify-content: space-between;
+    gap: 32px;
+    border-radius: 8px;
+    background: $color-bg-light;
+
+    @include pre-tablet {
+      gap: 24px;
+    }
+
+    @include small-mobile {
+      padding: 16px;
+      gap: 16px;
+    }
+
+    &__header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 32px;
+      border-bottom: 2px solid rgba($color-primary, 0.08);
+
+      @include pre-tablet {
+        padding-bottom: 24px;
+      }
+
+      @include small-mobile {
+        padding-bottom: 16px;
+      }
+    }
+
+    &__img {
+      min-width: 96px;
+      height: 96px;
+      border-radius: 100%;
+      background-color: #fff;
+      background-image: url('../../assets/img/placeholder-image.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      overflow: hidden;
+
+      @include small-mobile {
+        min-width: 60px;
+        height: 60px;
+      }
+
+      &.andrew {
+        background-image: url('../../assets/img/team-members/andrew.jfif');
+      }
+      &.yauheni {
+        background-image: url('../../assets/img/team-members/yauheni.jfif');
+      }
+      &.maksim {
+        background-image: url('../../assets/img/team-members/maksim.png');
+      }
+    }
+
+    &__header-wrapp {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__title {
+      @include font-h4;
+    }
+
+    &__role {
+      font: $font-label;
+
+      @include small-mobile {
+        font-size: 12px;
+      }
+    }
+
+    &__label {
+      display: inline-block;
+      margin-bottom: 12px;
+      font: $font-about-label;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+
+      @include small-mobile {
+        margin-bottom: 8px;
+      }
+    }
+
+    &__text {
+      @include small-mobile {
+        font-size: 14px;
+      }
+    }
+
+    &__link {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      font: $font-button;
+      color: $color-button;
+      transition: all 0.3s ease-in-out;
+
+      &::after {
+        content: '';
+        width: 20px;
+        height: 20px;
+        background-image: url('../../assets/icons/github-profile-icon.svg');
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 1px;
+        background: $color-button;
+        left: 0;
+        bottom: -4px;
+        transition: width 0.2s ease-in-out;
+      }
+
+      &:not(:disabled):hover,
+      &:not(:disabled):active {
+        &::before {
+          width: 100%;
+        }
+      }
+    }
+
+    &__contributions-list {
+      margin-left: 16px;
+
+      & li {
+        list-style: disc;
+        margin-bottom: 8px;
+
+        @include small-mobile {
+          font-size: 14px;
+          margin-bottom: 4px;
+        }
+      }
+    }
+  }
+
+  &-collaboration {
+    padding: 104px 0;
+    border-top: 1px solid $color-border;
+    border-bottom: 1px solid $color-border;
+
+    @include mobile {
+      padding-top: 60px;
+      margin-bottom: 60px;
+    }
+
+    &__title {
+      @include font-h1;
+    }
+
+    &__blockquote {
+      margin-top: 48px;
+      width: fit-content;
+      padding: 64px;
+      background: $color-bg-light;
+      border-radius: 8px;
+      position: relative;
+
+      @include tablet {
+        padding: 40px;
+      }
+
+      & p {
+        @include font-h2;
+      }
+
+      & footer {
+        margin-top: 40px;
+        font: $font-button;
+
+        @include tablet {
+          margin-top: 20px;
+        }
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        width: 36px;
+        height: 32px;
+        background-image: url('../../assets/icons/quote-icon.svg');
+        background-position: center;
+        background-size: cover;
+        margin-bottom: 20px;
+
+        @include tablet {
+          width: 27px;
+          height: 24px;
+        }
+      }
+    }
+  }
+
+  &-methods {
+    margin-top: 48px;
+
+    &__title {
+      @include font-h2;
+    }
+
+    &__list {
+      margin-top: 48px;
+    }
+
+    &-item {
+      display: flex;
+      margin-bottom: 40px;
+
+      &__index {
+        margin-right: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        background: $color-button;
+        color: $color-white;
+      }
+
+      &__title {
+        @include font-h4;
+        margin-bottom: 10px;
+      }
+
+      &__descr {
+        max-width: 1000px;
+        @include small-mobile {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  &-rsschool {
+    padding: 104px 0;
+    display: flex;
+    align-items: center;
+
+    @include pre-tablet {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    @include mobile {
+      padding: 40px 32px;
+      margin-bottom: 60px;
+    }
+
+    &__link {
+      display: block;
+      min-width: 220px;
+      height: 80px;
+      background-image: url('../../assets/icons/rsschool-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-image: url('../../assets/icons/rsschool-icon-active.svg');
+      }
+
+      @include pre-tablet {
+        margin-bottom: 40px;
+      }
+
+      @include small-mobile {
+        min-width: 135px;
+        height: 50px;
+      }
+    }
+
+    &__text {
+      max-width: 1300px;
+      margin: 0 0 0 40px;
+      padding: 0 0 0 40px;
+      @include font-h2;
+      border-left: 1.5px solid rgba($color-primary, 0.12);
+
+      @include pre-tablet {
+        margin: 0;
+        padding: 0;
+        border: none;
+      }
+    }
+  }
+}
