@@ -4,6 +4,40 @@
 The project is being developed as part of the final task of the course [JavaScript/Front-end (2023Q1)](https://rs.school/js/) from the [RS School](https://rs.school/).  
 The [`this-is-this team`](https://github.com/this-is-this-team) is working on the project.
 
+## Commercetools Setup
+
+<details>
+  <summary>.env example</summary>
+  <br />
+  <pre>
+    CTP_PROJECT_KEY=
+    CTP_CLIENT_SECRET=
+    CTP_CLIENT_ID=
+    CTP_AUTH_URL=
+    CTP_API_URL=
+    CTP_SCOPES=
+  </pre>
+</details>
+
+<details>
+  <summary>necessary scopes</summary>
+  <br />
+  <img src="https://github.com/elsuppo/this-is-this-eCommerce-application/assets/68076610/2533901d-a1bb-4a05-85c9-301057cece49" alt="profile-details"/>
+  <ul>
+    <li>view_products</li>
+    <li>view_cart_discounts</li>
+    <li>view_shipping_methods</li>
+    <li>view_categories</li>
+    <li>view_discount_codes</li>
+    <li>view_product_selections</li>
+    <li>manage_my_shopping_lists</li>
+    <li>manage_my_payments</li>
+    <li>manage_my_profile</li>
+    <li>manage_my_orders</li>
+    <li>create_anonymous_token</li>
+  </ul>
+</details>
+
 ## Project Purpose
 
 - Develop a Single Page Application (SPA) without using frameworks
