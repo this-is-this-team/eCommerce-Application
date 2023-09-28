@@ -1,0 +1,55 @@
+.header {
+  height: 80px;
+  border-bottom: 1px solid rgba(0, 19, 41, 0.12);
+
+  &__container {
+    @include container;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 64px;
+    height: 100%;
+
+    @include tablet {
+      justify-content: space-between;
+      gap: 20px;
+    }
+  }
+
+  &__link {
+    color: $color-primary;
+    transition: all 0.2s ease;
+  }
+
+  &__bridge {
+    position: absolute;
+    top: 20px;
+    width: calc(100% + 20px);
+    height: 15px;
+    z-index: 0;
+
+    @include tablet {
+      display: none;
+    }
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 35px;
+    border-radius: 8px;
+    background: $color-white;
+    box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.08);
+    z-index: 2;
+
+    &_closed {
+      display: none;
+    }
+
+    &_opened {
+      display: block;
+    }
+  }
+}

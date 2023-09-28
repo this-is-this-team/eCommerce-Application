@@ -1,0 +1,16 @@
+.signup-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-section {
+  margin-bottom: 104px;
+
+  @include mobile {
+    margin-bottom: 80px;
+  }
+
+  &__container {
+    @include container;
+  }
+}

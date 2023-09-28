@@ -1,0 +1,69 @@
+.shop-hero {
+  &__container {
+    @include container;
+  }
+
+  &__wrapper {
+    display: flex;
+    gap: 72px;
+    width: 100%;
+    padding-bottom: 104px;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    align-self: flex-end;
+  }
+
+  &__title {
+    @include font-h2;
+    margin-bottom: 24px;
+  }
+
+  &__text {
+    font-size: 18px;
+    line-height: 150%;
+  }
+
+  &__image {
+    width: 100%;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-image: url('../../assets/img/shop_hero-image.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    @include tablet {
+      display: none;
+    }
+
+    &--europe {
+      background-image: url('../../assets/img/shop_hero-image_europe.jpg');
+    }
+
+    &--asia {
+      background-image: url('../../assets/img/shop_hero-image_asia.jpg');
+    }
+
+    &--africa {
+      background-image: url('../../assets/img/shop_hero-image_africa.jpg');
+    }
+
+    &--america {
+      background-image: url('../../assets/img/shop_hero-image_america.jpg');
+    }
+
+    &--hiking {
+      background-image: url('../../assets/img/shop_hero-image_hiking.jpg');
+    }
+
+    &--sailing {
+      background-image: url('../../assets/img/shop_hero-image_sailing.jpg');
+    }
+  }
+}

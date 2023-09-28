@@ -1,0 +1,302 @@
+.button {
+  background: $color-button;
+  border-radius: 6px;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-white;
+  font: $font-button;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &:not(:disabled):hover,
+  &:not(:disabled):active {
+    background: $color-button-hover;
+  }
+
+  &--white {
+    width: 124px;
+    background: $color-white;
+    color: $color-primary;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: $color-gray;
+    }
+  }
+
+  &--loading {
+    position: relative;
+    color: transparent;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('../../assets/icons/spinner-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+
+  &--success {
+    position: relative;
+    color: transparent;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('../../assets/icons/success-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+
+  &--cart {
+    padding: 0;
+    width: 48px;
+    height: 48px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('../../assets/icons/cart-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+
+  &--logout {
+    position: relative;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    color: $color-secondary-40;
+    transition: transform 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: none;
+      transform: scale(1.06);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: -22px;
+      transform: translate(0, -50%);
+      background-image: url('../../assets/icons/logout-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 81px;
+      height: 1px;
+      top: 67%;
+      left: -21px;
+      transform: translate(0, -50%);
+      background-color: $color-secondary-40;
+    }
+  }
+
+  &--cancel {
+    position: relative;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    color: $color-secondary-40;
+    transition: color 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: none;
+      color: $color-secondary-60;
+
+      &::after {
+        background: $color-secondary-60;
+        width: 0;
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      left: 0;
+      bottom: 0px;
+      background-color: $color-secondary-40;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &--change-password {
+    position: relative;
+    background: none;
+    width: fit-content;
+    border-radius: 0;
+    padding: 0;
+    margin-left: 30px;
+    color: $color-button-hover;
+    transition: transform 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: none;
+      transform: scale(1.03);
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 26px;
+      height: 25px;
+      top: 50%;
+      left: -30px;
+      transform: translate(0, -50%);
+      background-image: url('../../assets/icons/change-password-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+
+  &--reset {
+    background: transparent;
+    padding: 0;
+    color: $color-button;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: $color-button;
+      left: 0;
+      bottom: -4px;
+      transition: width 0.2s ease-in-out;
+    }
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: transparent;
+
+      &::before {
+        width: 0;
+      }
+    }
+  }
+
+  &--add-address {
+    position: relative;
+    background: none;
+    border-radius: 0;
+    padding: 0;
+    color: $color-button;
+    transition: all 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background: none;
+      color: $color-button-hover;
+
+      &::after {
+        background: $color-button-hover;
+        width: 0;
+      }
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      left: 0;
+      bottom: 0px;
+      background: $color-button;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &--trash-cart {
+    position: relative;
+    display: block;
+    background-color: $color-error;
+    overflow: hidden;
+    height: 48px;
+
+    &.hidden {
+      display: none;
+    }
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      background-color: rgba($color-error, 0.8);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background-image: url('../../assets/icons/cart-trash-icon.svg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  }
+
+  &--quantity {
+    background: none;
+    border-radius: 6px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $color-black;
+    font: $font-button;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:not(:disabled):hover,
+    &:not(:disabled):active {
+      color: $color-white;
+    }
+  }
+}

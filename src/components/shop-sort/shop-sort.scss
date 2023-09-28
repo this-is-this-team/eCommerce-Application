@@ -1,0 +1,9 @@
+.shop-sort {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  @include mobile {
+    flex-wrap: wrap;
+  }
+}

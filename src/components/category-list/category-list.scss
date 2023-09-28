@@ -1,0 +1,54 @@
+.category-list {
+  margin-top: 48px;
+
+  &__container {
+    @include container;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__title {
+    @include font-h4;
+  }
+
+  &__list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &__link {
+    color: $color-secondary-60;
+    transition: color 0.3s ease-in-out;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      background: $color-primary;
+      left: 0;
+      bottom: -4px;
+      transition: width 0.2s ease-in-out;
+    }
+
+    &:hover {
+      color: $color-primary;
+
+      &::before {
+        width: 100%;
+      }
+    }
+
+    &--active {
+      color: $color-primary;
+
+      &::before {
+        width: 100%;
+      }
+    }
+  }
+}

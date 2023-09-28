@@ -1,0 +1,30 @@
+@import './libs/_reset.scss';
+@import './base/_fonts.scss';
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font: $font-main;
+  background-color: $color-white;
+  color: $color-primary;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+
+  &.hidden {
+    overflow: hidden;
+  }
+}
+
+header,
+footer {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+main {
+  flex-grow: 1;
+}
